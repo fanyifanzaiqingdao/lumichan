@@ -31,47 +31,101 @@ const FEATURES = [
   },
 ]
 
-const CULTURE = [
-  { src: '/culture/tibetan-monastery.jpg', alt: 'Tibetan Monastery', label: 'Tibetan Heritage', tall: true },
-  { src: '/culture/sichuan-teahouse.jpg', alt: 'Sichuan Teahouse', label: 'Tea Culture' },
-  { src: '/culture/yunnan-festival.jpg', alt: 'Yunnan Festival', label: 'Ethnic Festivals' },
-  { src: '/culture/calligraphy.jpg', alt: 'Chinese Calligraphy', label: 'Calligraphy Art' },
-  { src: '/culture/sichuan-hotpot.jpg', alt: 'Sichuan Hot Pot', label: 'Sichuan Cuisine' },
-  { src: '/culture/panda.jpg', alt: 'Giant Panda', label: 'Giant Pandas' },
-  { src: '/culture/lantern-festival.jpg', alt: 'Lantern Festival', label: 'Lantern Festival', tall: true },
-  { src: '/culture/rice-terraces.jpg', alt: 'Rice Terraces', label: 'Rice Terraces' },
-  { src: '/culture/sichuan-opera.jpg', alt: 'Sichuan Opera', label: 'Sichuan Opera' },
-  { src: '/culture/zhangjiajie-bridge.jpg', alt: 'Zhangjiajie', label: 'Natural Wonders' },
+const EXPERIENCES = [
+  {
+    number: '01',
+    title: 'A Day with a Nomadic Family',
+    place: 'Tagong Grassland',
+    text: 'Share butter tea, learn how tsampa is made and listen to the stories behind daily life on the plateau.',
+    detail: 'Local life · Food · Conversation',
+    image: '/images/experiences/tagong-nomadic-family.jpg',
+    alt: 'A Tibetan host pouring hot water into a traditional vessel inside a family home on Tagong Grassland',
+    href: '/traveler/guides',
+  },
+  {
+    number: '02',
+    title: 'Walk the Living Paths of Taoism',
+    place: 'Mount Qingcheng',
+    text: 'Move slowly through forest paths and mountain temples with context that brings Taoist ideas into view.',
+    detail: 'Heritage · Walking · Reflection',
+    image: '/images/experiences/qingcheng-brush-writing-card.jpg',
+    alt: 'A hand using a brush to copy Chinese characters during a quiet cultural practice',
+    href: '/traveler/itineraries',
+  },
+  {
+    number: '03',
+    title: 'Taste Chengdu Beyond the Menu',
+    place: 'Chengdu',
+    text: 'Follow the rhythm of teahouses, markets and neighbourhood kitchens with someone who knows the city personally.',
+    detail: 'Food · Teahouses · City life',
+    image: '/images/experiences/chengdu-teahouse-card.jpg',
+    alt: 'Guests sharing time in a traditional Chengdu teahouse filled with bamboo chairs',
+    href: '/traveler/itineraries',
+  },
 ]
 
 const DESTINATIONS = [
   {
-    name: 'BiPeng Valley',
-    location: 'Western Sichuan',
-    duration: '3-4 Days',
-    rating: 4.9,
-    image: '/home/bipeng-valley.jpg',
+    title: 'Chengdu & Mount Qingcheng',
+    text: 'Teahouse rhythms, remarkable food and the quiet heritage of a Taoist mountain.',
+    image: '/images/destinations/qingcheng-forest-walk-card.jpg',
+    alt: 'A traveler walking up a stone path through the deep green forest of Mount Qingcheng',
+    size: 'wide',
+    href: '/traveler/itineraries',
   },
   {
-    name: 'Shuangqiao Valley',
-    location: 'Siguniang Mountain',
-    duration: '5 Days',
-    rating: 4.8,
-    image: '/home/shuangqiao-valley.jpg',
+    title: 'Kangding, Tagong & Danba',
+    text: 'Tibetan communities, sacred places, grasslands and mountain roads.',
+    image: '/images/destinations/kangding-tagong-danba-card.jpg',
+    alt: 'A woman in traditional dress standing on the exterior steps of a stone house in Danba',
+    size: 'tall',
+    href: '/traveler/itineraries',
   },
   {
-    name: 'Tagong Grassland',
-    location: 'Kangding, Tibet',
-    duration: '7-8 Days',
-    rating: 4.9,
-    image: '/home/tagong-grassland.jpg',
+    title: 'Mount Siguniang',
+    text: 'Alpine valleys, village stays and trails for walking at your own pace.',
+    image: '/images/destinations/mount-siguniang-card.jpg',
+    alt: 'Snow-covered peaks and golden autumn forest reflected in a lake at Mount Siguniang',
+    size: 'small',
+    href: '/traveler/itineraries',
   },
   {
-    name: 'Kangding City',
-    location: 'Sichuan Province',
-    duration: '2-3 Days',
-    rating: 4.7,
-    image: '/home/kangding.jpg',
+    title: 'Jiuzhaigou & Huanglong',
+    text: 'Forests, luminous lakes and a highland landscape shaped by water.',
+    image: '/images/destinations/jiuzhaigou-huanglong-card.jpg',
+    alt: 'Turquoise travertine pools cascading through the Huanglong landscape',
+    size: 'small',
+    href: '/traveler/itineraries',
+  },
+]
+
+const JOURNEYS = [
+  {
+    eyebrow: '5 DAYS · PRIVATE',
+    title: 'People & Peaks of Western Sichuan',
+    text: 'Chengdu · Wolong · Mount Siguniang · Danba · Tagong · Kangding',
+    tags: ['Culture', 'Nature', 'Local life'],
+    image: '/images/journeys/western-sichuan-card.jpg',
+    alt: 'Misty mountain valley and winding river at Mount Siguniang',
+    href: '/traveler/itineraries',
+  },
+  {
+    eyebrow: '4 DAYS · PRIVATE',
+    title: 'Taoist Mountains & Chengdu Life',
+    text: 'Chengdu · Dujiangyan · Mount Qingcheng',
+    tags: ['Heritage', 'Food', 'Slow travel'],
+    image: '/images/journeys/taoist-mountains-chengdu-card.jpg',
+    alt: 'Misty forest, lake and Taoist buildings at Mount Qingcheng',
+    href: '/traveler/itineraries',
+  },
+  {
+    eyebrow: '6 DAYS · PRIVATE',
+    title: 'Valleys & Waters of Northern Sichuan',
+    text: 'Chengdu · Jiuzhaigou · Huanglong',
+    tags: ['Nature', 'Photography', 'Family'],
+    image: '/images/journeys/northern-sichuan-waters-card.jpg',
+    alt: 'Aerial view of turquoise lakes in Jiuzhaigou Valley',
+    href: '/traveler/itineraries',
   },
 ]
 
@@ -114,29 +168,32 @@ function FeatureIcon({ name }) {
 
 export default function Home() {
   return (
-    <div className="home home--dark">
-      <section className="hero">
+    <div className="home">
+      <section className="hero shell" aria-labelledby="hero-title">
         <div className="hero__media" aria-hidden="true">
-          <img src="/home/hero-sichuan.jpg" alt="" />
+          <img
+            src="/images/home/hero-yala-prayer-flags.jpg"
+            alt="Prayer flags overlooking snow-covered Mount Yala in Western Sichuan"
+          />
         </div>
-        <div className="hero__veil" aria-hidden="true" />
-        <div className="hero__content section">
-          <div className="hero__badge">✦ AI-Powered Travel Planning</div>
-          <h1 className="font-serif hero__title">
+        <div className="hero__shade" aria-hidden="true" />
+        <div className="hero__copy">
+          <p className="eyebrow light">AI-Powered Travel Planning</p>
+          <h1 id="hero-title" className="font-serif">
             Travel with
             <br />
-            <span className="text-gold">Confidence</span>
+            Confidence
           </h1>
-          <p className="hero__subtitle">
+          <p className="hero__description">
             Every step verified. Every detail confirmed. Experience the world&apos;s first AI-verified
             travel platform.
           </p>
           <div className="hero__actions">
-            <Link to="/traveler/ai-planner" className="btn btn-gold">
-              AI Trip Planning <span aria-hidden>✦</span>
+            <Link to="/traveler/contact" className="button button-light">
+              Plan My Trip <span aria-hidden="true">↗</span>
             </Link>
-            <Link to="/traveler/guides" className="btn btn-ghost">
-              Find a Guide
+            <Link to="/traveler/guides" className="text-link light-link">
+              Find a Guide <span aria-hidden="true">↓</span>
             </Link>
           </div>
           <ul className="hero__trust">
@@ -148,25 +205,154 @@ export default function Home() {
             ))}
           </ul>
         </div>
+        <div className="hero__note" aria-hidden="true">
+          <span>31.08° N</span>
+          <span>SICHUAN · CHINA</span>
+        </div>
       </section>
 
-      <section className="stats">
-        <div className="section stats__grid">
+      <section className="stats shell">
+        <div className="stats__grid">
           {STATS.map((item) => (
             <div key={item.label} className="stats__item">
-              <div className="stats__value text-gold">{item.value}</div>
+              <div className="stats__value font-serif">{item.value}</div>
               <div className="stats__label">{item.label}</div>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="features">
-        <div className="section section-pad">
+      {/* 1 — Experiences */}
+      <section className="experiences section-block" id="experiences" aria-labelledby="experiences-title">
+        <div className="shell">
+          <div className="section-heading split-heading">
+            <div>
+              <p className="eyebrow">Signature Experiences</p>
+              <h2 id="experiences-title" className="font-serif">
+                Come home with more than photographs.
+              </h2>
+            </div>
+            <p>
+              Meet people, try something with your own hands and understand the places you pass through —
+              with time for genuine connection.
+            </p>
+          </div>
+
+          <div className="experience-grid">
+            {EXPERIENCES.map((item, index) => (
+              <article key={item.number} className={`experience-card experience-${index + 1}`}>
+                <div className="experience-image">
+                  <img src={item.image} alt={item.alt} loading="lazy" />
+                </div>
+                <div className="experience-copy">
+                  <div className="experience-meta">
+                    <span>{item.number}</span>
+                    <span>{item.place}</span>
+                  </div>
+                  <h3 className="font-serif">{item.title}</h3>
+                  <p>{item.text}</p>
+                  <div className="experience-footer">
+                    <span>{item.detail}</span>
+                    <Link to={item.href} aria-label={`Explore ${item.title}`}>
+                      ↗
+                    </Link>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 2 — Destinations */}
+      <section className="destinations section-block" id="destinations" aria-labelledby="destinations-title">
+        <div className="shell">
+          <div className="section-heading destinations-heading">
+            <p className="eyebrow">Explore Sichuan</p>
+            <h2 id="destinations-title" className="font-serif">
+              One province.
+              <br />
+              <em>Many living cultures.</em>
+            </h2>
+            <p className="heading-note">
+              Look beyond the scenery — from Chengdu&apos;s teahouses and Mount Qingcheng&apos;s Taoist
+              heritage to Tibetan communities and highland roads.
+            </p>
+          </div>
+
+          <div className="destination-mosaic">
+            {DESTINATIONS.map((item) => (
+              <Link
+                key={item.title}
+                to={item.href}
+                className={`destination-tile ${item.size}`}
+              >
+                <img src={item.image} alt={item.alt} loading="lazy" />
+                <span className="destination-shade" aria-hidden="true" />
+                <span className="destination-content">
+                  <span className="destination-title font-serif">{item.title}</span>
+                  <span className="destination-text">{item.text}</span>
+                </span>
+                <span className="destination-arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 3 — Journeys */}
+      <section className="journeys section-block" id="journeys" aria-labelledby="journeys-title">
+        <div className="shell">
+          <div className="section-heading horizontal">
+            <div>
+              <p className="eyebrow">Signature Journeys</p>
+              <h2 id="journeys-title" className="font-serif">
+                Designed to take you deeper.
+              </h2>
+            </div>
+            <Link to="/traveler/contact" className="text-link">
+              Plan a journey <span aria-hidden="true">↗</span>
+            </Link>
+          </div>
+
+          <div className="journey-list">
+            {JOURNEYS.map((journey, index) => (
+              <article key={journey.title} className="journey-card">
+                <div className="journey-number">0{index + 1}</div>
+                <div className="journey-image">
+                  <img src={journey.image} alt={journey.alt} loading="lazy" />
+                </div>
+                <div className="journey-copy">
+                  <p className="eyebrow">{journey.eyebrow}</p>
+                  <h3 className="font-serif">{journey.title}</h3>
+                  <p>{journey.text}</p>
+                  <div className="tag-list">
+                    {journey.tags.map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
+                <Link
+                  className="circle-link"
+                  to={journey.href}
+                  aria-label={`View ${journey.title}`}
+                >
+                  ↗
+                </Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="features section-block">
+        <div className="shell">
           <div className="section-head">
-            <div className="eyebrow">Why Choose Lumichan</div>
+            <p className="eyebrow">Why Choose Lumichan</p>
             <h2 className="font-serif">
-              Travel Smarter<span className="text-gold">, Not Harder</span>
+              Travel Smarter<span className="em-accent">, Not Harder</span>
             </h2>
           </div>
           <div className="features__grid">
@@ -183,80 +369,20 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="culture">
-        <div className="section section-pad">
-          <div className="section-head section-head--center">
-            <div className="eyebrow">Cultural Highlights</div>
-            <h2 className="font-serif">
-              Experience <span className="text-gold">Authentic China</span>
-            </h2>
-            <p>
-              From ancient traditions to breathtaking landscapes, immerse yourself in the rich cultural
-              tapestry of China
-            </p>
-          </div>
-          <div className="culture__grid">
-            {CULTURE.map((item) => (
-              <figure
-                key={item.label}
-                className={`culture__card${item.tall ? ' culture__card--tall' : ''}`}
-              >
-                <img src={item.src} alt={item.alt} loading="lazy" width={640} height={800} />
-                <figcaption>{item.label}</figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="destinations">
-        <div className="section section-pad">
-          <div className="destinations__top">
-            <div>
-              <div className="eyebrow">Featured Destinations</div>
-              <h2 className="font-serif">
-                Discover <span className="text-gold">Western Sichuan</span>
-              </h2>
-            </div>
-            <Link to="/traveler/itineraries" className="btn btn-outline destinations__all">
-              View All Itineraries →
-            </Link>
-          </div>
-          <div className="destinations__grid">
-            {DESTINATIONS.map((item) => (
-              <Link
-                key={item.name}
-                to="/traveler/itineraries"
-                className="dest-card"
-              >
-                <div className="dest-card__media">
-                  <img src={item.image} alt={item.name} loading="lazy" />
-                </div>
-                <div className="dest-card__body">
-                  <div className="dest-card__rating">★ {item.rating}</div>
-                  <h3 className="font-serif">{item.name}</h3>
-                  <p>{item.location}</p>
-                  <span>{item.duration}</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="cta-band">
-        <div className="section cta-band__inner">
+      <section className="cta-band shell">
+        <div className="cta-band__inner">
+          <p className="eyebrow light">Ready When You Are</p>
           <h2 className="font-serif">
-            Ready to Start Your <span className="text-gold">Adventure</span>?
+            Ready to Start Your <em>Adventure</em>?
           </h2>
           <p>
             Let our AI plan your perfect journey or connect with local guides who know the hidden gems.
           </p>
-          <div className="hero__actions">
-            <Link to="/traveler/ai-planner" className="btn btn-gold">
-              Start AI Planning <span aria-hidden>✦</span>
+          <div className="hero__actions hero__actions--center">
+            <Link to="/traveler/contact" className="button button-light">
+              Plan My Trip <span aria-hidden="true">↗</span>
             </Link>
-            <Link to="/traveler/itineraries" className="btn btn-outline">
+            <Link to="/traveler/itineraries" className="text-link light-link">
               Browse Itineraries
             </Link>
           </div>

@@ -5,21 +5,14 @@ import Footer from './Footer.jsx'
 export default function Layout() {
   const { pathname } = useLocation()
   const isHome = pathname === '/traveler' || pathname === '/traveler/'
-  const dark =
-    isHome ||
-    pathname.includes('ai-planner') ||
-    pathname.includes('/guide') ||
-    pathname.includes('/itineraries') ||
-    pathname.includes('/guides') ||
-    pathname.includes('/contact')
 
   return (
-    <div className={`page ${dark ? 'theme-dark' : ''}`}>
-      <Header transparent={isHome} dark={dark} />
+    <div className="page theme-paper">
+      <Header floating={isHome} />
       <main className="page-main">
         <Outlet />
       </main>
-      <Footer dark={dark} />
+      <Footer />
     </div>
   )
 }

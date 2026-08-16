@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom'
 import './Footer.css'
 
-export default function Footer({ dark = false }) {
+export default function Footer() {
   return (
-    <footer className={`site-footer ${dark ? 'is-dark' : ''}`}>
+    <footer className="site-footer">
       <div className="section site-footer__grid">
         <div>
           <div className="brand footer-brand">
             <img src="/lumichan-logo.png" alt="" className="brand__mark" />
-            <span className="brand__name text-gold">Lumichan</span>
+            <span className="brand__name">Lumichan</span>
           </div>
           <p className="footer-copy">
             Experience the world with confidence. Our AI-verified itineraries and local experts ensure
