@@ -1,0 +1,3 @@
+# Deny direct web access to stored submissions (Apache).
+# On Nginx (Baota), also add the location blocks in README.
+Require all denied

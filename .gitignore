@@ -1,0 +1,14 @@
+node_modules
+dist
+dist.zip
+*.zip
+.env
+.env.local
+.DS_Store
+public/api/config.php
+public/api/config.example copy.php
+dist/api/config.php
+public/api/data/*.jsonl
+public/api/data/rate_*.json
+public/api/data/submissions.jsonl
+public/uploads/

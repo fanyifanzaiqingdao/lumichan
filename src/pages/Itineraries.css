@@ -1,0 +1,403 @@
+.itin-page {
+  background: #0b1017;
+  color: #f5f1e8;
+  min-height: 100vh;
+}
+
+.itin-page .eyebrow {
+  color: var(--gold);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.itin-hero {
+  padding: 7.5rem 0 3.5rem;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(201, 162, 39, 0.14), transparent 42%),
+    linear-gradient(180deg, #121821, #0b1017);
+}
+
+.itin-hero h1 {
+  margin: 0.8rem 0 0.85rem;
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+}
+
+.itin-hero p {
+  margin: 0 auto;
+  max-width: 36rem;
+  color: rgba(245, 241, 232, 0.68);
+  font-size: 1.05rem;
+}
+
+.itin-grid-wrap {
+  padding: 2rem 0 4rem;
+}
+
+.itin-loading {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: rgba(245, 241, 232, 0.55);
+  padding: 2rem 0;
+}
+
+.itin-pay-banner {
+  grid-column: 1 / -1;
+  margin: 0 0 0.5rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.85rem;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(245, 241, 232, 0.75);
+}
+
+.itin-pay-banner.is-ok {
+  background: rgba(34, 197, 94, 0.14);
+  color: #86efac;
+}
+
+.itin-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.itin-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  background: #151c26;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.itin-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(201, 162, 39, 0.4);
+}
+
+.itin-card__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.itin-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+.itin-card:hover .itin-card__media img {
+  transform: scale(1.08);
+}
+
+.itin-card__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 45%, rgba(11, 16, 23, 0.75));
+  pointer-events: none;
+}
+
+.itin-card__price {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+  color: #111;
+  font-size: 0.85rem;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(201, 162, 39, 0.35);
+}
+
+.itin-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1.25rem 1.3rem 1.4rem;
+}
+
+.itin-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 0.9rem;
+  margin-bottom: 0.75rem;
+  color: rgba(245, 241, 232, 0.62);
+  font-size: 0.86rem;
+}
+
+.itin-card__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.itin-card__meta svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  color: var(--gold);
+}
+
+.itin-card__body h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.25rem;
+  line-height: 1.25;
+}
+
+.itin-card__subtitle {
+  margin: 0 0 0.55rem;
+  color: var(--gold-soft);
+  font-size: 0.9rem;
+}
+
+.itin-card__desc {
+  margin: 0 0 1rem;
+  color: rgba(245, 241, 232, 0.62);
+  font-size: 0.92rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+.itin-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+}
+
+.itin-card__tags span {
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(201, 162, 39, 0.12);
+  color: var(--gold-soft);
+  font-size: 0.75rem;
+}
+
+.itin-card__btn {
+  width: 100%;
+}
+
+.itin-cta {
+  padding: 4rem 0;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: #121821;
+}
+
+.itin-cta h2 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+
+.itin-cta p {
+  margin: 0 auto 1.5rem;
+  max-width: 32rem;
+  color: rgba(245, 241, 232, 0.68);
+}
+
+.itin-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+}
+
+.itin-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(4, 8, 12, 0.72);
+  cursor: pointer;
+}
+
+.itin-modal__panel {
+  position: relative;
+  z-index: 1;
+  width: min(920px, 100%);
+  max-height: min(90vh, 960px);
+  overflow: auto;
+  border-radius: 1.4rem;
+  background: #121821;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+}
+
+.itin-modal__close {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  z-index: 2;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.itin-modal__hero {
+  position: relative;
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
+}
+
+.itin-modal__hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.itin-modal__hero-text {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 1.5rem;
+  background: linear-gradient(180deg, transparent, rgba(8, 12, 18, 0.92));
+}
+
+.itin-modal__price {
+  display: inline-flex;
+  margin-bottom: 0.5rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: var(--gold);
+  color: #111;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.itin-modal__hero-text h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+}
+
+.itin-modal__hero-text p {
+  margin: 0.35rem 0 0;
+  color: rgba(245, 241, 232, 0.78);
+}
+
+.itin-modal__content {
+  padding: 1.4rem 1.5rem 1.75rem;
+}
+
+.itin-modal__meta {
+  margin-bottom: 1rem;
+}
+
+.itin-modal__lead {
+  margin: 0 0 1.25rem;
+  color: rgba(245, 241, 232, 0.78);
+  line-height: 1.65;
+}
+
+.itin-modal__block {
+  margin-bottom: 1.4rem;
+}
+
+.itin-modal__block h3,
+.itin-modal__cols h3 {
+  margin: 0 0 0.7rem;
+  font-size: 1.2rem;
+}
+
+.itin-modal__empty {
+  margin: 0;
+  color: rgba(245, 241, 232, 0.58);
+}
+
+.itin-days {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.itin-day {
+  padding: 1rem 1.05rem;
+  border-radius: 1rem;
+  background: #0b1017;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.itin-day__badge {
+  display: inline-flex;
+  margin-bottom: 0.45rem;
+  color: var(--gold);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.itin-day h4 {
+  margin: 0 0 0.4rem;
+  font-size: 1.05rem;
+}
+
+.itin-day p,
+.itin-day li {
+  color: rgba(245, 241, 232, 0.68);
+  font-size: 0.92rem;
+}
+
+.itin-day ul {
+  margin: 0.55rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.itin-modal__cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+
+.itin-modal__cols ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: rgba(245, 241, 232, 0.68);
+}
+
+.itin-modal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.itin-modal__actions .btn-outline {
+  color: #f5f1e8;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+@media (max-width: 980px) {
+  .itin-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .itin-grid,
+  .itin-modal__cols {
+    grid-template-columns: 1fr;
+  }
+
+  .itin-hero {
+    padding-top: 6.5rem;
+  }
+
+  .itin-modal__hero {
+    aspect-ratio: 16 / 10;
+  }
+}

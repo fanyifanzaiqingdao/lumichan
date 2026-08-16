@@ -1,0 +1,93 @@
+export const GUIDES = [
+  {
+    "id": "19f4eb40-514a-4221-93d6-6ed4d1946ec1",
+    "full_name": "Tenzin Dorje",
+    "location": "Tagong, Sichuan",
+    "photo_url": null,
+    "has_vehicle": true,
+    "vehicle_type": "Toyota Land Cruiser",
+    "languages": [
+      "English",
+      "Mandarin",
+      "Tibetan"
+    ],
+    "specialties": [
+      "Tibetan Culture",
+      "Mountain Trekking",
+      "Photography Tours"
+    ],
+    "experience": "8 years",
+    "bio": "Born and raised in Tagong, I'm passionate about sharing the authentic Tibetan culture and hidden gems of Western Sichuan. From sacred monasteries to remote nomad camps, I'll take you beyond the tourist trail.",
+    "price_per_day": 150,
+    "rating": 4.9,
+    "reviews_count": 156
+  },
+  {
+    "id": "5a3c4293-1b0e-4d79-99e9-33f63c1eaf8b",
+    "full_name": "Li Mei",
+    "location": "Chengdu, Sichuan",
+    "photo_url": null,
+    "has_vehicle": true,
+    "vehicle_type": "Mercedes V-Class",
+    "languages": [
+      "English",
+      "Mandarin",
+      "Japanese"
+    ],
+    "specialties": [
+      "City Tours",
+      "Food & Culinary",
+      "Family Friendly"
+    ],
+    "experience": "6 years",
+    "bio": "As a Chengdu native and certified food guide, I love introducing travelers to the real Sichuan cuisine - from famous restaurants to hidden street food gems. Let me show you why Chengdu is a UNESCO City of Gastronomy!",
+    "price_per_day": 120,
+    "rating": 4.8,
+    "reviews_count": 234
+  },
+  {
+    "id": "0842e9f2-7218-4c0b-b811-ad1a91a15c52",
+    "full_name": "Wang Jian",
+    "location": "Kangding, Sichuan",
+    "photo_url": null,
+    "has_vehicle": true,
+    "vehicle_type": "Jeep Wrangler",
+    "languages": [
+      "English",
+      "Mandarin"
+    ],
+    "specialties": [
+      "Adventure",
+      "Mountain Trekking"
+    ],
+    "experience": "5 years",
+    "bio": "Adventure is my middle name! From high-altitude camping to challenging mountain trails, I specialize in creating unforgettable outdoor experiences for thrill-seekers. Safety first, adventure always!",
+    "price_per_day": 130,
+    "rating": 4.7,
+    "reviews_count": 89
+  },
+  {
+    "id": "5d0ded79-1f39-4f48-b8b4-bad9b67bef3c",
+    "full_name": "Pema Lhamo",
+    "location": "Danba, Sichuan",
+    "photo_url": null,
+    "has_vehicle": false,
+    "vehicle_type": null,
+    "languages": [
+      "English",
+      "Mandarin",
+      "Tibetan",
+      "French"
+    ],
+    "specialties": [
+      "Tibetan Culture",
+      "Cultural Immersion"
+    ],
+    "experience": "4 years",
+    "bio": "I grew up in the beautiful Jiaju Tibetan Village, famous for its stunning watchtowers. I offer authentic homestay experiences and traditional craft workshops. Come experience real Tibetan village life!",
+    "price_per_day": 100,
+    "rating": 4.9,
+    "reviews_count": 67
+  }
+]
+export const GUIDE_FILTERS = ["All","Tibetan Culture","Mountain Trekking","Food & Culinary","Adventure","Photography Tours","Family Friendly","City Tours"]

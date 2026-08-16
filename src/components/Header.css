@@ -1,0 +1,133 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(250, 247, 241, 0.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(15, 23, 32, 0.06);
+}
+
+.site-header.is-transparent {
+  position: absolute;
+  inset: 0 0 auto;
+  background: transparent;
+  border-bottom: none;
+}
+
+.site-header.is-dark {
+  background: rgba(15, 23, 32, 0.88);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--white);
+}
+
+.site-header.is-transparent.is-dark,
+.site-header.is-transparent {
+  color: var(--white);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 4.5rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  z-index: 2;
+}
+
+.brand__mark {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  object-fit: cover;
+  box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.35);
+}
+
+.brand__name {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.nav__link {
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  opacity: 0.88;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.nav__link:hover,
+.nav__link.is-active {
+  opacity: 1;
+  background: rgba(201, 162, 39, 0.14);
+}
+
+.header-cta {
+  padding: 0.65rem 1.1rem;
+  font-size: 0.9rem;
+}
+
+.nav-toggle {
+  display: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  background: transparent;
+  padding: 0.45rem;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
+  cursor: pointer;
+}
+
+.nav-toggle span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: currentColor;
+  border-radius: 999px;
+}
+
+@media (max-width: 980px) {
+  .nav,
+  .header-cta {
+    display: none;
+  }
+
+  .nav.is-open {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: absolute;
+    top: 4.5rem;
+    left: 1.25rem;
+    right: 1.25rem;
+    padding: 0.75rem;
+    border-radius: 1rem;
+    background: rgba(15, 23, 32, 0.96);
+    color: var(--white);
+    box-shadow: var(--shadow);
+  }
+
+  .site-header:not(.is-transparent):not(.is-dark) .nav.is-open {
+    background: var(--white);
+    color: var(--ink);
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+}

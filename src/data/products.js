@@ -1,0 +1,835 @@
+export const PRODUCTS = [
+  {
+    "id": "138c7945-d885-41a5-8418-bcf6a88a6ef6",
+    "title": "3-Day Western Sichuan Explorer",
+    "subtitle": "Perfect quick escape to alpine landscapes",
+    "description": "Discover the hidden gems of Western Sichuan in just 3 days. From crystal-clear lakes to stunning alpine vistas.",
+    "long_description": null,
+    "duration": "3 Days",
+    "price": "$599",
+    "rating": 4.9,
+    "review_count": 128,
+    "max_altitude": "4,500m",
+    "group_size": "2-8 people",
+    "highlights": [
+      "BiPeng Valley",
+      "Shuangqiao Valley",
+      "Zhongshuge Bookstore"
+    ],
+    "itinerary": [],
+    "inclusions": [],
+    "exclusions": [],
+    "sort_order": 1,
+    "image": "/itineraries/1-bipeng.jpg"
+  },
+  {
+    "id": "952c009d-1dff-4934-86be-9c6c2923d070",
+    "title": "5-Day Panda & Mountain Adventure",
+    "subtitle": "Wildlife encounters and Tibetan culture",
+    "description": "Experience giant pandas at Wolong, explore pristine valleys, and discover sacred monasteries in Kham Tibet.",
+    "long_description": null,
+    "duration": "5 Days",
+    "price": "$899",
+    "rating": 4.8,
+    "review_count": 256,
+    "max_altitude": "3,730m",
+    "group_size": "2-8 people",
+    "highlights": [
+      "Wolong Panda Base",
+      "Tagong Grassland",
+      "Tibetan Monasteries"
+    ],
+    "itinerary": [],
+    "inclusions": [],
+    "exclusions": [],
+    "sort_order": 2,
+    "image": "/itineraries/2-panda.jpg"
+  },
+  {
+    "id": "9fea2fe8-b304-47fc-a4cb-b8d23ecfdd80",
+    "title": "5-Day Tibetan Culture Deep Dive",
+    "subtitle": "Immersive cultural experience",
+    "description": "Deep dive into authentic Tibetan culture with monastery stays, nomad family visits, and traditional workshops.",
+    "long_description": null,
+    "duration": "5 Days",
+    "price": "$849",
+    "rating": 4.9,
+    "review_count": 89,
+    "max_altitude": "4,200m",
+    "group_size": "2-6 people",
+    "highlights": [
+      "Monastery Stays",
+      "Nomad Family Visit",
+      "Traditional Crafts"
+    ],
+    "itinerary": [],
+    "inclusions": [],
+    "exclusions": [],
+    "sort_order": 3,
+    "image": "/itineraries/3-prayer.jpg"
+  },
+  {
+    "id": "2939b56d-f5ab-40f0-aa9d-f18df45540ba",
+    "title": "7-Day Ultimate Sichuan Journey",
+    "subtitle": "Comprehensive adventure through Western Sichuan",
+    "description": "The ultimate Western Sichuan experience covering everything from pandas to sacred monasteries.",
+    "long_description": null,
+    "duration": "7-8 Days",
+    "price": "$1,299",
+    "rating": 4.9,
+    "review_count": 178,
+    "max_altitude": "4,860m",
+    "group_size": "2-6 people",
+    "highlights": [
+      "Giant Pandas",
+      "Tibetan Villages",
+      "Kangding City",
+      "Shangli Ancient Town"
+    ],
+    "itinerary": [],
+    "inclusions": [],
+    "exclusions": [],
+    "sort_order": 4,
+    "image": "/itineraries/4-tagong.jpg"
+  },
+  {
+    "id": "07e8700a-7f03-4479-b092-1074f925eef6",
+    "title": "6-Day Photography Expedition",
+    "subtitle": "Capture the best of Western Sichuan",
+    "description": "Designed for photographers, hitting the best viewpoints at optimal times for stunning shots.",
+    "long_description": null,
+    "duration": "6 Days",
+    "price": "$999",
+    "rating": 4.8,
+    "review_count": 45,
+    "max_altitude": "4,500m",
+    "group_size": "2-4 people",
+    "highlights": [
+      "Sunrise Spots",
+      "Snow Mountains",
+      "Tibetan Portraits"
+    ],
+    "itinerary": [],
+    "inclusions": [],
+    "exclusions": [],
+    "sort_order": 5,
+    "image": "/itineraries/5-shuangqiao.jpg"
+  },
+  {
+    "id": "a5227aef-364c-4d53-baed-a16eb87cffae",
+    "title": "8-Day Adventure Challenge",
+    "subtitle": "For the thrill-seekers",
+    "description": "Push your limits with high-altitude trekking, camping under the stars, and mountain biking adventures.",
+    "long_description": null,
+    "duration": "8 Days",
+    "price": "$1,499",
+    "rating": 4.7,
+    "review_count": 56,
+    "max_altitude": "5,200m",
+    "group_size": "2-4 people",
+    "highlights": [
+      "High-Altitude Trekking",
+      "Camping",
+      "Mountain Biking"
+    ],
+    "itinerary": [],
+    "inclusions": [],
+    "exclusions": [],
+    "sort_order": 6,
+    "image": "/itineraries/6-kangding.jpg"
+  },
+  {
+    "id": "c300ed98-356f-4f70-9612-9842cb1b037a",
+    "title": "3-Day Chengdu City Tour",
+    "subtitle": "成都印象 · 三日漫游 — Classic · Local Life · Artsy",
+    "description": "The perfect introduction to Chengdu: wander Qing-dynasty alleys, sip tea in the People's Park, meet giant pandas at sunrise, and eat your way through the city's most famous snack streets.",
+    "long_description": "A three-day cultural immersion designed for first-time visitors to Chengdu. Day 1 explores the old town and Chengdu's slow-paced tea culture; Day 2 traces Three Kingdoms history and Du Fu's poetry through classical gardens and temples; Day 3 pairs an early-morning panda visit with the city's edgiest creative district and street-food scene. All attractions bookable via WeChat in advance — we handle the reservations.",
+    "duration": "3 Days",
+    "price": "From $580 per person",
+    "rating": 4.9,
+    "review_count": 128,
+    "max_altitude": null,
+    "group_size": "1-8 people",
+    "highlights": [
+      "Kuanzhai Alleys",
+      "Giant Panda Base",
+      "Sichuan Cuisine",
+      "Wuhou Shrine & Jinli",
+      "Jinjiang Night Cruise"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Old Town Charm & Slow Life",
+        "summary": "Old Chengdu charm + local life + first taste of nightlife",
+        "activities": [
+          {
+            "time": "Morning",
+            "title": "Kuanzhai Alleys (宽窄巷子)",
+            "description": "Wander the late-Qing wide/narrow/well alleys. Explore side lanes for an authentic experience away from crowds."
+          },
+          {
+            "time": "Morning",
+            "title": "People's Park & Heming Teahouse",
+            "description": "Try covered-bowl tea (盖碗茶) and traditional ear cleaning. Watch locals play cards to feel Chengdu's famous slow-paced lifestyle."
+          },
+          {
+            "time": "Noon",
+            "title": "Kuixinglou Street",
+            "description": "Local snacks — spicy hot pot, 串串香 chuan chuan xiang."
+          },
+          {
+            "time": "Afternoon",
+            "title": "Chengdu Museum",
+            "description": "Free entry. See the stone rhinoceros and Old Chengdu Life immersive exhibition. Rent the audio guide."
+          },
+          {
+            "time": "Afternoon",
+            "title": "Chunxi Road & IFS",
+            "description": "Snap the famous climbing panda sculpture on the 7th-floor terrace."
+          },
+          {
+            "time": "Evening",
+            "title": "Taikoo Li & Jiuyan Bridge",
+            "description": "Trendy open-shopping district blending modern design with Sichuan courtyard heritage. End at Jiuyan Bridge for the illuminated Jinjiang River night view."
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "title": "Culture & History — Three Kingdoms & Poetic Charm",
+        "summary": "Three Kingdoms culture + Du Fu's poetry + Western Sichuan Zen",
+        "activities": [
+          {
+            "time": "Morning",
+            "title": "Wuhou Shrine (武侯祠)",
+            "description": "Sacred site of Three Kingdoms culture. Don't miss the iconic red walls and bamboo shadows — perfect for photos."
+          },
+          {
+            "time": "Morning",
+            "title": "Jinli Ancient Street (锦里)",
+            "description": "Chengdu's living Qingming Shanghe Tu. Enter directly from Wuhou Shrine's side gate and have lunch here."
+          },
+          {
+            "time": "Afternoon",
+            "title": "Du Fu Thatched Cottage (杜甫草堂)",
+            "description": "Former residence of the poet Du Fu. Don't miss the Thatched Cottage and Ministry Work Shrine — the bamboo garden is peaceful and poetic."
+          },
+          {
+            "time": "Afternoon",
+            "title": "Qingyang Palace (青羊宫)",
+            "description": "The premier Taoist temple in Western Sichuan. Touching the sacred bronze goat is said to bring good luck. See the Bagua Pavilion and Sanqing Hall."
+          },
+          {
+            "time": "Evening",
+            "title": "Wangping Street",
+            "description": "New internet-famous food street. Try Limestone Braised Chicken, Zhu Guangyu Hotpot, Shiguang Xiaowan Desserts."
+          },
+          {
+            "time": "Evening",
+            "title": "Jinjiang River Night Cruise",
+            "description": "40-minute boat tour from Dongmen Wharf with stunning light shows on both banks."
+          }
+        ]
+      },
+      {
+        "day": 3,
+        "title": "Cute Pandas & Artsy Vibes",
+        "summary": "National treasure + industrial-style arts + authentic snacks",
+        "activities": [
+          {
+            "time": "Early Morning",
+            "title": "Chengdu Research Base of Giant Panda Breeding",
+            "description": "Go early! 8–10 am is the most active feeding/playing time. Route: Main Gate → Moon Delivery Room → Young Panda Villa → Adult Panda Villa."
+          },
+          {
+            "time": "Morning",
+            "title": "Wenshu Monastery (文殊院)",
+            "description": "One of the four major Buddhist monasteries in Western Sichuan. Famous red walls, traditional architecture, and a great vegetarian buffet."
+          },
+          {
+            "time": "Afternoon",
+            "title": "Eastern Suburb Memory (东郊记忆)",
+            "description": "Cultural & creative park converted from old factories — perfect for industrial-style photography. Often hosts music events and art exhibitions."
+          },
+          {
+            "time": "Evening",
+            "title": "Jianshe Road Snack Street",
+            "description": "The Snack Universe Center of Chengdu. Must-try: Fu Qiang Spare Ribs, Guoba Potato, Handmade Ice Jelly."
+          }
+        ]
+      }
+    ],
+    "inclusions": [
+      "Professional local English-speaking guide (all 3 days)",
+      "All attraction reservations & entrance fees",
+      "Private A/C vehicle with driver",
+      "Airport / train station pickup and drop-off",
+      "Two bottles of water per person per day",
+      "Travel insurance"
+    ],
+    "exclusions": [
+      "International/domestic flights & high-speed rail",
+      "Hotel accommodation (we can book on request)",
+      "Meals (allowing you to freely explore local cuisine)",
+      "Personal expenses, tips, and optional evening activities"
+    ],
+    "sort_order": 7,
+    "image": "/itineraries/7-chengdu.jpg"
+  },
+  {
+    "id": "e77f9a81-34b7-4c7a-a58d-4487de4e36af",
+    "title": "Chengdu & Chongqing — 7-Day Adventure",
+    "subtitle": "Sichuan's Heart & Soul — Pandas · Opera · 8D City · Hotpot",
+    "description": "A full week through Sichuan's two most iconic cities: from Chengdu's laid-back tea houses and giant pandas to Chongqing's vertical skyline, cable-car rides over the Yangtze, and the otherworldly Wulong Karst.",
+    "long_description": "This 7-day journey pairs the two giants of Southwest China. Days 1–3 in Chengdu cover the slow-life essentials — pandas, Kuanzhai Alleys, Sichuan Opera face-changing, and Leshan Giant Buddha. On Day 3 afternoon you high-speed-rail into Chongqing for Days 4–6: the 8D vertical city, Hongyadong at night, Ciqikou old town, the legendary Liziba metro-through-a-building, and a full-day escape to UNESCO-listed Wulong Karst. Includes hotpot at least three times.",
+    "duration": "7 Days",
+    "price": "From $1,380 per person",
+    "rating": 4.9,
+    "review_count": 214,
+    "max_altitude": null,
+    "group_size": "2-10 people",
+    "highlights": [
+      "Giant Panda Base",
+      "Sichuan Opera Face-Changing",
+      "Leshan Giant Buddha",
+      "Hongyadong Night View",
+      "Yangtze River Cable Car",
+      "Wulong Karst UNESCO",
+      "Ciqikou Ancient Town"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival & Slow Life",
+        "summary": "Ease into Chengdu's famously unhurried rhythm",
+        "activities": [
+          {
+            "time": "Afternoon",
+            "title": "Kuanzhai Alleys",
+            "description": "Preserved Qing Dynasty courtyard houses. Local handicrafts and old-Chengdu vibe."
+          },
+          {
+            "time": "Evening",
+            "title": "People's Park & Teahouse",
+            "description": "Sip Gaiwan Cha by the lake. Watch locals play mahjong."
+          },
+          {
+            "time": "Dinner",
+            "title": "Chen Mapo Tofu",
+            "description": "The legendary spicy and numbing mapo tofu at its birthplace restaurant."
+          },
+          {
+            "time": "Night",
+            "title": "Chunxi Road & Taikoo Li",
+            "description": "Vibrant nightlife district. Photograph the iconic climbing panda sculpture at IFS."
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "title": "Panda Encounters & Ancient Culture",
+        "summary": "Pandas + Three Kingdoms + Sichuan Opera evening",
+        "activities": [
+          {
+            "time": "Early Morning",
+            "title": "Chengdu Giant Panda Breeding Center",
+            "description": "Arrive early — pandas most active 8–10am. Visit the nursery for baby pandas."
+          },
+          {
+            "time": "Afternoon",
+            "title": "Wuhou Shrine & Jinli",
+            "description": "Memorial temple to Three Kingdoms heroes. Wander Jinli's red-lantern-lined pedestrian street."
+          },
+          {
+            "time": "Evening",
+            "title": "Sichuan Opera Show",
+            "description": "Face-Changing (变脸) & Fire-Breathing (吐火) — must-see. Comedy skits, folk music."
+          }
+        ]
+      },
+      {
+        "day": 3,
+        "title": "Leshan Giant Buddha & Transfer to Chongqing",
+        "summary": "World's largest stone Buddha, then high-speed rail",
+        "activities": [
+          {
+            "time": "Morning",
+            "title": "Leshan Giant Buddha",
+            "description": "High-speed train to Leshan. Climb the winding stairs or take the boat for a panoramic view."
+          },
+          {
+            "time": "Lunch",
+            "title": "Qiaojiao Niurou",
+            "description": "Leshan specialty — sizzling beef with chili and herbs."
+          },
+          {
+            "time": "Afternoon",
+            "title": "High-speed rail to Chongqing",
+            "description": "About 3 hours. Check into hotel in Jiefangbei area."
+          },
+          {
+            "time": "Night",
+            "title": "Hongyadong & Qiansimen Bridge",
+            "description": "Traditional stilt-house complex lit up at night — Spirited Away vibes. Best photo from Qiansimen Bridge."
+          }
+        ]
+      },
+      {
+        "day": 4,
+        "title": "Urban Marvels of the 8D City",
+        "summary": "Cable car, ancient town, metro-through-a-building, hotpot",
+        "activities": [
+          {
+            "time": "Morning",
+            "title": "Yangtze River Cable Car",
+            "description": "Soar above the Yangtze for aerial views of the sprawling city landscape."
+          },
+          {
+            "time": "Late Morning",
+            "title": "Ciqikou Ancient Town",
+            "description": "Stone-paved streets of a well-preserved market town."
+          },
+          {
+            "time": "Midday",
+            "title": "Liziba Station",
+            "description": "The famous metro station where the train passes directly through a residential building."
+          },
+          {
+            "time": "Afternoon",
+            "title": "Eling No. 2 Factory (贰厂)",
+            "description": "Trendy arts district in a converted printing factory. Panoramic city views."
+          },
+          {
+            "time": "Evening",
+            "title": "Authentic Chongqing Hotpot",
+            "description": "Your first authentic Chongqing hotpot. Try Mandarin Duck Pot for a non-spicy side."
+          }
+        ]
+      },
+      {
+        "day": 5,
+        "title": "Historical Trails & Mountain Views",
+        "summary": "Old city relics + mountain trail + sunset skyline",
+        "activities": [
+          {
+            "time": "Morning",
+            "title": "Shibati & City Wall Relics",
+            "description": "Historic stone steps connecting the old city's upper and lower parts."
+          },
+          {
+            "time": "Afternoon",
+            "title": "Mountain City Trail & Chongqing Museum",
+            "description": "Hike for panoramic views of the layered city, then dive into regional history."
+          },
+          {
+            "time": "Sunset",
+            "title": "Nanshan One Tree Viewing Platform",
+            "description": "Watch the sun set and the skyline light up — the classic Chongqing panorama."
+          }
+        ]
+      },
+      {
+        "day": 6,
+        "title": "Day Trip to Wulong Karst",
+        "summary": "UNESCO World Heritage — full day adventure",
+        "activities": [
+          {
+            "time": "Full Day",
+            "title": "Three Natural Bridges",
+            "description": "Three massive limestone bridges carved by nature. Famous movie filming location (Curse of the Golden Flower, Transformers 4)."
+          },
+          {
+            "time": "Full Day",
+            "title": "Longshui Gorge Difeng",
+            "description": "Hike through a deep, dramatic crevice surrounded by sheer cliffs and thundering waterfalls."
+          }
+        ]
+      },
+      {
+        "day": 7,
+        "title": "Last Impressions & Departure",
+        "summary": "Chongqing xiaomian breakfast, souvenir shopping, transfer out",
+        "activities": [
+          {
+            "time": "Morning",
+            "title": "Chongqing Xiaomian Breakfast",
+            "description": "Spicy Chongqing noodles — the ultimate local breakfast."
+          },
+          {
+            "time": "Morning",
+            "title": "Souvenir Shopping",
+            "description": "Hotpot base, dried chilies, local snacks."
+          },
+          {
+            "time": "Afternoon",
+            "title": "Airport / Rail Transfer",
+            "description": "Allow extra time — Chongqing traffic can be unpredictable."
+          }
+        ]
+      }
+    ],
+    "inclusions": [
+      "Professional bilingual guide (all 7 days)",
+      "Private A/C vehicle in each city",
+      "High-speed rail: Chengdu ⇄ Leshan, Chengdu → Chongqing",
+      "All listed attraction tickets & reservations",
+      "Sichuan Opera VIP-tier ticket",
+      "Wulong Karst full-day tour with local guide",
+      "Airport / rail-station transfers",
+      "Travel insurance"
+    ],
+    "exclusions": [
+      "International flights",
+      "Hotel accommodation (we recommend & book on request)",
+      "Meals (freedom to explore local cuisine)",
+      "Personal expenses, tips, optional shopping"
+    ],
+    "sort_order": 8,
+    "image": "/itineraries/8-cdcq.jpg"
+  },
+  {
+    "id": "3f6fc50d-69d4-419d-8635-a02a76745c5a",
+    "title": "Southern Xinjiang — 9-Day Adventure",
+    "subtitle": "Kashgar · Pamirs · Taklamakan Desert — A Silk Road Discovery",
+    "description": "A 9-day private journey along the ancient Silk Road: UNESCO-listed Kashgar Old Town, the mirror-like Karakul Lake beneath Muztagh Ata, the winding Panlong Ancient Road, autumn-gold Populus euphratica forests, and the epic Taklamakan Desert Highway.",
+    "long_description": "This is our flagship Southern Xinjiang itinerary — 9 days, a 7-seater business van (Mercedes V-Class or equivalent), a professional driver-guide, and 8 nights in comfortable hotels. You'll base in Kashgar, ascend the Pamir Plateau to Tashkurgan, loop back via the legendary Panlong Ancient Road, then cross the Taklamakan Desert Highway to Wensu Grand Canyon's red-sandstone landscapes, ending back in Kashgar for night markets and the Gaotai Residence. Border Permit for Pamir travel is required — we assist with the application.",
+    "duration": "9 Days",
+    "price": "¥8,380 per person (~$1,180)",
+    "rating": 5.0,
+    "review_count": 47,
+    "max_altitude": "3,600m at Karakul Lake",
+    "group_size": "Private tour — ideal for 2 (couples)",
+    "highlights": [
+      "Kashgar Old Town UNESCO",
+      "Karakul Lake & Muztagh Ata",
+      "Panlong Ancient Road",
+      "Taklamakan Desert Highway",
+      "Wensu Grand Canyon",
+      "Yingjisha Folk Arts",
+      "Hotan Night Market"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Kashgar",
+        "summary": "Airport transfer & acclimatization",
+        "activities": [
+          {
+            "time": "All Day",
+            "title": "Arrival at Kashgar Airport",
+            "description": "Private transfer by our professional driver to your hotel in Kashgar city center. Rest of the day free to acclimate."
+          },
+          {
+            "time": "Accommodation",
+            "title": "Kashgar City Center",
+            "description": "City Comfort Inn, GreenTree Inn, or similar 3-star options."
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "title": "Kashgar Exploration & Border Permit",
+        "summary": "UNESCO Old Town + permit application for the Pamirs",
+        "activities": [
+          {
+            "time": "Morning",
+            "title": "Border Permit Application",
+            "description": "Apply for the necessary permit for the Pamir Plateau at the local police station. Our team guides you through this self-guided process."
+          },
+          {
+            "time": "Afternoon",
+            "title": "Kashgar Old Town (UNESCO)",
+            "description": "Wander the labyrinthine streets, visit bustling bazaars, and soak in the Silk Road atmosphere."
+          },
+          {
+            "time": "Accommodation",
+            "title": "Kashgar city center",
+            "description": "Ready for tomorrow's Pamir journey."
+          }
+        ]
+      },
+      {
+        "day": 3,
+        "title": "Kashgar → Tashkurgan",
+        "summary": "Scenic drive into the Pamir Plateau",
+        "activities": [
+          {
+            "time": "Morning",
+            "title": "Drive south toward the Pamirs",
+            "description": "Stunning views of the Kunlun Mountains along the way."
+          },
+          {
+            "time": "Midday",
+            "title": "Baisha Lake (White Sand Lake)",
+            "description": "Alpine lake with crystal-clear blue water and unique white sand dunes."
+          },
+          {
+            "time": "Afternoon",
+            "title": "Karakul Lake",
+            "description": "High-altitude lake (3,600m) at the foot of Muztagh Ata — Father of Ice Mountains."
+          },
+          {
+            "time": "Accommodation",
+            "title": "Tashkurgan",
+            "description": "GreenTree Eastern, Cloud's End, or similar."
+          }
+        ]
+      },
+      {
+        "day": 4,
+        "title": "Tashkurgan → Kashgar via Panlong Road",
+        "summary": "One of the world's most spectacular mountain roads",
+        "activities": [
+          {
+            "time": "Morning",
+            "title": "Panlong Ancient Road (Dragon's Backbone)",
+            "description": "Winding mountain pass with incredible views — a thrilling drive."
+          },
+          {
+            "time": "Midday",
+            "title": "Bandier Blue Lake",
+            "description": "Turquoise water reflecting snow-capped peaks."
+          },
+          {
+            "time": "Evening",
+            "title": "Return to Kashgar",
+            "description": "Descent from the highlands. Overnight in Kashgar city center."
+          }
+        ]
+      },
+      {
+        "day": 5,
+        "title": "Kashgar → Hotan",
+        "summary": "Folk arts, Populus euphratica forest, night market",
+        "activities": [
+          {
+            "time": "Morning",
+            "title": "Yingjisha Folk Arts",
+            "description": "Hometown of famous Yingjisha knives and traditional pottery villages. Watch skilled artisans at work."
+          },
+          {
+            "time": "Afternoon",
+            "title": "Zepu Populus Euphratica Forest",
+            "description": "In autumn this reserve turns into a golden wonderland."
+          },
+          {
+            "time": "Evening",
+            "title": "Hotan Night Market",
+            "description": "Local flavors, fresh fruits, and Uyghur cultural performances."
+          },
+          {
+            "time": "Accommodation",
+            "title": "Hotan City",
+            "description": "Heyuan Tongcheng or Liyu Hotel."
+          }
+        ]
+      },
+      {
+        "day": 6,
+        "title": "Hotan → Alar via Taklamakan Desert Highway",
+        "summary": "Ancient ruins + the Sea of Death crossing",
+        "activities": [
+          {
+            "time": "Morning",
+            "title": "Yotkan Ancient City",
+            "description": "Historic site of the ancient Kingdom of Khotan — rich cultural heritage."
+          },
+          {
+            "time": "Afternoon",
+            "title": "Taklamakan Desert Highway",
+            "description": "Epic drive across the Sea of Death — an engineering marvel cutting through the vast desert."
+          },
+          {
+            "time": "Accommodation",
+            "title": "Alar",
+            "description": "Haoting Hotel or Vienna 3 Best Hotel."
+          }
+        ]
+      },
+      {
+        "day": 7,
+        "title": "Alar → Aksu · Wensu Grand Canyon",
+        "summary": "Red-sandstone landscapes of the Tianshan",
+        "activities": [
+          {
+            "time": "Full Day",
+            "title": "Wensu (Tianshan) Grand Canyon",
+            "description": "Otherworldly red sandstone formations — a photographer's paradise."
+          },
+          {
+            "time": "Evening",
+            "title": "Transfer to Aksu",
+            "description": "Another important Silk Road city with rich cultural heritage."
+          },
+          {
+            "time": "Accommodation",
+            "title": "Aksu",
+            "description": "GreenTree Inn Smart Selection, Dexin Hotel, or similar."
+          }
+        ]
+      },
+      {
+        "day": 8,
+        "title": "Aksu → Kashgar · Old Town Deep Dive",
+        "summary": "Gaotai Residence, Hanbazaar Night Market",
+        "activities": [
+          {
+            "time": "Morning",
+            "title": "Return to Kashgar",
+            "description": "Scenic drive back."
+          },
+          {
+            "time": "Afternoon",
+            "title": "Old Town & Gaotai Residence",
+            "description": "Centuries-old adobe building complex showcasing traditional Uyghur architecture."
+          },
+          {
+            "time": "Evening",
+            "title": "Hanbazaar Night Market",
+            "description": "Delicious local street food and authentic handcrafted souvenirs."
+          },
+          {
+            "time": "Accommodation",
+            "title": "Kashgar",
+            "description": "Comfortable hotel in the heart of the old town."
+          }
+        ]
+      },
+      {
+        "day": 9,
+        "title": "Departure",
+        "summary": "Farewell breakfast & airport transfer",
+        "activities": [
+          {
+            "time": "Morning",
+            "title": "Hotel breakfast",
+            "description": "Take home unforgettable memories of Southern Xinjiang."
+          },
+          {
+            "time": "Later",
+            "title": "Kashgar Airport transfer",
+            "description": "Private transfer for your departure flight."
+          }
+        ]
+      }
+    ],
+    "inclusions": [
+      "7-seater business van (Mercedes V-Class or similar) for the entire trip",
+      "Professional driver acting as part-time guide",
+      "All fuel, tolls, and driver's accommodation",
+      "8 nights comfortable 3-star hotels (1 standard double room)",
+      "All first entrance tickets & shuttle fees for listed attractions",
+      "Agency liability & personal accident insurance"
+    ],
+    "exclusions": [
+      "International & domestic airfares to/from Kashgar",
+      "All meals (freedom to explore local cuisine)",
+      "Border Permit application fees",
+      "Personal expenses, shopping, tips"
+    ],
+    "sort_order": 9,
+    "image": "/itineraries/9-xinjiang.jpg"
+  },
+  {
+    "id": "6d088dc7-0ee0-4f56-95b9-fa084511e5f0",
+    "title": "5-Day West of Sichuan",
+    "subtitle": "Panda Base • Siguniang • Tibetan Villages • Tagong Grassland • Kangding",
+    "description": "A 5-day curated journey through Western Sichuan — from Chengdu's giant pandas to the sacred grasslands of Tagong, ancient Tibetan stone villages, alpine valleys and the historic Kham gateway city of Kangding.",
+    "long_description": "Discover the heaven, earth, humanity and creations of Western Sichuan on this immersive 5-day route. Meet giant pandas at the tranquil Wolong Base, drive into the fairyland alpine scenery of Shuangqiao Valley, stay overnight in the stone-tower village of Zhonglu, join a Tibetan bonfire party, cross onto the Tibetan Plateau to Tagong — \"The Little Lhasa of Kham\" — visit the 1,300-year-old Tagong Monastery and the serene red-walled Muya Monastery, share butter tea and tsampa with a nomadic family, and end in Kangding, the historic gateway between Han and Tibetan cultures.",
+    "duration": "5 Days / 4 Nights",
+    "price": "From $980",
+    "rating": 4.9,
+    "review_count": 47,
+    "max_altitude": "3,700 m (Shuangqiao Valley)",
+    "group_size": "2-8 travelers",
+    "highlights": [
+      "Wolong Giant Panda Base — fewer crowds, more pandas",
+      "Shuangqiao Valley alpine fairyland (3,700 m)",
+      "Overnight in Zhonglu Tibetan stone-tower village",
+      "Traditional Tibetan bonfire party",
+      "Tagong Monastery & serene Muya Monastery",
+      "Nomad family visit — tsampa & butter tea",
+      "Kangding — the Gateway to Kham Tibet",
+      "English-speaking local guide throughout"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Chengdu → Wolong Panda Base → Siguniang Town",
+        "activities": [
+          "Chengdu pickup",
+          "Wolong Giant Panda Base visit",
+          "Scenic mountain drive",
+          "Overnight in Siguniang Town"
+        ],
+        "description": "Depart Chengdu and drive into the mountains to the Wolong China Giant Panda Base — one of the best places to meet giant pandas away from the crowds. Continue to Siguniang Town for the night."
+      },
+      {
+        "day": 2,
+        "title": "Shuangqiao Valley → Zhonglu Tibetan Village",
+        "activities": [
+          "Shuangqiao Valley alpine sightseeing",
+          "Transfer to Zhonglu Tibetan Village",
+          "Tibetan bonfire night party",
+          "Overnight in a Tibetan stone-tower guesthouse"
+        ],
+        "description": "Spend the morning in Shuangqiao Valley (3,700 m), a core scenic area of Siguniang Mountain famed as a 'fairyland on earth'. In the afternoon transfer to Zhonglu Tibetan Village and join a traditional bonfire party in the evening."
+      },
+      {
+        "day": 3,
+        "title": "Zhonglu Tibetan Village → Tagong Grassland",
+        "activities": [
+          "Zhonglu village walk & photography",
+          "Scenic drive to Tagong",
+          "Grassland arrival & orientation",
+          "Overnight in Tagong"
+        ],
+        "description": "Explore Zhonglu's stone watchtowers and ancient Tibetan architecture, then cross onto the plateau to Tagong — 'The Little Lhasa of Kham' — meeting your English-speaking local guide on arrival."
+      },
+      {
+        "day": 4,
+        "title": "Tagong Town Local Experience",
+        "activities": [
+          "Tagong Monastery",
+          "Muya Monastery",
+          "Nomad family visit — tsampa & butter tea",
+          "Grassland photography"
+        ],
+        "description": "A full day of culture on the Tibetan plateau: visit the 1,300-year-old Tagong Monastery ('The Little Jokhang') and the serene, red-walled Muya Monastery. Share butter tea and tsampa with a nomadic family in their yurt."
+      },
+      {
+        "day": 5,
+        "title": "Tagong → Kangding → Chengdu",
+        "activities": [
+          "Drive to Kangding",
+          "Kangding old town walk",
+          "Yak dumplings & butter tea",
+          "Return transfer to Chengdu"
+        ],
+        "description": "Descend from the plateau to Kangding, the historic 'Gateway to Kham Tibet'. Walk the old town along the Zheduo River, optionally visit Paoma Mountain Park, then return to Chengdu."
+      }
+    ],
+    "inclusions": [
+      "Private vehicle & professional driver (4 days)",
+      "English-speaking local Tibetan guide in Tagong",
+      "4 nights accommodation (boutique / Tibetan guesthouse)",
+      "All entrance tickets listed in the itinerary",
+      "Wolong Giant Panda Base ticket",
+      "Tibetan bonfire party",
+      "Nomad family butter tea & tsampa experience",
+      "Daily breakfast",
+      "Bottled water & oxygen support on plateau days",
+      "Travel insurance"
+    ],
+    "exclusions": [
+      "International & domestic flights / trains to Chengdu",
+      "Lunches and dinners (recommendations provided)",
+      "Personal expenses & optional activities",
+      "Tips for guide and driver",
+      "China visa fees"
+    ],
+    "sort_order": 10,
+    "image": "/itineraries/10-wsc.jpg"
+  }
+]

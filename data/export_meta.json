@@ -1,0 +1,18 @@
+{
+  "source": "https://fkrplegsxdyydtpvgawu.supabase.co/rest/v1",
+  "exported_at": "2026-08-15T11:31:18.182323+00:00",
+  "counts": {
+    "products": 10,
+    "products_published": 10,
+    "guides": 4,
+    "site_content": 83,
+    "seo_settings": 0,
+    "inquiries": 0
+  },
+  "notes": [
+    "Exported via public anon key from live Lumichan Supabase.",
+    "guides.json may contain emails/phones — prefer guides_public.json for frontend.",
+    "uploads table does not exist / not exposed.",
+    "Product image_url fields are often null; live site uses bundled fallback images."
+  ]
+}
