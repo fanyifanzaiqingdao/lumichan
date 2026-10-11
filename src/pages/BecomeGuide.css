@@ -1,16 +1,16 @@
 .bg-page {
   min-height: 100vh;
-  background: var(--paper);
-  color: var(--ink);
+  background: #0b1017;
+  color: #f5f1e8;
 }
 
 .bg-topbar {
   position: sticky;
   top: 0;
   z-index: 40;
-  background: rgba(255, 253, 248, 0.94);
+  background: rgba(11, 16, 23, 0.94);
   backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .bg-topbar__inner {
@@ -38,7 +38,7 @@
 }
 
 .bg-back {
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.66);
   font-size: 0.95rem;
 }
 
@@ -60,15 +60,12 @@
 .bg-intro h1 {
   margin: 0 0 0.8rem;
   font-size: clamp(2.2rem, 5vw, 3.3rem);
-  font-family: var(--font-serif);
-  font-weight: 400;
-  letter-spacing: -0.03em;
 }
 
 .bg-intro p {
   margin: 0 auto;
   max-width: 36rem;
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.66);
 }
 
 .bg-steps {
@@ -93,7 +90,7 @@
 
 .bg-steps__node span {
   font-size: 0.75rem;
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.55);
 }
 
 .bg-steps__circle {
@@ -102,14 +99,14 @@
   border-radius: 999px;
   display: grid;
   place-items: center;
-  background: var(--paper-deep);
-  color: var(--muted);
+  background: #1a222c;
+  color: rgba(245, 241, 232, 0.55);
   font-weight: 700;
 }
 
 .bg-steps__circle.is-active {
-  background: var(--forest);
-  color: #fff;
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+  color: #111;
 }
 
 .bg-steps__line {
@@ -117,18 +114,18 @@
   height: 0.25rem;
   margin: 0 0.55rem 1.1rem;
   border-radius: 999px;
-  background: var(--paper-deep);
+  background: #1a222c;
 }
 
 .bg-steps__line.is-active {
-  background: var(--forest);
+  background: var(--gold);
 }
 
 .bg-card {
   padding: 2rem;
   border-radius: 1.5rem;
-  background: var(--white);
-  border: 1px solid var(--line);
+  background: #151c26;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   display: grid;
   gap: 1.15rem;
 }
@@ -146,7 +143,7 @@
   border-radius: 0.75rem;
   display: grid;
   place-items: center;
-  background: rgba(23, 61, 50, 0.08);
+  background: rgba(201, 162, 39, 0.12);
 }
 
 .bg-card__title h2 {
@@ -175,17 +172,17 @@
 .bg-card input,
 .bg-card textarea {
   width: 100%;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 0.8rem;
   padding: 0.85rem 0.95rem;
-  background: var(--paper);
-  color: var(--ink);
+  background: #0f141c;
+  color: #f5f1e8;
 }
 
 .bg-card input:focus,
 .bg-card textarea:focus {
   outline: none;
-  border-color: var(--forest);
+  border-color: rgba(201, 162, 39, 0.55);
 }
 
 .bg-upload__label {
@@ -200,16 +197,16 @@
   gap: 0.25rem;
   min-height: 7.5rem;
   padding: 1.2rem;
-  border: 1.5px dashed rgba(23, 61, 50, 0.28);
+  border: 1.5px dashed rgba(201, 162, 39, 0.35);
   border-radius: 1rem;
-  background: rgba(23, 61, 50, 0.04);
+  background: rgba(201, 162, 39, 0.04);
   text-align: center;
   cursor: pointer;
 }
 
 .bg-upload__box.has-file {
   border-style: solid;
-  border-color: var(--forest);
+  border-color: rgba(201, 162, 39, 0.55);
 }
 
 .bg-upload__box input {
@@ -218,16 +215,16 @@
 
 .bg-upload__icon {
   font-size: 1.35rem;
-  color: var(--clay);
+  color: var(--gold);
 }
 
 .bg-upload__title {
-  color: var(--forest);
+  color: var(--gold-soft);
   font-weight: 600;
 }
 
 .bg-upload__desc {
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.5);
   font-size: 0.85rem;
 }
 
@@ -239,9 +236,9 @@
 
 .bg-choice button,
 .bg-chips button {
-  border: 1px solid var(--line);
-  background: var(--paper);
-  color: var(--ink);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #0f141c;
+  color: #f5f1e8;
   cursor: pointer;
 }
 
@@ -253,9 +250,9 @@
 
 .bg-choice button.is-active,
 .bg-chips button.is-active {
-  border-color: var(--clay);
-  background: rgba(23, 61, 50, 0.08);
-  color: var(--forest);
+  border-color: var(--gold);
+  background: rgba(201, 162, 39, 0.12);
+  color: var(--gold-soft);
 }
 
 .bg-chips {
@@ -278,8 +275,8 @@
 }
 
 .bg-nav .btn-outline {
-  color: var(--ink);
-  border-color: var(--line);
+  color: #f5f1e8;
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .bg-error {
@@ -315,7 +312,7 @@
 .bg-card--success p {
   margin: 0 0 1.5rem;
   max-width: 28rem;
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.66);
 }
 
 @media (max-width: 720px) {

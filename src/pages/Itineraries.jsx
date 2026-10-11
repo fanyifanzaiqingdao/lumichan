@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { PRODUCTS } from '../data/products.js'
 import PaymentPanel from '../components/PaymentPanel.jsx'
+import SoftImage from '../components/SoftImage.jsx'
 import './Itineraries.css'
 
 function MetaIcon({ type }) {
@@ -131,11 +132,14 @@ export default function Itineraries() {
     <div className="itin-page">
       <section className="itin-hero">
         <div className="section">
-          <div className="eyebrow">Curated Itineraries</div>
+          <div className="eyebrow">Private Journeys</div>
           <h1 className="font-serif">
-            Featured <span className="text-gold">Adventures</span>
+            Travel through what you do, <span className="text-gold">not what you see</span>.
           </h1>
-          <p>Hand-picked journeys verified by our AI and local experts</p>
+          <p>
+            We design private journeys that connect travelers with China&apos;s people, landscapes, and
+            living cultures.
+          </p>
         </div>
       </section>
 
@@ -156,7 +160,7 @@ export default function Itineraries() {
           {products.map((item) => (
             <article key={item.id} className="itin-card">
               <div className="itin-card__media">
-                <img src={item.image} alt={item.title} loading="lazy" />
+                <SoftImage src={item.image} alt={item.title} loading="lazy" />
                 <div className="itin-card__price">{item.price}</div>
               </div>
               <div className="itin-card__body">
@@ -208,12 +212,17 @@ export default function Itineraries() {
       <section className="itin-cta">
         <div className="section">
           <h2 className="font-serif">
-            Want a <span className="text-gold">Custom Itinerary</span>?
+            Ready to Start Your <span className="text-gold">Adventure</span>?
           </h2>
-          <p>Let our AI create a personalized journey based on your preferences</p>
-          <Link to="/traveler/ai-planner" className="btn btn-gold">
-            Start AI Planning ✦
-          </Link>
+          <p>Tell us what you want to experience — we&apos;ll design a private journey around you.</p>
+          <div className="itin-cta__actions">
+            <Link to="/traveler/contact" className="btn btn-gold">
+              Book A Consultation <span aria-hidden>✦</span>
+            </Link>
+            <Link to="/traveler/itineraries" className="btn btn-outline">
+              Browse Itineraries
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -225,7 +234,7 @@ export default function Itineraries() {
               ×
             </button>
             <div className="itin-modal__hero">
-              <img src={selected.image} alt="" />
+              <SoftImage src={selected.image} alt="" loading="eager" />
               <div className="itin-modal__hero-text">
                 <div className="itin-modal__price">{selected.price}</div>
                 <h2 className="font-serif">{selected.title}</h2>
@@ -321,9 +330,6 @@ export default function Itineraries() {
               <div className="itin-modal__actions">
                 <Link to="/traveler/contact" className="btn btn-gold" onClick={() => setSelected(null)}>
                   Inquire About This Trip
-                </Link>
-                <Link to="/traveler/ai-planner" className="btn btn-outline" onClick={() => setSelected(null)}>
-                  Start AI Planning
                 </Link>
               </div>
 

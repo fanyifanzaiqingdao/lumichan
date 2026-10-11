@@ -192,7 +192,7 @@ export default function BecomeGuide() {
       <header className="bg-topbar">
         <div className="bg-topbar__inner">
           <Link to="/traveler" className="bg-brand">
-            <img src="/lumichan-logo.png" alt="" />
+            <img src="/lumichan-logo.png" alt="" loading="lazy" decoding="async" width={40} height={40} />
             <span className="text-gold font-serif">Lumichan</span>
           </Link>
           <Link to="/traveler" className="bg-back">

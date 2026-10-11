@@ -1,20 +1,20 @@
 .pay-panel {
   margin-top: 1.25rem;
   padding-top: 1.25rem;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: grid;
   gap: 0.85rem;
 }
 
 .pay-panel__hint {
   margin: 0;
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.62);
   font-size: 0.92rem;
   line-height: 1.5;
 }
 
 .pay-panel__hint strong {
-  color: var(--ink);
+  color: #f5f1e8;
 }
 
 .pay-panel__block {
@@ -26,12 +26,12 @@
   font-size: 0.8rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.45);
 }
 
 .pay-panel__muted {
   margin: 0;
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.45);
   font-size: 0.9rem;
 }
 
@@ -50,20 +50,26 @@
 .pay-panel__stripe {
   width: 100%;
   justify-content: center;
-  color: var(--ink);
-  border-color: var(--line);
-  background: var(--paper);
+  color: #f5f1e8;
+  border-color: rgba(255, 255, 255, 0.25);
+  background: #0f141c;
 }
 
 .pay-panel__alipay {
   width: 100%;
   justify-content: center;
-  color: var(--paper);
+  color: #0b1017;
   border-color: rgba(22, 119, 255, 0.45);
   background: #1677ff;
 }
 
+.pay-panel__paypal-link {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
 .pay-panel__alipay:hover {
   filter: brightness(1.06);
-  color: var(--paper);
+  color: #0b1017;
 }
