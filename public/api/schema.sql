@@ -28,6 +28,46 @@ CREATE TABLE IF NOT EXISTS `products` (
   KEY `idx_products_published_sort` (`is_published`, `sort_order`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS `inquiries` (
+  `inquiry_id` varchar(32) NOT NULL,
+  `request_id` char(36) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `consent_at` datetime NOT NULL,
+  `consent_version` varchar(80) NOT NULL,
+  `source_page` varchar(255) NOT NULL,
+  `utm_json` json DEFAULT NULL,
+  `language` varchar(10) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(200) NOT NULL,
+  `preferred_contact` varchar(20) NOT NULL,
+  `contact_handle` varchar(80) NOT NULL DEFAULT '',
+  `country` varchar(100) NOT NULL DEFAULT '',
+  `travelers` smallint unsigned NOT NULL,
+  `travel_dates` varchar(100) NOT NULL,
+  `destinations` varchar(200) NOT NULL DEFAULT '',
+  `preferred_service` varchar(100) NOT NULL DEFAULT '',
+  `traveling_with_children` tinyint(1) NOT NULL DEFAULT 0,
+  `child_age_band` varchar(20) NOT NULL DEFAULT '',
+  `english_guide` varchar(20) NOT NULL DEFAULT 'Not sure',
+  `interests_json` json DEFAULT NULL,
+  `message` text,
+  `notification_status` varchar(16) NOT NULL DEFAULT 'pending',
+  `notification_attempts` smallint unsigned NOT NULL DEFAULT 0,
+  `notification_claimed_at` datetime DEFAULT NULL,
+  `notified_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`inquiry_id`),
+  UNIQUE KEY `uq_inquiries_request` (`request_id`),
+  KEY `idx_inquiries_created` (`created_at`),
+  KEY `idx_inquiries_notification` (`notification_status`, `created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `inquiry_rate_limits` (
+  `bucket_hash` char(64) NOT NULL,
+  `hit_count` smallint unsigned NOT NULL DEFAULT 0,
+  `expires_at` datetime NOT NULL,
+  PRIMARY KEY (`bucket_hash`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Guides (applications + published directory)
 CREATE TABLE IF NOT EXISTS `guides` (
   `id` varchar(64) NOT NULL,

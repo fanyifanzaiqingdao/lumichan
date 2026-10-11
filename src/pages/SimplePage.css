@@ -1,91 +1,78 @@
 .simple-page {
-  padding-top: 6rem;
-  padding-bottom: 4rem;
+  min-height: 60vh;
+  background: #0b1017;
+  color: #f5f1e8;
 }
 
-.simple-page h1 {
-  margin: 0.9rem 0 0.8rem;
+.simple-page__hero {
+  padding: 7.5rem 0 2rem;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(201, 162, 39, 0.14), transparent 42%),
+    linear-gradient(180deg, #121821, #0b1017);
+}
+
+.simple-page__hero h1 {
+  margin: 0;
   font-size: clamp(2.2rem, 5vw, 3.4rem);
+  max-width: 18ch;
 }
 
-.simple-page > p {
-  max-width: 38rem;
-  color: var(--muted);
-  margin: 0 0 1.5rem;
-}
-
-.theme-dark-page {
-  color: var(--white);
-}
-
-.theme-dark-page > p {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.page:has(.theme-dark-page) {
-  background: #10161d;
-}
-
-.contact-form {
-  position: relative;
-  display: grid;
-  gap: 1rem;
-  max-width: 32rem;
-}
-
-.contact-form label {
-  display: grid;
-  gap: 0.4rem;
-  font-weight: 560;
+.simple-page__updated {
+  margin: 0.85rem 0 0;
+  color: rgba(245, 241, 232, 0.55);
   font-size: 0.92rem;
 }
 
-.contact-form input,
-.contact-form textarea {
-  border: 1px solid rgba(15, 23, 32, 0.12);
-  border-radius: 0.85rem;
-  padding: 0.8rem 0.95rem;
-  background: var(--white);
+.simple-page__body {
+  padding: 0 0 4.5rem;
 }
 
-.contact-form button {
-  justify-self: start;
-}
-
-.contact-form button:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-
-.form-status {
-  max-width: 32rem;
-  margin: 0;
-}
-
-.form-status-ok {
+.simple-page__prose {
+  max-width: 48rem;
   display: grid;
-  gap: 1rem;
-  padding: 1.25rem 1.35rem;
-  border-radius: 0.85rem;
-  background: rgba(201, 162, 39, 0.12);
-  border: 1px solid rgba(201, 162, 39, 0.35);
+  gap: 0.95rem;
 }
 
-.form-status-ok p {
+.simple-page__prose p {
   margin: 0;
-  color: var(--ink, #0f1720);
+  color: rgba(245, 241, 232, 0.72);
+  line-height: 1.75;
+  font-size: 1.02rem;
 }
 
-.form-status-err {
-  color: #b42318;
-  font-size: 0.92rem;
+.simple-page__h2 {
+  margin: 1.75rem 0 0.25rem;
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+  font-weight: 400;
+  color: #f5f1e8;
 }
 
-.hp-field {
-  position: absolute;
-  left: -10000px;
-  top: auto;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
+.simple-page__list {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: rgba(245, 241, 232, 0.72);
+  line-height: 1.7;
+}
+
+.simple-page__list li {
+  margin-bottom: 0.35rem;
+}
+
+.simple-page__hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 1rem 0;
+}
+
+.simple-page__email {
+  margin-top: 0.5rem !important;
+}
+
+.simple-page__email a {
+  color: var(--gold);
+  text-decoration: underline;
+}
+
+.simple-page__body a {
+  color: var(--gold);
 }

@@ -63,9 +63,9 @@ export default function AiPlanner() {
         </div>
 
         <div className="planner-actions">
-          <Link to="/traveler/guides" className="btn btn-gold">
+          {/* <Link to="/traveler/guides" className="btn btn-gold">
             Find a Guide
-          </Link>
+          </Link> */}
           <Link to="/traveler/contact" className="btn btn-ghost">
             Contact Us
           </Link>

@@ -1,25 +1,15 @@
 .guides-page {
   min-height: 100vh;
-  background: var(--paper);
-  color: var(--ink);
+  background: #0b1017;
+  color: #f5f1e8;
 }
 
 .guides-hero {
   padding: 7.5rem 0 1.5rem;
   text-align: center;
   background:
-    radial-gradient(circle at 50% 0%, rgba(23, 61, 50, 0.08), transparent 42%),
-    linear-gradient(180deg, var(--paper-deep), var(--paper));
-}
-
-.guides-hero h1,
-.itin-hero h1,
-.contact-hero h1,
-.bg-intro h1,
-.planner-hero h1 {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  letter-spacing: -0.03em;
+    radial-gradient(circle at 50% 0%, rgba(201, 162, 39, 0.14), transparent 42%),
+    linear-gradient(180deg, #121821, #0b1017);
 }
 
 .guides-hero h1 {
@@ -30,7 +20,7 @@
 .guides-hero > .section > p {
   margin: 0 auto 2rem;
   max-width: 36rem;
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.68);
   font-size: 1.05rem;
 }
 
@@ -51,33 +41,33 @@
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.45);
   font-size: 1.2rem;
 }
 
 .guides-search__field input {
   width: 100%;
   height: 3rem;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 0.9rem;
   padding: 0 1rem 0 2.8rem;
-  background: var(--white);
-  color: var(--ink);
+  background: #151c26;
+  color: #f5f1e8;
 }
 
 .guides-search__field input::placeholder {
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.42);
 }
 
 .guides-search__filters {
   height: 3rem;
-  color: var(--ink);
-  border-color: rgba(23, 61, 50, 0.35);
+  color: #f5f1e8;
+  border-color: rgba(201, 162, 39, 0.45);
   white-space: nowrap;
 }
 
 .guides-search__filters.is-active {
-  background: rgba(23, 61, 50, 0.08);
+  background: rgba(201, 162, 39, 0.14);
 }
 
 .guides-chips {
@@ -93,15 +83,15 @@
   border: 0;
   border-radius: 999px;
   padding: 0.55rem 1rem;
-  background: var(--white);
-  color: var(--ink);
+  background: #151c26;
+  color: #f5f1e8;
   cursor: pointer;
   font-size: 0.88rem;
 }
 
 .guides-chips button.is-active {
-  background: var(--forest);
-  color: #fff;
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+  color: #111;
   font-weight: 700;
 }
 
@@ -111,14 +101,14 @@
 
 .guides-count {
   margin: 0 0 1.25rem;
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.55);
   font-size: 0.92rem;
 }
 
 .guides-empty {
   text-align: center;
   padding: 4rem 1rem;
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.55);
 }
 
 .guides-grid {
@@ -132,15 +122,14 @@
   gap: 1.25rem;
   padding: 1.35rem;
   border-radius: 1.4rem;
-  background: var(--white);
-  border: 1px solid var(--line);
-  box-shadow: 0 12px 32px rgba(31, 43, 36, 0.06);
+  background: #151c26;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   transition: border-color 0.25s ease, transform 0.25s ease;
 }
 
 .guide-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(23, 61, 50, 0.35);
+  border-color: rgba(201, 162, 39, 0.4);
 }
 
 .guide-card__avatar-wrap {
@@ -158,8 +147,8 @@
 .guide-card__avatar--fallback {
   display: grid;
   place-items: center;
-  background: rgba(23, 61, 50, 0.1);
-  color: var(--clay);
+  background: rgba(201, 162, 39, 0.16);
+  color: var(--gold);
   font-size: 1.4rem;
   font-weight: 700;
 }
@@ -198,19 +187,19 @@
 
 .guide-card__location {
   margin: 0.2rem 0 0;
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.58);
   font-size: 0.9rem;
 }
 
 .guide-card__price {
-  color: var(--clay);
+  color: var(--gold);
   font-weight: 700;
   font-size: 1.05rem;
   white-space: nowrap;
 }
 
 .guide-card__price span {
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.5);
   font-size: 0.78rem;
   font-weight: 500;
 }
@@ -220,28 +209,28 @@
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-bottom: 0.55rem;
-  color: var(--forest);
+  color: var(--gold-soft);
   font-size: 0.88rem;
 }
 
 .guide-card__meta span:last-child {
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.58);
 }
 
 .guide-card__langs,
 .guide-card__vehicle {
   margin: 0 0 0.45rem;
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.68);
   font-size: 0.9rem;
 }
 
 .guide-card__vehicle {
-  color: var(--forest);
+  color: var(--gold-soft);
 }
 
 .guide-card__bio {
   margin: 0 0 0.85rem;
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.62);
   font-size: 0.9rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -259,7 +248,7 @@
 .guide-card__tags span {
   padding: 0.25rem 0.6rem;
   border-radius: 999px;
-  background: var(--line);
+  background: rgba(255, 255, 255, 0.06);
   color: rgba(245, 241, 232, 0.78);
   font-size: 0.75rem;
 }
@@ -279,13 +268,13 @@
 
 .guides-become p {
   margin: 0;
-  color: var(--muted);
+  color: rgba(245, 241, 232, 0.58);
 }
 
 .guides-more .btn-outline,
 .guides-become .btn-outline {
-  color: var(--ink);
-  border-color: var(--line);
+  color: #f5f1e8;
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 @media (max-width: 900px) {

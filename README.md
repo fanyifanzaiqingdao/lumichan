@@ -12,7 +12,9 @@ npm run dev
 
 浏览器打开终端提示的本地地址（一般是 http://localhost:5173 ），首页路由为 `/traveler`。
 
-本地 Vite **不会跑 PHP**。要测联系表单：先部署到宝塔，或把 `VITE_CONTACT_API` 指到线上 `/api/contact.php`。
+V1.1 首页在 `/traveler`，服务和路线分别在 `/traveler/services`、`/traveler/journeys`。首页内容在 `/admin` 编辑；未获批的路线价格、Vlog 和评价不会在前台发布。
+
+本地 Vite 会把 `/api` 代理到 `127.0.0.1:8080`。需要联调 PHP 时先运行 `cd public && php -S 127.0.0.1:8080`。
 
 ## 打包
 
@@ -20,7 +22,18 @@ npm run dev
 npm run build
 ```
 
-产物在 `dist/`（含 `dist/api/contact.php`）。
+产物在 `dist/`（含 PHP API）。构建会剔除本机 `config.php`、上传文件和私有数据，再扫描价格/人数测试占位；发现残留时失败。服务器原有 `api/config.php`、`uploads/`、`api/data/homepage.live.json` 要保留。
+
+### 首页咨询后端
+
+1. 在宝塔数据库执行 `dist/api/schema.sql`，新增 `inquiries` 与 `inquiry_rate_limits` 表。已有产品、向导表会保留。
+2. 确认服务器的 `api/config.php` 已配置数据库和收件邮箱；升级时不要用示例文件覆盖它。
+3. 宝塔计划任务每 5 分钟执行 `php /www/wwwroot/你的站点/api/retry-inquiries.php`，重试邮件通知。线索先入库，邮件失败时仍返回成功。
+4. `/admin` 的“咨询线索”页可查看最近 100 条，并手动重发通知。
+5. `/admin` 的“首页配置”可改图片路径、文案、FAQ、服务、路线及获授权媒体；图片文件可直接上传。上传目录 `uploads/homepage/` 需允许 PHP 写入。
+6. 后台修改写入 `api/data/homepage.live.json`，默认文件 `homepage.json` 只用于首次安装。首次升级前若旧 `homepage.json` 已由后台改过，请先备份，上传后在后台核对并重新保存一次。
+
+上传后确认 Nginx 拒绝访问 `/api/data/` 和 `/api/config.php`；`uploads/` 不应允许执行 PHP。真实价格、取消条款、法律页、图片及顾客授权仍需负责人确认。
 
 ## 部署到宝塔
 
@@ -57,6 +70,8 @@ location / {
 ```
 
 6. 保存并重载 Nginx；申请 SSL
+
+Staging 环境还应在 Nginx 响应中加入 `X-Robots-Tag: noindex, nofollow`；正式域名发布前复核 canonical。
 
 ### 邮件说明
 

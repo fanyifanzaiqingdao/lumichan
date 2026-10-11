@@ -1,63 +1,107 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import SoftImage from './SoftImage.jsx'
+import { track } from '../lib/analytics.js'
 import './Header.css'
 
 const NAV = [
   { name: 'Home', path: '/traveler' },
-  { name: 'Find Guides', path: '/traveler/guides' },
-  { name: 'Itineraries', path: '/traveler/itineraries' },
-  { name: 'Contact', path: '/traveler/contact' },
+  { name: 'About', path: '/traveler/about' },
+  // { name: 'AI Planning', path: '/traveler/ai-planner' }, // temporarily hidden
+  // { name: 'Find Guides', path: '/traveler/guides' }, // temporarily hidden
+  { name: 'Services', path: '/traveler/services' },
+  { name: 'Journeys', path: '/traveler/journeys' },
+  // { name: 'Contact', path: '/traveler/contact' }, // temporarily hidden
   { name: 'Become a Guide', path: '/guide' },
 ]
 
-export default function Header({ floating = false }) {
+export default function Header({ transparent = false, dark = false }) {
   const [open, setOpen] = useState(false)
+  const menuRef = useRef(null)
+  const toggleRef = useRef(null)
 
   useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === 'Escape') setOpen(false)
+    if (!open) return
+    const menu = menuRef.current
+    const focusables = Array.from(menu?.querySelectorAll('a, button') || [])
+    focusables[0]?.focus()
+    function onKeyDown(event) {
+      if (event.key === 'Escape') {
+        setOpen(false)
+        toggleRef.current?.focus()
+      }
+      if (event.key === 'Tab' && focusables.length) {
+        const first = focusables[0]
+        const last = focusables.at(-1)
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault()
+          last.focus()
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault()
+          first.focus()
+        }
+      }
     }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-  }, [])
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [open])
 
   return (
-    <header className={`site-header${floating ? ' is-floating' : ''}`} data-site-header>
-      <Link to="/traveler" className="brand" onClick={() => setOpen(false)} translate="no">
-        <img src="/lumichan-logo.png" alt="" className="brand__mark" />
-        <span className="brand__name">Lumichan</span>
-      </Link>
+    <header
+      className={[
+        'site-header',
+        transparent ? 'is-transparent' : '',
+        dark ? 'is-dark' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      <div className="site-header__inner section">
+        <Link to="/traveler" className="brand" onClick={() => setOpen(false)}>
+          <SoftImage src="/lumichan-logo.png" alt="" className="brand__mark" loading="eager" width={40} height={40} />
+          <span className="brand__name text-gold">Lumichan</span>
+        </Link>
 
-      <button
-        type="button"
-        className="menu-toggle"
-        aria-expanded={open}
-        aria-controls="site-menu"
-        onClick={() => setOpen((v) => !v)}
-      >
-        <span />
-        <span />
-        <span />
-        <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
-      </button>
-
-      <nav className={`site-nav${open ? ' is-open' : ''}`} id="site-menu" aria-label="Primary">
-        {NAV.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            end={item.path === '/traveler'}
-            className={({ isActive }) => (isActive ? 'is-active' : undefined)}
-            onClick={() => setOpen(false)}
+        <nav ref={menuRef} id="primary-navigation" className={`nav ${open ? 'is-open' : ''}`} aria-label="Main navigation">
+          {NAV.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              end={item.path === '/traveler'}
+              className={({ isActive }) => (isActive ? 'nav__link is-active' : 'nav__link')}
+              onClick={() => setOpen(false)}
+            >
+              {item.name}
+            </NavLink>
+          ))}
+          <Link
+            to="/traveler#inquiry"
+            className="btn btn-gold nav__cta-mobile"
+            onClick={() => { setOpen(false); track('cta_click', { label: 'Plan My Journey', destination: '/traveler#inquiry', section: 'mobile_menu' }) }}
           >
-            {item.name}
-          </NavLink>
-        ))}
-      </nav>
+            Plan My Journey
+          </Link>
+        </nav>
 
-      <Link to="/traveler/contact" className="header-cta" onClick={() => setOpen(false)}>
-        Plan My Trip <span aria-hidden="true">↗</span>
-      </Link>
+        <Link to="/traveler#inquiry" className="btn btn-gold header-cta" aria-label="Plan My Journey" onClick={() => { setOpen(false); track('cta_click', { label: 'Plan My Journey', destination: '/traveler#inquiry', section: 'header' }) }}>
+          <span className="header-cta__full">Plan My Journey</span>
+          <span className="header-cta__short">Plan trip</span>
+        </Link>
+
+        <button
+          ref={toggleRef}
+          type="button"
+          className="nav-toggle"
+          aria-label="Toggle menu"
+          aria-expanded={open}
+          aria-controls="primary-navigation"
+          onClick={() => setOpen((v) => !v)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </div>
     </header>
   )
 }

@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/check-release.mjs",
+    "build:dev": "vite build --mode staging && node scripts/check-release.mjs dist-dev",
+    "preview:dev": "vite preview --mode staging --host 127.0.0.1",
     "preview": "vite preview"
   },
   "dependencies": {

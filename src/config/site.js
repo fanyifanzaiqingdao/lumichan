@@ -1,8 +1,13 @@
-/** Site-wide contact settings — edit WhatsApp number here */
+/** Site-wide contact settings */
 export const SITE = {
-  // International format, digits only (no + / spaces). Example: 8613812345678
-  whatsappNumber: import.meta.env.VITE_WHATSAPP_NUMBER || '',
-  whatsappPrefill: "Hi Lumichan! I'd like to ask about a trip.",
+  siteUrl: 'https://lumichan.com.cn',
+  contactEmail: 'jin.lu@lumichan.com.cn',
+  phoneDisplay: '+86 13551117121',
+  // International format, digits only (no + / spaces)
+  whatsappNumber: import.meta.env.VITE_WHATSAPP_NUMBER || '8613551117121',
+  address:
+    'No. 140, Annex to No. 198 Shijicheng Road, No. 12, Middle Section of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China',
+  whatsappPrefill: "Hi Lumichan! I'd like to book a consultation.",
 }
 
 export function whatsappUrl(prefill = SITE.whatsappPrefill) {

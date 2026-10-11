@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { whatsappUrl } from '../config/site.js'
 import './WhatsAppFloat.css'
@@ -5,8 +6,29 @@ import './WhatsAppFloat.css'
 export default function WhatsAppFloat() {
   const { pathname } = useLocation()
   const href = whatsappUrl()
+  const [hidden, setHidden] = useState(false)
 
-  if (!href || pathname.startsWith('/admin')) return null
+  useEffect(() => {
+    if (pathname !== '/traveler') {
+      setHidden(false)
+      return
+    }
+    const visible = new Set()
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) visible.add(entry.target.id)
+        else visible.delete(entry.target.id)
+      })
+      setHidden(visible.size > 0)
+    })
+    ;['faq', 'inquiry'].forEach((id) => {
+      const target = document.getElementById(id)
+      if (target) observer.observe(target)
+    })
+    return () => observer.disconnect()
+  }, [pathname])
+
+  if (!href || pathname.startsWith('/admin') || hidden) return null
 
   return (
     <a

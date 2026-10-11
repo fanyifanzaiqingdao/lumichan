@@ -8,18 +8,17 @@ const CONTACT_API = import.meta.env.VITE_CONTACT_API || '/api/contact.php'
 const waHref = whatsappUrl()
 
 const INFO = {
-  email: 'lijunjie1988927@qq.com',
-  phone: SITE.whatsappNumber
-    ? `WhatsApp: +${String(SITE.whatsappNumber).replace(/\D/g, '')}`
-    : 'WhatsApp: Junjie Li',
-  address: '中国 四川省成都市高新区世纪城路298号附14号',
-  hours: '24/7 Available',
+  email: SITE.contactEmail,
+  phone: SITE.phoneDisplay || (SITE.whatsappNumber
+    ? `+${String(SITE.whatsappNumber).replace(/\D/g, '')}`
+    : ''),
+  address: SITE.address,
 }
 
 const SOCIALS = [
   { label: 'TikTok', handle: 'lumichan67', url: 'https://www.tiktok.com/@lumichan67' },
-  { label: 'Facebook', handle: 'LumichanTravel', url: 'https://facebook.com/LumichanTravel' },
-  { label: 'Instagram', handle: 'lumichantravel', url: 'https://instagram.com/lumichantravel' },
+  { label: 'Facebook', handle: 'LumichanTravel', url: 'https://www.facebook.com/profile.php?id=61585245772437' },
+  { label: 'Instagram', handle: 'lumichan_travel', url: 'https://instagram.com/lumichan_travel' },
   { label: 'WhatsApp', handle: 'Junjie Li', url: waHref || '#' },
   { label: 'WeChat', handle: 'lumichan_travel', url: '#' },
 ]
@@ -84,9 +83,9 @@ export default function Contact() {
       <section className="contact-hero">
         <div className="section">
           <h1 className="font-serif">
-            Get in <span className="text-gold">Touch</span>
+            Book A <span className="text-gold">Consultation</span>
           </h1>
-          <p>Have questions? We&apos;d love to hear from you. Our team is available 24/7.</p>
+          <p>Tell us about your trip — we&apos;ll help you plan a private journey that fits your pace.</p>
         </div>
       </section>
 
@@ -104,7 +103,10 @@ export default function Contact() {
                   <div className="contact-info-card__value">{INFO.email}</div>
                 </div>
               </a>
-              <a className="contact-info-card" href="#">
+              <a
+                className="contact-info-card"
+                href={waHref || `tel:${String(SITE.phoneDisplay || '').replace(/\s/g, '')}`}
+              >
                 <div className="contact-info-card__icon" aria-hidden>
                   ☎
                 </div>
@@ -113,15 +115,17 @@ export default function Contact() {
                   <div className="contact-info-card__value">{INFO.phone}</div>
                 </div>
               </a>
-              <div className="contact-info-card">
-                <div className="contact-info-card__icon" aria-hidden>
-                  ⌖
+              {INFO.address ? (
+                <div className="contact-info-card">
+                  <div className="contact-info-card__icon" aria-hidden>
+                    ⌖
+                  </div>
+                  <div>
+                    <div className="contact-info-card__label">Office</div>
+                    <div className="contact-info-card__value">{INFO.address}</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="contact-info-card__label">Office</div>
-                  <div className="contact-info-card__value">{INFO.address}</div>
-                </div>
-              </div>
+              ) : null}
             </div>
 
             <h3 className="font-serif contact-aside__sub">Follow Us</h3>
@@ -138,15 +142,6 @@ export default function Contact() {
                   <div className="contact-social__handle">{item.handle}</div>
                 </a>
               ))}
-            </div>
-
-            <div className="contact-hours">
-              <h3 className="font-serif">Office Hours</h3>
-              <div className="contact-hours__row">
-                <span>Monday - Sunday</span>
-                <strong>{INFO.hours}</strong>
-              </div>
-              <p>* We are available around the clock — reach out any time.</p>
             </div>
           </aside>
 

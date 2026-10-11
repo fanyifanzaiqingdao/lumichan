@@ -133,7 +133,13 @@ export default function FindGuides() {
                 <article key={guide.id} className="guide-card">
                   <div className="guide-card__avatar-wrap">
                     {guide.photo_url ? (
-                      <img src={guide.photo_url} alt={guide.full_name} className="guide-card__avatar" />
+                      <img
+                        src={guide.photo_url}
+                        alt={guide.full_name}
+                        className="guide-card__avatar"
+                        loading="lazy"
+                        decoding="async"
+                      />
                     ) : (
                       <div className="guide-card__avatar guide-card__avatar--fallback">
                         {initials(guide.full_name)}

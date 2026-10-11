@@ -45,7 +45,7 @@
 @media (max-width: 640px) {
   .wa-float {
     right: 1rem;
-    bottom: 1rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom));
     width: 3.25rem;
     height: 3.25rem;
   }

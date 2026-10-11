@@ -1,10 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import defaultHomepage from '../data/homepage.js'
 import './Admin.css'
 
 const AUTH_API = '/api/admin-auth.php'
 const PRODUCTS_API = '/api/admin-products.php'
 const GUIDES_API = '/api/admin-guides.php'
+const HOMEPAGE_API = '/api/admin-homepage.php'
+const LEADS_API = '/api/admin-leads.php'
+const INQUIRIES_API = '/api/admin-inquiries.php'
+const UPLOAD_API = '/api/admin-upload.php'
 
 const EMPTY_PRODUCT = {
   id: '',
@@ -50,6 +55,43 @@ const STATUS_LABEL = {
   rejected: '已拒绝',
 }
 
+const LEAD_STATUS_LABEL = {
+  new: '新线索',
+  reviewing: '评估中',
+  drafted: '已有草稿',
+  posted: '已人工发布',
+  replied: '有回复',
+  ignored: '忽略',
+}
+
+const EMPTY_LEAD = {
+  platform: 'Reddit',
+  keyword: '',
+  title: '',
+  url: '',
+  summary: '',
+  author: '',
+  status: 'new',
+  score: 0,
+  admin_notes: '',
+  reply_draft: '',
+}
+
+function isSearchPageUrl(url = '') {
+  try {
+    const parsed = new URL(url)
+    const host = parsed.hostname.replace(/^www\./, '')
+    if (host === 'google.com' || host === 'duckduckgo.com') return true
+    if (host === 'reddit.com' && parsed.pathname.startsWith('/search')) return true
+    if (host === 'tripadvisor.com' && parsed.pathname.startsWith('/Search')) return true
+    if (host === 'quora.com' && parsed.pathname.startsWith('/search')) return true
+    if (host === 'youtube.com' && parsed.pathname.startsWith('/results')) return true
+    return false
+  } catch {
+    return false
+  }
+}
+
 async function api(url, options = {}) {
   const res = await fetch(url, {
     credentials: 'include',
@@ -71,7 +113,7 @@ export default function Admin() {
   const [booting, setBooting] = useState(true)
   const [loggedIn, setLoggedIn] = useState(false)
   const [password, setPassword] = useState('')
-  const [tab, setTab] = useState('products') // products | guides
+  const [tab, setTab] = useState('homepage') // homepage | products | guides | leads
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
 
@@ -86,6 +128,19 @@ export default function Admin() {
   const [guideEditing, setGuideEditing] = useState(null)
   const [guideForm, setGuideForm] = useState(EMPTY_GUIDE)
   const [guideQuery, setGuideQuery] = useState('')
+  const [homepage, setHomepage] = useState(null)
+  const [inquiries, setInquiries] = useState([])
+  const [homepageSaved, setHomepageSaved] = useState(false)
+  const [leadKeywords, setLeadKeywords] = useState('')
+  const [leadLinks, setLeadLinks] = useState([])
+  const [leads, setLeads] = useState([])
+  const [leadQuery, setLeadQuery] = useState('')
+  const [leadStatus, setLeadStatus] = useState('all')
+  const [leadEditing, setLeadEditing] = useState(null)
+  const [leadForm, setLeadForm] = useState(EMPTY_LEAD)
+  const [deepseekConfigured, setDeepseekConfigured] = useState(false)
+  const [leadDiscovering, setLeadDiscovering] = useState(false)
+  const [leadDiscoverResults, setLeadDiscoverResults] = useState([])
 
   async function refreshSession() {
     const data = await api(`${AUTH_API}?action=me`)
@@ -105,8 +160,37 @@ export default function Admin() {
     setGuideCounts(data.counts || { all: 0, pending: 0, approved: 0, rejected: 0 })
   }
 
+  async function loadHomepage() {
+    const data = await api(HOMEPAGE_API)
+    const saved = data.homepage || {}
+    setHomepage({
+      ...defaultHomepage,
+      ...saved,
+      copy: { ...defaultHomepage.copy, ...saved.copy },
+      formConfig: { ...defaultHomepage.formConfig, ...saved.formConfig },
+      services: defaultHomepage.services.map((item, index) => ({ ...item, ...(saved.services?.[index] || {}) })),
+      journeys: defaultHomepage.journeys.map((item, index) => ({ ...item, ...(saved.journeys?.[index] || {}) })),
+      whyImageAlt: saved.whyImageAlt || defaultHomepage.whyImageAlt,
+      vlogs: saved.vlogs || [],
+      reviews: saved.reviews || [],
+    })
+  }
+
+  async function loadInquiries() {
+    const data = await api(INQUIRIES_API)
+    setInquiries(data.inquiries || [])
+  }
+
+  async function loadLeads() {
+    const data = await api(LEADS_API)
+    setLeadKeywords((data.keywords || []).join('\n'))
+    setLeadLinks(data.search_links || [])
+    setLeads(data.leads || [])
+    setDeepseekConfigured(!!data.deepseek_configured)
+  }
+
   async function loadAll() {
-    await Promise.all([loadProducts(), loadGuides(guideStatus)])
+    await Promise.all([loadHomepage(), loadProducts(), loadGuides(guideStatus), loadLeads()])
   }
 
   useEffect(() => {
@@ -145,6 +229,18 @@ export default function Admin() {
     )
   }, [guides, guideQuery])
 
+  const filteredLeads = useMemo(() => {
+    const q = leadQuery.trim().toLowerCase()
+    return leads.filter((lead) => {
+      if (leadStatus !== 'all' && lead.status !== leadStatus) return false
+      if (!q) return true
+      return [lead.title, lead.platform, lead.keyword, lead.summary, lead.url, lead.author]
+        .join(' ')
+        .toLowerCase()
+        .includes(q)
+    })
+  }, [leads, leadQuery, leadStatus])
+
   async function handleLogin(e) {
     e.preventDefault()
     setError('')
@@ -166,6 +262,91 @@ export default function Admin() {
     setLoggedIn(false)
     setProducts([])
     setGuides([])
+    setHomepage(null)
+  }
+
+  async function saveHomepage() {
+    setSaving(true)
+    setError('')
+    try {
+      const data = await api(HOMEPAGE_API, {
+        method: 'PUT',
+        body: JSON.stringify({ homepage }),
+      })
+      setHomepage(data.homepage || homepage)
+      setHomepageSaved(true)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  function updateHomepage(path, value) {
+    setHomepageSaved(false)
+    setHomepage((current) => {
+      const next = structuredClone(current || {})
+      let target = next
+      path.slice(0, -1).forEach((key) => {
+        if (target[key] == null) target[key] = typeof key === 'number' ? [] : {}
+        target = target[key]
+      })
+      target[path.at(-1)] = value
+      return next
+    })
+  }
+
+  function updateHomepageList(path, value) {
+    updateHomepage(
+      path,
+      value
+        .split('\n')
+        .map((item) => item.trim())
+        .filter(Boolean),
+    )
+  }
+
+  function updateHomepagePairList(path, value) {
+    updateHomepage(
+      path,
+      value
+        .split('\n')
+        .map((line) => line.split('|').map((item) => item.trim()))
+        .filter((items) => items[0] || items[1]),
+    )
+  }
+
+  function updateHomepageGallery(path, value) {
+    updateHomepage(path, value.split('\n').map((line) => {
+      const [src, alt] = line.split('|').map((part) => part.trim())
+      return { src, alt }
+    }).filter((item) => item.src || item.alt))
+  }
+
+  function addHomepageItem(key, item) {
+    updateHomepage([key], [...(homepage?.[key] || []), item])
+  }
+
+  function removeHomepageItem(key, index) {
+    updateHomepage([key], homepage[key].filter((_, itemIndex) => itemIndex !== index))
+  }
+
+  async function uploadHomepageImage(file, path) {
+    if (!file) return
+    setSaving(true)
+    setError('')
+    try {
+      const body = new FormData()
+      body.append('image', file)
+      const response = await fetch(UPLOAD_API, { method: 'POST', credentials: 'include', body })
+      const result = await response.json().catch(() => ({}))
+      if (!response.ok || !result.ok) throw new Error(result.error || '图片上传失败')
+      updateHomepage(path, result.path)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
   }
 
   async function changeGuideFilter(status) {
@@ -356,6 +537,121 @@ export default function Admin() {
     }
   }
 
+  async function saveLeadKeywords() {
+    setSaving(true)
+    setError('')
+    try {
+      const data = await api(LEADS_API, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'keywords', keywords: leadKeywords }),
+      })
+      setLeadKeywords((data.keywords || []).join('\n'))
+      setLeadLinks(data.search_links || [])
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  async function discoverLeadPages() {
+    setLeadDiscovering(true)
+    setError('')
+    try {
+      const data = await api(LEADS_API, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'discover', keywords: leadKeywords }),
+      })
+      setLeadDiscoverResults(data.results || [])
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLeadDiscovering(false)
+    }
+  }
+
+  function openCreateLead(link = null) {
+    const candidateUrl = link?.resultUrl || link?.url || ''
+    setLeadForm({
+      ...EMPTY_LEAD,
+      platform: link?.platform || 'Reddit',
+      keyword: link?.keyword || '',
+      title: link?.title || '',
+      url: candidateUrl && !isSearchPageUrl(candidateUrl) ? candidateUrl : '',
+    })
+    setLeadEditing('new')
+    setError('')
+  }
+
+  function openEditLead(lead) {
+    setLeadForm({ ...EMPTY_LEAD, ...lead })
+    setLeadEditing(lead)
+    setError('')
+  }
+
+  async function saveLead(e) {
+    e.preventDefault()
+    setSaving(true)
+    setError('')
+    try {
+      if (leadEditing === 'new') {
+        await api(LEADS_API, { method: 'POST', body: JSON.stringify(leadForm) })
+      } else {
+        await api(`${LEADS_API}?id=${encodeURIComponent(leadForm.id)}`, {
+          method: 'PUT',
+          body: JSON.stringify(leadForm),
+        })
+      }
+      setLeadEditing(null)
+      await loadLeads()
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  async function updateLead(lead, patch) {
+    setError('')
+    try {
+      await api(`${LEADS_API}?id=${encodeURIComponent(lead.id)}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ ...lead, ...patch }),
+      })
+      await loadLeads()
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
+  async function generateLeadDraft(lead) {
+    setSaving(true)
+    setError('')
+    try {
+      const data = await api(LEADS_API, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'draft', id: lead.id }),
+      })
+      setLeadForm((form) => (form.id === lead.id ? { ...form, ...data.lead } : form))
+      await loadLeads()
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  async function removeLead(lead) {
+    if (!confirm(`确定删除线索「${lead.title || lead.url}」？`)) return
+    setError('')
+    try {
+      await api(`${LEADS_API}?id=${encodeURIComponent(lead.id)}`, { method: 'DELETE' })
+      await loadLeads()
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
   if (booting) {
     return (
       <div className="admin-page">
@@ -369,7 +665,7 @@ export default function Admin() {
       <div className="admin-page admin-page--login">
         <form className="admin-login" onSubmit={handleLogin}>
           <h1 className="font-serif">Lumichan 后台</h1>
-          <p>管理行程产品与向导审核</p>
+          <p>管理首页、行程产品与向导审核</p>
           <label>
             管理密码
             <input
@@ -397,10 +693,13 @@ export default function Admin() {
       <header className="admin-top">
         <div>
           <h1 className="font-serif">运营后台</h1>
-          <p className="admin-muted">产品上架 · 向导审核（同原站逻辑）</p>
+          <p className="admin-muted">首页配置 · 产品上架 · 向导审核 · 旅游线索</p>
         </div>
         <div className="admin-top__actions">
-          <Link to={tab === 'guides' ? '/traveler/guides' : '/traveler/itineraries'} className="btn btn-outline">
+          <Link
+            to={tab === 'homepage' ? '/traveler' : tab === 'guides' ? '/traveler/guides' : '/traveler/itineraries'}
+            className="btn btn-outline"
+          >
             查看前台
           </Link>
           <button type="button" className="btn btn-outline" onClick={handleLogout}>
@@ -410,15 +709,29 @@ export default function Admin() {
             <button type="button" className="btn btn-gold" onClick={openCreateProduct}>
               + 新建产品
             </button>
-          ) : (
+          ) : tab === 'guides' ? (
             <button type="button" className="btn btn-gold" onClick={openCreateGuide}>
               + 新建向导
+            </button>
+          ) : tab === 'leads' ? (
+            <button type="button" className="btn btn-gold" onClick={() => openCreateLead()}>
+              + 导入线索
+            </button>
+          ) : (
+            <button type="button" className="btn btn-gold" disabled={saving} onClick={saveHomepage}>
+              {saving ? '保存中…' : '保存首页配置'}
             </button>
           )}
         </div>
       </header>
 
       <div className="admin-tabs">
+        <button type="button" className={tab === 'homepage' ? 'is-active' : ''} onClick={() => setTab('homepage')}>
+          首页配置
+        </button>
+        <button type="button" className={tab === 'inquiries' ? 'is-active' : ''} onClick={() => { setTab('inquiries'); loadInquiries().catch((err) => setError(err.message)) }}>
+          咨询线索
+        </button>
         <button type="button" className={tab === 'products' ? 'is-active' : ''} onClick={() => setTab('products')}>
           产品管理
         </button>
@@ -426,9 +739,318 @@ export default function Admin() {
           向导管理
           {guideCounts.pending > 0 && <span className="admin-tab-badge">{guideCounts.pending}</span>}
         </button>
+        <button type="button" className={tab === 'leads' ? 'is-active' : ''} onClick={() => setTab('leads')}>
+          旅游线索
+          {leads.filter((lead) => lead.status === 'new').length > 0 && (
+            <span className="admin-tab-badge">{leads.filter((lead) => lead.status === 'new').length}</span>
+          )}
+        </button>
       </div>
 
       {error && <p className="admin-error">{error}</p>}
+
+      {tab === 'homepage' && (
+        <section className="admin-homepage-editor">
+          <div className="admin-toolbar">
+            <div>
+              <strong>首页表单配置</strong>
+              <p className="admin-muted">编辑首页文案、图片路径、服务卡片、旅程卡片、步骤和 FAQ。保存后刷新前台生效。</p>
+            </div>
+            <button type="button" className="btn btn-outline" onClick={loadHomepage}>
+              重新加载
+            </button>
+          </div>
+
+          {homepage && (
+            <div className="admin-home-form">
+              <div className="admin-home-card">
+                <h2 className="font-serif">SEO / 页面文案</h2>
+                <div className="admin-form-grid">
+                  <label className="span-2">SEO 标题
+                    <input maxLength={80} value={homepage.seo?.title || ''} onChange={(e) => updateHomepage(['seo', 'title'], e.target.value)} />
+                  </label>
+                  <label className="span-2">SEO 描述
+                    <textarea rows={2} maxLength={180} value={homepage.seo?.description || ''} onChange={(e) => updateHomepage(['seo', 'description'], e.target.value)} />
+                  </label>
+                  {Object.entries(homepage.copy || {}).map(([section, fields]) => (
+                    <div className="admin-home-repeat span-2" key={section}>
+                      <strong>{section}</strong>
+                      <div className="admin-form-grid">
+                        {Object.entries(fields).map(([field, value]) => (
+                          <label className="span-2" key={field}>{field}
+                            <textarea rows={field === 'intro' ? 2 : 1} value={value} onChange={(e) => updateHomepage(['copy', section, field], e.target.value)} />
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="admin-home-card">
+                <h2 className="font-serif">Hero</h2>
+                <div className="admin-form-grid">
+                  <label>
+                    Eyebrow
+                    <input value={homepage.hero?.eyebrow || ''} onChange={(e) => updateHomepage(['hero', 'eyebrow'], e.target.value)} />
+                  </label>
+                  <label>
+                    图片路径
+                    <input value={homepage.hero?.image || ''} onChange={(e) => updateHomepage(['hero', 'image'], e.target.value)} />
+                    <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['hero', 'image'])} />
+                  </label>
+                  <label className="span-2">
+                    标题
+                    <input value={homepage.hero?.title || ''} onChange={(e) => updateHomepage(['hero', 'title'], e.target.value)} />
+                  </label>
+                  <label className="span-2">
+                    副标题
+                    <textarea rows={3} value={homepage.hero?.subtitle || ''} onChange={(e) => updateHomepage(['hero', 'subtitle'], e.target.value)} />
+                  </label>
+                  <label>
+                    主按钮文字
+                    <input value={homepage.hero?.primaryCta?.label || ''} onChange={(e) => updateHomepage(['hero', 'primaryCta', 'label'], e.target.value)} />
+                  </label>
+                  <label>
+                    主按钮链接
+                    <input value={homepage.hero?.primaryCta?.href || ''} onChange={(e) => updateHomepage(['hero', 'primaryCta', 'href'], e.target.value)} />
+                  </label>
+                  <label>
+                    次按钮文字
+                    <input value={homepage.hero?.secondaryCta?.label || ''} onChange={(e) => updateHomepage(['hero', 'secondaryCta', 'label'], e.target.value)} />
+                  </label>
+                  <label>
+                    次按钮链接
+                    <input value={homepage.hero?.secondaryCta?.href || ''} onChange={(e) => updateHomepage(['hero', 'secondaryCta', 'href'], e.target.value)} />
+                  </label>
+                  <label className="span-2">
+                    信任点（每行一个）
+                    <textarea rows={4} value={(homepage.hero?.trustPoints || []).join('\n')} onChange={(e) => updateHomepageList(['hero', 'trustPoints'], e.target.value)} />
+                  </label>
+                </div>
+              </div>
+
+              <div className="admin-home-card">
+                <h2 className="font-serif">服务卡片</h2>
+                <label>Booking policy version（运营和法律批准后填写）
+                  <input value={homepage.bookingPolicyVersion || ''} onChange={(e) => updateHomepage(['bookingPolicyVersion'], e.target.value)} />
+                </label>
+                {(homepage.services || []).map((item, index) => (
+                  <div className="admin-home-repeat" key={item.id || index}>
+                    <div className="admin-form-grid">
+                      <label>
+                        编号
+                        <input value={item.number || ''} onChange={(e) => updateHomepage(['services', index, 'number'], e.target.value)} />
+                      </label>
+                      <label>
+                        ID
+                        <input value={item.id || ''} onChange={(e) => updateHomepage(['services', index, 'id'], e.target.value)} />
+                      </label>
+                      <label className="span-2">
+                        标题
+                        <input value={item.title || ''} onChange={(e) => updateHomepage(['services', index, 'title'], e.target.value)} />
+                      </label>
+                      <label className="span-2">
+                        简介
+                        <textarea rows={2} value={item.summary || ''} onChange={(e) => updateHomepage(['services', index, 'summary'], e.target.value)} />
+                      </label>
+                      <label>
+                        价格
+                        <input value={item.price || ''} onChange={(e) => updateHomepage(['services', index, 'price'], e.target.value)} />
+                      </label>
+                      <label>
+                        链接
+                        <input value={item.href || ''} onChange={(e) => updateHomepage(['services', index, 'href'], e.target.value)} />
+                      </label>
+                      <label>图片路径
+                        <input value={item.image || ''} onChange={(e) => updateHomepage(['services', index, 'image'], e.target.value)} />
+                        <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['services', index, 'image'])} />
+                      </label>
+                      <label>图片 alt
+                        <input value={item.imageAlt || ''} onChange={(e) => updateHomepage(['services', index, 'imageAlt'], e.target.value)} />
+                      </label>
+                      <label className="span-2">
+                        预订说明
+                        <textarea rows={2} value={item.booking || ''} onChange={(e) => updateHomepage(['services', index, 'booking'], e.target.value)} />
+                      </label>
+                      <label className="span-2"><input type="checkbox" checked={!!item.bookingApproved} onChange={(e) => updateHomepage(['services', index, 'bookingApproved'], e.target.checked)} /> 取消/改期条款已审批</label>
+                      {['tagline', 'priceDetail', 'description', 'perfectFor', 'support', 'goodToKnow'].map((field) => (
+                        <label className="span-2" key={field}>详情 {field}
+                          <textarea rows={field === 'description' ? 4 : 2} value={item.details?.[field] || ''} onChange={(e) => updateHomepage(['services', index, 'details', field], e.target.value)} />
+                        </label>
+                      ))}
+                      <label className="span-2">详情 included（每行一项）
+                        <textarea rows={6} value={(item.details?.included || []).join('\n')} onChange={(e) => updateHomepageList(['services', index, 'details', 'included'], e.target.value)} />
+                      </label>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="admin-home-card">
+                <h2 className="font-serif">旅程卡片</h2>
+                {(homepage.journeys || []).map((item, index) => (
+                  <div className="admin-home-repeat" key={item.slug || index}>
+                    <div className="admin-form-grid">
+                      <label>
+                        Slug
+                        <input value={item.slug || ''} onChange={(e) => updateHomepage(['journeys', index, 'slug'], e.target.value)} />
+                      </label>
+                      <label>
+                        天数
+                        <input value={item.duration || ''} onChange={(e) => updateHomepage(['journeys', index, 'duration'], e.target.value)} />
+                      </label>
+                      <label className="span-2">
+                        标题
+                        <input value={item.title || ''} onChange={(e) => updateHomepage(['journeys', index, 'title'], e.target.value)} />
+                      </label>
+                      <label className="span-2">
+                        简介
+                        <textarea rows={2} value={item.summary || ''} onChange={(e) => updateHomepage(['journeys', index, 'summary'], e.target.value)} />
+                      </label>
+                      <label>
+                        图片路径
+                        <input value={item.image || ''} onChange={(e) => updateHomepage(['journeys', index, 'image'], e.target.value)} />
+                        <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['journeys', index, 'image'])} />
+                      </label>
+                      <label>图片 alt
+                        <input value={item.imageAlt || ''} onChange={(e) => updateHomepage(['journeys', index, 'imageAlt'], e.target.value)} />
+                      </label>
+                      <label>
+                        价格
+                        <input value={item.price || ''} onChange={(e) => updateHomepage(['journeys', index, 'price'], e.target.value)} />
+                      </label>
+                      <label className="span-2">
+                        标签（每行一个）
+                        <textarea rows={3} value={(item.tags || []).join('\n')} onChange={(e) => updateHomepageList(['journeys', index, 'tags'], e.target.value)} />
+                      </label>
+                      <label className="span-2">
+                        团型说明
+                        <input value={item.groupBasis || ''} onChange={(e) => updateHomepage(['journeys', index, 'groupBasis'], e.target.value)} />
+                      </label>
+                      <label className="span-2"><input type="checkbox" checked={!!item.priceApproved} onChange={(e) => updateHomepage(['journeys', index, 'priceApproved'], e.target.checked)} /> 价格和成团人数已批准发布</label>
+                      <label className="span-2"><input type="checkbox" checked={!!item.detailsApproved} onChange={(e) => updateHomepage(['journeys', index, 'detailsApproved'], e.target.checked)} /> 路线详情已批准发布</label>
+                      <label className="span-2">详情 highlights（每行一项）
+                        <textarea rows={4} value={(item.details?.highlights || []).join('\n')} onChange={(e) => updateHomepageList(['journeys', index, 'details', 'highlights'], e.target.value)} />
+                      </label>
+                      <label className="span-2">详情 suggested flow（每行一项，未经批准保持空白）
+                        <textarea rows={4} value={(item.details?.flow || []).join('\n')} onChange={(e) => updateHomepageList(['journeys', index, 'details', 'flow'], e.target.value)} />
+                      </label>
+                      {['idealFor', 'note'].map((field) => <label className="span-2" key={field}>详情 {field}
+                        <textarea rows={2} value={item.details?.[field] || ''} onChange={(e) => updateHomepage(['journeys', index, 'details', field], e.target.value)} />
+                      </label>)}
+                      <label className="span-2">详情 gallery（每行：图片路径 | alt）
+                        <textarea rows={3} value={(item.details?.gallery || []).map((image) => `${image.src} | ${image.alt}`).join('\n')} onChange={(e) => updateHomepageGallery(['journeys', index, 'details', 'gallery'], e.target.value)} />
+                      </label>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="admin-home-card">
+                <h2 className="font-serif">Why / Steps / FAQ</h2>
+                <div className="admin-form-grid">
+                  <label className="span-2">
+                    Why 图片路径
+                    <input value={homepage.whyImage || ''} onChange={(e) => updateHomepage(['whyImage'], e.target.value)} />
+                    <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['whyImage'])} />
+                  </label>
+                  <label className="span-2">Why 图片 alt
+                    <input value={homepage.whyImageAlt || ''} onChange={(e) => updateHomepage(['whyImageAlt'], e.target.value)} />
+                  </label>
+                  <label className="span-2">
+                    Why 条目（每行：标题 | 描述）
+                    <textarea rows={5} value={(homepage.whyItems || []).map((item) => item.join(' | ')).join('\n')} onChange={(e) => updateHomepagePairList(['whyItems'], e.target.value)} />
+                  </label>
+                  <label className="span-2">
+                    步骤（每行：编号 | 标题 | 描述 | 标签）
+                    <textarea rows={7} value={(homepage.steps || []).map((item) => item.join(' | ')).join('\n')} onChange={(e) => updateHomepagePairList(['steps'], e.target.value)} />
+                  </label>
+                  <label className="span-2">
+                    FAQ（每行：问题 | 答案）
+                    <textarea rows={8} value={(homepage.faqs || []).map((item) => item.join(' | ')).join('\n')} onChange={(e) => updateHomepagePairList(['faqs'], e.target.value)} />
+                  </label>
+                </div>
+              </div>
+              <div className="admin-home-card">
+                <h2 className="font-serif">咨询表单文案</h2>
+                <div className="admin-form-grid">
+                  {Object.entries(homepage.formConfig || {}).map(([field, value]) => (
+                    <label className="span-2" key={field}>{field}
+                      <input value={value} onChange={(e) => updateHomepage(['formConfig', field], e.target.value)} />
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div className="admin-home-card">
+                <h2 className="font-serif">Vlog</h2>
+                <p className="admin-muted">仅在视频、封面、字幕摘要、alt 和授权记录齐全并启用时显示。</p>
+                {(homepage.vlogs || []).map((item, index) => (
+                  <div className="admin-home-repeat" key={index}>
+                    <div className="admin-form-grid">
+                      {['title', 'cover', 'video', 'subtitle', 'caption', 'alt', 'consentRecord'].map((field) => <label key={field}>{field}<input value={item[field] || ''} onChange={(e) => updateHomepage(['vlogs', index, field], e.target.value)} /></label>)}
+                      <label>上传封面<input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['vlogs', index, 'cover'])} /></label>
+                      <label><input type="checkbox" checked={!!item.published} onChange={(e) => updateHomepage(['vlogs', index, 'published'], e.target.checked)} /> 发布</label>
+                    </div>
+                    <button type="button" className="btn btn-outline" onClick={() => removeHomepageItem('vlogs', index)}>删除</button>
+                  </div>
+                ))}
+                <button type="button" className="btn btn-outline" onClick={() => addHomepageItem('vlogs', { title: '', cover: '', video: '', subtitle: '', caption: '', alt: '', consentRecord: '', published: false })}>新增 Vlog</button>
+              </div>
+              <div className="admin-home-card">
+                <h2 className="font-serif">Guest Stories / 旅客评价</h2>
+                <p className="admin-muted">首页标题：Words From Our Travelers。介绍：Real journeys. Real experiences. Stories worth sharing.</p>
+                <p className="admin-muted">评价仅在真实来源及发布授权记录齐全并启用时显示。无已发布评价时，首页保留栏目标题、介绍和暂无评价提示，不显示虚构评价。</p>
+                {(homepage.reviews || []).map((item, index) => (
+                  <div className="admin-home-repeat" key={index}>
+                    <div className="admin-form-grid">
+                      {['quote', 'identity', 'tripType', 'tripDate', 'photo', 'photoAlt', 'sourceRecord', 'consentRecord'].map((field) => <label key={field}>{field}<input value={item[field] || ''} onChange={(e) => updateHomepage(['reviews', index, field], e.target.value)} /></label>)}
+                      <label>上传照片<input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['reviews', index, 'photo'])} /></label>
+                      <label><input type="checkbox" checked={!!item.published} onChange={(e) => updateHomepage(['reviews', index, 'published'], e.target.checked)} /> 发布</label>
+                    </div>
+                    <button type="button" className="btn btn-outline" onClick={() => removeHomepageItem('reviews', index)}>删除</button>
+                  </div>
+                ))}
+                <button type="button" className="btn btn-outline" onClick={() => addHomepageItem('reviews', { quote: '', identity: '', tripType: '', tripDate: '', photo: '', photoAlt: '', sourceRecord: '', consentRecord: '', published: false })}>新增 Review</button>
+              </div>
+            </div>
+          )}
+
+          <div className="admin-modal__actions">
+            {homepageSaved && <span role="status">配置已保存</span>}
+            <button type="button" className="btn btn-gold" disabled={saving} onClick={saveHomepage}>
+              {saving ? '保存中…' : '保存首页配置'}
+            </button>
+          </div>
+        </section>
+      )}
+
+      {tab === 'inquiries' && (
+        <section className="admin-homepage-editor">
+          <div className="admin-toolbar">
+            <div><strong>咨询线索</strong><p className="admin-muted">最近 100 条。通知待发送时可手动重试。</p></div>
+            <button type="button" className="btn btn-outline" onClick={() => loadInquiries().catch((err) => setError(err.message))}>刷新</button>
+          </div>
+          <div className="admin-inquiry-list">
+            {inquiries.map((item) => (
+              <article className="admin-home-card" key={item.inquiry_id}>
+                <h2>{item.name} <small>{item.created_at}</small></h2>
+                <p>{item.email} · {item.preferred_contact} {item.contact_handle}</p>
+                <p>{item.preferred_service} · {item.travelers} traveler(s) · {item.travel_dates}</p>
+                {item.destinations && <p>Destinations: {item.destinations}</p>}
+                {item.message && <p>{item.message}</p>}
+                <p>Notification: {item.notification_status} · Attempts: {item.notification_attempts}</p>
+                {item.notification_status !== 'sent' && <button type="button" className="btn btn-outline" onClick={async () => {
+                  try {
+                    await api(INQUIRIES_API, { method: 'POST', body: JSON.stringify({ inquiry_id: item.inquiry_id }) })
+                    await loadInquiries()
+                  } catch (err) { setError(err.message) }
+                }}>重试通知</button>}
+              </article>
+            ))}
+            {inquiries.length === 0 && <p className="admin-muted">暂无咨询线索</p>}
+          </div>
+        </section>
+      )}
 
       {tab === 'products' && (
         <>
@@ -575,6 +1197,169 @@ export default function Admin() {
                     </td>
                   </tr>
                 ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+
+      {tab === 'leads' && (
+        <>
+          <section className="admin-lead-grid">
+            <div className="admin-lead-panel">
+              <div>
+                <strong>关键词配置</strong>
+                <p className="admin-muted">每行一个关键词。系统生成搜索链接，管理员打开后手动筛选并导入帖子。</p>
+              </div>
+              <textarea
+                rows={7}
+                value={leadKeywords}
+                onChange={(e) => setLeadKeywords(e.target.value)}
+                spellCheck={false}
+              />
+              <button type="button" className="btn btn-gold" disabled={saving} onClick={saveLeadKeywords}>
+                {saving ? '保存中…' : '保存关键词'}
+              </button>
+            </div>
+
+            <div className="admin-lead-panel">
+              <div>
+                <strong>发现具体页面</strong>
+                <p className="admin-muted">按关键词查找相关帖子/页面，点击标题可访问原网页，再决定是否导入。</p>
+              </div>
+              <button type="button" className="btn btn-gold" disabled={leadDiscovering} onClick={discoverLeadPages}>
+                {leadDiscovering ? '查找中…' : '查找相关页面'}
+              </button>
+              {leadDiscoverResults.length > 0 && (
+                <div className="admin-result-list">
+                  {leadDiscoverResults.map((result) => (
+                    <div key={result.url} className="admin-result-row">
+                      <div>
+                        <a href={result.url} target="_blank" rel="noreferrer">
+                          {result.title}
+                        </a>
+                        <p className="admin-muted">
+                          {result.platform} · {result.keyword}
+                          {result.is_search_page ? ' · 平台搜索入口' : ''}
+                          {result.already_imported ? ' · 已导入' : ''}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        disabled={result.already_imported}
+                        onClick={() =>
+                          openCreateLead({
+                            platform: result.platform,
+                            keyword: result.keyword,
+                            title: result.title,
+                            resultUrl: result.url,
+                          })
+                        }
+                      >
+                        {result.is_search_page ? '手动导入' : '导入'}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="admin-link-list">
+                <p className="admin-muted">备用：直接打开平台搜索页</p>
+                {leadLinks.slice(0, 18).map((link) => (
+                  <div key={`${link.platform}-${link.keyword}`} className="admin-link-row">
+                    <a href={link.url} target="_blank" rel="noreferrer">
+                      {link.platform} · {link.keyword}
+                    </a>
+                    <button type="button" onClick={() => openCreateLead(link)}>
+                      导入
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <div className="admin-subfilters">
+            {['all', 'new', 'reviewing', 'drafted', 'posted', 'replied', 'ignored'].map((key) => (
+              <button
+                key={key}
+                type="button"
+                className={leadStatus === key ? 'is-active' : ''}
+                onClick={() => setLeadStatus(key)}
+              >
+                {key === 'all' ? '全部' : LEAD_STATUS_LABEL[key]}
+              </button>
+            ))}
+          </div>
+
+          <div className="admin-toolbar">
+            <input
+              value={leadQuery}
+              onChange={(e) => setLeadQuery(e.target.value)}
+              placeholder="搜索平台 / 标题 / 关键词 / 链接…"
+            />
+            <span className="admin-muted">共 {filteredLeads.length} 条</span>
+            <span className={`admin-badge${deepseekConfigured ? ' is-on' : ''}`}>
+              DeepSeek {deepseekConfigured ? '已配置' : '未配置'}
+            </span>
+          </div>
+
+          <div className="admin-table-wrap">
+            <table className="admin-table admin-table--leads">
+              <thead>
+                <tr>
+                  <th>评分</th>
+                  <th>线索</th>
+                  <th>平台</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredLeads.map((lead) => (
+                  <tr key={lead.id}>
+                    <td>
+                      <strong>{lead.score}</strong>
+                    </td>
+                    <td>
+                      <strong>{lead.title || '未命名线索'}</strong>
+                      <div className="admin-muted">{lead.keyword || lead.summary || '—'}</div>
+                    </td>
+                    <td>{lead.platform || 'Manual'}</td>
+                    <td>
+                      <span className={`admin-badge admin-badge--lead-${lead.status}`}>
+                        {LEAD_STATUS_LABEL[lead.status] || lead.status}
+                      </span>
+                    </td>
+                    <td className="admin-actions">
+                      {lead.url && (
+                        <a href={lead.url} target="_blank" rel="noreferrer">
+                          打开原帖
+                        </a>
+                      )}
+                      <button type="button" onClick={() => openEditLead(lead)}>
+                        编辑
+                      </button>
+                      <button type="button" disabled={saving} onClick={() => generateLeadDraft(lead)}>
+                        AI 草稿
+                      </button>
+                      {lead.status !== 'posted' && (
+                        <button type="button" onClick={() => updateLead(lead, { status: 'posted' })}>
+                          标记已发
+                        </button>
+                      )}
+                      <button type="button" className="is-danger" onClick={() => removeLead(lead)}>
+                        删除
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {filteredLeads.length === 0 && (
+                  <tr>
+                    <td colSpan="5" className="admin-muted">
+                      暂无符合条件的线索。先打开搜索链接，找到帖子后手动导入。
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -888,6 +1673,139 @@ export default function Admin() {
             {error && <p className="admin-error">{error}</p>}
             <div className="admin-modal__actions">
               <button type="button" className="btn btn-outline" onClick={() => setGuideEditing(null)}>
+                取消
+              </button>
+              <button type="submit" className="btn btn-gold" disabled={saving}>
+                {saving ? '保存中…' : '保存'}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {leadEditing && (
+        <div className="admin-modal">
+          <button
+            type="button"
+            className="admin-modal__backdrop"
+            aria-label="关闭"
+            onClick={() => setLeadEditing(null)}
+          />
+          <form className="admin-modal__panel admin-modal__panel--wide" onSubmit={saveLead}>
+            <h2 className="font-serif">{leadEditing === 'new' ? '导入旅游线索' : '编辑旅游线索'}</h2>
+            <div className="admin-form-grid">
+              <label>
+                平台
+                <input
+                  value={leadForm.platform}
+                  onChange={(e) => setLeadForm((f) => ({ ...f, platform: e.target.value }))}
+                  placeholder="Reddit / Tripadvisor / Quora"
+                />
+              </label>
+              <label>
+                关键词
+                <input
+                  value={leadForm.keyword}
+                  onChange={(e) => setLeadForm((f) => ({ ...f, keyword: e.target.value }))}
+                />
+              </label>
+              <label className="span-2">
+                标题 *
+                <input
+                  required
+                  value={leadForm.title}
+                  onChange={(e) => setLeadForm((f) => ({ ...f, title: e.target.value }))}
+                />
+              </label>
+              <label className="span-2">
+                原帖 URL
+                <input
+                  type="url"
+                  value={leadForm.url}
+                  onChange={(e) => setLeadForm((f) => ({ ...f, url: e.target.value }))}
+                  placeholder="https://..."
+                />
+              </label>
+              <label>
+                作者 / 用户名
+                <input
+                  value={leadForm.author}
+                  onChange={(e) => setLeadForm((f) => ({ ...f, author: e.target.value }))}
+                />
+              </label>
+              <label>
+                状态
+                <select
+                  value={leadForm.status}
+                  onChange={(e) => setLeadForm((f) => ({ ...f, status: e.target.value }))}
+                >
+                  {Object.entries(LEAD_STATUS_LABEL).map(([key, label]) => (
+                    <option key={key} value={key}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="span-2">
+                帖子摘要 / 用户需求
+                <textarea
+                  rows={4}
+                  value={leadForm.summary}
+                  onChange={(e) => setLeadForm((f) => ({ ...f, summary: e.target.value }))}
+                  placeholder="记录对方正在问什么、行程时间、目的地、预算或痛点"
+                />
+              </label>
+              <label>
+                评分
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={leadForm.score}
+                  onChange={(e) => setLeadForm((f) => ({ ...f, score: e.target.value }))}
+                  placeholder="留空或 0 时自动评分"
+                />
+              </label>
+              <label>
+                发布记录
+                <input value={leadForm.posted_at || '未发布'} readOnly />
+              </label>
+              <label className="span-2">
+                管理员备注
+                <textarea
+                  rows={2}
+                  value={leadForm.admin_notes}
+                  onChange={(e) => setLeadForm((f) => ({ ...f, admin_notes: e.target.value }))}
+                />
+              </label>
+              <label className="span-2">
+                DeepSeek 英文回复草稿
+                <textarea
+                  rows={8}
+                  value={leadForm.reply_draft}
+                  onChange={(e) => setLeadForm((f) => ({ ...f, reply_draft: e.target.value }))}
+                  placeholder="点击 AI 草稿生成后，可在这里人工修改，再去原帖手动发布。"
+                />
+              </label>
+            </div>
+            {error && <p className="admin-error">{error}</p>}
+            <div className="admin-modal__actions">
+              {leadEditing !== 'new' && (
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  disabled={saving}
+                  onClick={() => generateLeadDraft(leadForm)}
+                >
+                  {saving ? '生成中…' : '生成 AI 草稿'}
+                </button>
+              )}
+              {leadForm.url && (
+                <a className="btn btn-outline" href={leadForm.url} target="_blank" rel="noreferrer">
+                  打开原帖
+                </a>
+              )}
+              <button type="button" className="btn btn-outline" onClick={() => setLeadEditing(null)}>
                 取消
               </button>
               <button type="submit" className="btn btn-gold" disabled={saving}>

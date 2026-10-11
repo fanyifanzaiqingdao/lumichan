@@ -11,6 +11,7 @@ return [
     'save_to_file' => true,
     'send_mail' => true,
     'max_per_hour_per_ip' => 10,
+    'rate_limit_secret' => 'replace-with-a-long-random-value',
 
     'smtp_host' => 'smtp.gmail.com',
     'smtp_port' => 465,
@@ -19,6 +20,9 @@ return [
     'smtp_pass' => 'your-app-password',
 
     'admin_password' => 'change-me-now',
+    // Travel Lead Finder AI drafts read DeepSeek from the server environment:
+    // DEEPSEEK_API_KEY=your-private-key
+    // Do not put this key in frontend code or commit it to git.
 
     'db_host' => '127.0.0.1',
     'db_port' => 3306,
@@ -27,11 +31,12 @@ return [
     'db_pass' => 'your-db-password',
     'db_charset' => 'utf8mb4',
 
-    // 只收定金：订单金额的 20%（产品 price 字段 × 0.2）
-    // 例：$599 → 定金约 $119.80
+    // 只收定金：展示用参考比例（产品 price × 比例）
+    // PayPal Payment Link 金额以链接里设定为准（个人账户可用，无需 Client ID）
     'deposit_percent' => 0.2,
+    'paypal_payment_link' => 'https://www.paypal.com/ncp/payment/84Y8LAY8N457A',
 
-    // PayPal https://developer.paypal.com/
+    // PayPal REST API（Business 账号才有；有 payment_link 时前端优先用链接）
     'paypal_mode' => 'sandbox', // sandbox | live
     'paypal_client_id' => '',
     'paypal_secret' => '',
