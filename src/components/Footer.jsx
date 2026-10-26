@@ -73,6 +73,7 @@ export default function Footer({ dark = false }) {
         <div>
           <h3>Company</h3>
           <Link to="/traveler/about">About Us</Link>
+          <Link to="/traveler/about#partnerships">Travel Partnerships</Link>
           <Link to="/traveler/contact">Contact Us</Link>
           <Link to="/traveler/careers">Careers</Link>
         </div>

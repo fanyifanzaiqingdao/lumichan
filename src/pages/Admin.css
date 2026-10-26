@@ -4,6 +4,11 @@
   color: #f5f1e8;
   padding: 2rem 1.25rem 3rem;
 }
+.admin-service-preview { display: flex; flex-wrap: wrap; gap: 20px; }
+.admin-service-preview figure { margin: 0; width: min(260px, 100%); }
+.admin-service-preview img { width: 100%; height: 285px; object-fit: cover; border-radius: 8px; }
+.admin-service-preview figure + figure img { height: 190px; }
+.admin-service-preview figcaption { font-size: 12px; margin-top: 6px; }
 
 .admin-page--login {
   display: grid;

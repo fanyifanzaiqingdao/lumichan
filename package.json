@@ -6,11 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && node scripts/check-release.mjs",
-    "build:dev": "vite build --mode staging && node scripts/check-release.mjs dist-dev",
+    "build:dev": "vite build --mode staging && node scripts/check-release.mjs dist-dev --staging",
     "preview:dev": "vite preview --mode staging --host 127.0.0.1",
     "preview": "vite preview"
   },
   "dependencies": {
+    "lucide-react": "^1.61.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.30.1"

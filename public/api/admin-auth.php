@@ -22,6 +22,7 @@ if ($action === 'login') {
     if (!admin_password_ok($password)) {
         api_json(401, ['ok' => false, 'error' => '密码错误']);
     }
+    session_regenerate_id(true);
     $_SESSION['admin_ok'] = true;
     $_SESSION['admin_at'] = time();
     api_json(200, ['ok' => true, 'logged_in' => true]);

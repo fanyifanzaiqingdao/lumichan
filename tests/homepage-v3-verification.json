@@ -1,0 +1,44 @@
+{
+  "revision": "20261012",
+  "lastVerified": "2026-10-13",
+  "screenshots": "/tmp/lumichan-v3-docx-fixes",
+  "scope": "dev worktree only; not committed, pushed or deployed",
+  "source": "Lumichan_Developer_Revision_Brief.docx",
+  "sourceSha256": "4ee026d58e55091d5d6ecd7a3826c845a36e7e7c7e443639a17dbf1f4777a5f0",
+  "policyVersion": "lumichan-services-type-e7b49a41",
+  "policySource": "public/api/data/homepage.json (frontend fallback, public CMS API, service details, Booking Terms and downloaded quotation template)",
+  "refundTiers": { "planning": 3, "road-trip": 4, "signature": 4, "education": 5 },
+  "homepageRefundSummary": "Each service references stepIndex 0 only; retains date change and all conditions.",
+  "viewports": [
+    { "width": 320, "container": 280, "processColumns": 1, "horizontalOverflow": false },
+    { "width": 390, "container": 350, "processColumns": 1, "horizontalOverflow": false },
+    { "width": 768, "container": 720, "processColumns": 2, "horizontalOverflow": false },
+    { "width": 1440, "container": 1280, "processColumns": 3, "horizontalOverflow": false },
+    { "width": 1920, "container": 1600, "processColumns": 3, "horizontalOverflow": false }
+  ],
+  "verified": [
+    "DOCX form palette: #151C26 card, #0B1017 inputs, #F5F1E8 text, #B3B9C1 secondary text; collapsed, expanded, error and success states checked",
+    "Refund figures use DM Sans 600; homepage 30/28px and complete policy 24/23px",
+    "Signature and Education scope headings retain may include; Road Trip and Education audience copy matches DOCX",
+    "CMS service image publish toggle survives save; unpublished image is not rendered or replaced by fallback; replacement resets publication and authorization records",
+    "PHP rejects unlicensed published replacements and filters unpublished media; unpublished drafts can be saved; migration preserves image publication state",
+    "DM Sans, Manrope and Playfair Display loaded in Chrome",
+    "Mobile service images 255px high; desktop 46 percent image width and alternating placement",
+    "Six ordered process steps, no video or image requests from process",
+    "Four service CTAs preselect service, expand preferences and focus inquiry",
+    "Education minimum six travelers; simulated inquiry success only after API acknowledgement",
+    "Keyboard FAQ interaction",
+    "Complete service and Booking Terms policy grids, including education departure day",
+    "Mocked CMS save preserves policy data and updates image focus",
+    "Downloaded quotation contains the saved full policy, version and conditions",
+    "Production hides empty guest section, contains no preview component or placeholder asset",
+    "Authorized review fixture renders a 16:10 image with configured focal point",
+    "Node content tests, PHP validation tests, staging and production build checks"
+  ],
+  "notVerified": [
+    "Live deployment, production CMS login, database writes or email delivery; no real inquiry or live content was submitted.",
+    "Legal ownership of existing website imagery; replacement photos require source and license records.",
+    "Original service-policy PDF cited by the DOCX was not included; policy text was transcribed from the supplied DOCX."
+  ],
+  "pendingContentDecision": "Planning price bands 1-5 days and 5-10 days overlap on day five. Original text retained for review; confirm before publishing. No refund-calculation algorithm was invented."
+}

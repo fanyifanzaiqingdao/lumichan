@@ -1,0 +1,113 @@
+import assert from 'node:assert/strict'
+import { mkdir } from 'node:fs/promises'
+import homepage from '../src/data/homepage.js'
+
+const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright')
+const base = process.env.TEST_URL || 'http://127.0.0.1:5191'
+const output = '/tmp/lumichan-revision2-qa'
+await mkdir(output, { recursive: true })
+const browser = await chromium.launch({ channel: 'chrome', headless: true })
+const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } })
+const errors = []
+page.on('pageerror', (error) => errors.push(error.message))
+try {
+  await page.goto(base + '/traveler')
+  await page.locator('.service-feature__visual img').first().waitFor()
+  assert.equal(await page.locator('.service-feature__policy').count(), 4)
+  assert.equal(await page.locator('.service-feature__policy[open]').count(), 0)
+  const card = page.locator('.service-feature').first()
+  const compactHeight = (await card.boundingBox()).height
+  await card.locator('summary').click()
+  assert.ok(await card.locator('.booking-policy').isVisible())
+  assert.ok((await card.boundingBox()).height > compactHeight + 80)
+  await card.locator('summary').press('Enter')
+  assert.equal(await card.locator('.booking-policy').isVisible(), false)
+  assert.doesNotMatch(await page.locator('#services').innerText(), /RMB/)
+  assert.deepEqual(await page.locator('.journey-card__media > span').allTextContents(), ['From USD 299', 'From USD 899'])
+  assert.equal(await page.locator('.journey-card h3').first().innerText(), 'Cultural gateway')
+  assert.equal(await page.locator('#journeys .section-cta a').getAttribute('href'), '/traveler#inquiry')
+  assert.equal(await page.locator('#why .home-why__cta a').getAttribute('href'), '/traveler#inquiry')
+  const gallery = page.locator('.journey-gallery')
+  await gallery.scrollIntoViewIfNeeded()
+  await page.mouse.move(0, 0)
+  await page.locator('h1').evaluate((element) => element.focus())
+  const active = () => gallery.locator('.journey-gallery__dots [aria-current]').getAttribute('aria-label')
+  const initial = await active()
+  await page.waitForFunction((previous) => document.querySelector('.journey-gallery__dots [aria-current]').getAttribute('aria-label') !== previous, initial, { timeout: 8000 })
+  await gallery.getByRole('button', { name: 'Pause slideshow', exact: true }).click()
+  const stopped = await active()
+  await page.mouse.move(0, 0)
+  await page.locator('h1').evaluate((element) => element.focus())
+  await page.waitForTimeout(5400)
+  assert.equal(await active(), stopped)
+  for (let i = 1; i <= 5; i++) {
+    await gallery.getByRole('button', { name: `Show image ${i}`, exact: true }).click()
+    await gallery.locator('img:visible').evaluate((image) => image.decode())
+    assert.ok(await gallery.locator('img:visible').evaluate((image) => image.naturalWidth > 1000))
+    assert.equal(await gallery.locator('.ai-image-label:visible').innerText(), 'AI-generated illustration')
+  }
+  await gallery.getByRole('button', { name: 'Next image', exact: true }).click()
+  assert.equal(await active(), 'Show image 1')
+  await page.locator('#why').screenshot({ path: output + '/why-desktop.png' })
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await gallery.getByRole('button', { name: 'Play slideshow', exact: true }).waitFor({ state: 'detached' })
+  assert.equal(await gallery.getByRole('button', { name: 'Play slideshow', exact: true }).count(), 0)
+  await page.setViewportSize({ width: 320, height: 900 })
+  await page.locator('#why').screenshot({ path: output + '/why-mobile.png' })
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 320)
+  await page.locator('#why .home-why__cta a').click()
+  await page.locator('.inquiry-preferences summary').click()
+  const contacts = page.locator('[name="preferred_contact"]')
+  assert.deepEqual(await contacts.locator('option').allTextContents(), ['Email', 'Ins', 'WeChat'])
+  await page.locator('[name="name"]').fill('Revision QA')
+  await page.locator('[name="email"]').fill('qa@example.test')
+  await page.locator('[name="travelers"]').fill('2')
+  await page.locator('[name="travel_dates"]').fill('May 2027')
+  await page.locator('[name="privacy_consent"]').check()
+  await contacts.selectOption('Ins')
+  let submitted
+  await page.route('**/api/inquiry.php', (route) => {
+    submitted = route.request().postDataJSON()
+    return route.fulfill({ json: { ok: true, inquiry_id: 'mock-revision2-not-stored' } })
+  })
+  await page.locator('.inquiry-form__submit').click()
+  await page.locator('#error-contact_handle').waitFor()
+  assert.equal(submitted, undefined)
+  await page.locator('[name="contact_handle"]').fill('qa_instagram')
+  await contacts.selectOption('WeChat')
+  await page.locator('[name="contact_handle"]').fill('qa_wechat')
+  await page.locator('.inquiry-form__submit').click()
+  await page.locator('.inquiry-success').waitFor()
+  assert.equal(submitted.preferred_contact, 'WeChat')
+  assert.equal(submitted.contact_handle, 'qa_wechat')
+  for (const route of ['booking-terms', 'privacy', 'terms']) {
+    await page.goto(base + '/traveler/' + route)
+    await page.getByText(/四川第四分公司/).first().waitFor()
+    assert.equal(await page.getByText(/成都麓米禅分公司/).count(), 0)
+    assert.ok(await page.getByText(/No. 140, Annex of Tianfu Avenue/).count())
+    if (route === 'booking-terms') {
+      assert.equal(await page.locator('#service-policies .booking-policy').count(), 0)
+      assert.equal(await page.locator('#service-policies li').count(), 16)
+    }
+  }
+  let saved
+  await page.route('**/api/admin-auth.php*', (route) => route.fulfill({ json: { ok: true, logged_in: true } }))
+  await page.route('**/api/admin-homepage.php', (route) => {
+    if (route.request().method() === 'PUT') saved = route.request().postDataJSON().homepage
+    return route.fulfill({ json: { ok: true, homepage: saved || homepage } })
+  })
+  await page.setViewportSize({ width: 1440, height: 1000 })
+  await page.goto(base + '/admin')
+  const imageEditor = page.getByRole('group', { name: '轮播图片 1', exact: true })
+  await imageEditor.getByLabel('图片 alt', { exact: true }).fill('QA gallery alt')
+  await imageEditor.getByRole('checkbox').uncheck()
+  await page.getByLabel('图片上的起价标签', { exact: false }).first().fill('From USD 399')
+  await page.getByRole('button', { name: /保存首页/ }).first().click()
+  await page.getByText('配置已保存', { exact: true }).waitFor()
+  assert.equal(saved.whyGallery[0].alt, 'QA gallery alt')
+  assert.equal(saved.whyGallery[0].aiGenerated, false)
+  assert.equal(saved.journeys[0].priceBadge, 'From USD 399')
+  assert.equal(saved.contentRevision, homepage.contentRevision)
+  assert.deepEqual(errors, [])
+  console.log('Revision 2 browser checks passed: collapsed policies, USD badges, autoplay/pause/manual/reduced-motion gallery, mobile layout, contact validation/submission, legal copy and CMS save. No live data submitted.')
+} finally { await browser.close() }

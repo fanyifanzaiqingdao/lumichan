@@ -19,8 +19,8 @@ const SOCIALS = [
   { label: 'TikTok', handle: 'lumichan67', url: 'https://www.tiktok.com/@lumichan67' },
   { label: 'Facebook', handle: 'LumichanTravel', url: 'https://www.facebook.com/profile.php?id=61585245772437' },
   { label: 'Instagram', handle: 'lumichan_travel', url: 'https://instagram.com/lumichan_travel' },
-  { label: 'WhatsApp', handle: 'Junjie Li', url: waHref || '#' },
-  { label: 'WeChat', handle: 'lumichan_travel', url: '#' },
+  ...(waHref ? [{ label: 'WhatsApp', handle: INFO.phone, url: waHref }] : []),
+  { label: 'WeChat', handle: SITE.wechatHandle },
 ]
 
 export default function Contact() {
@@ -32,7 +32,7 @@ export default function Contact() {
     name: '',
     email: '',
     phone: '',
-    subject: guideName ? `Guide inquiry: ${guideName}` : '',
+    subject: guideName ? `Guide inquiry: ${guideName}` : state?.subject || '',
     message: guideName
       ? `Hi, I'd like to inquire about booking guide ${guideName}.\n\nDates:\nGroup size:\nNotes:\n`
       : '',
@@ -111,7 +111,7 @@ export default function Contact() {
                   ☎
                 </div>
                 <div>
-                  <div className="contact-info-card__label">Phone / WhatsApp</div>
+                  <div className="contact-info-card__label">{waHref ? 'Phone / WhatsApp' : 'Phone'}</div>
                   <div className="contact-info-card__value">{INFO.phone}</div>
                 </div>
               </a>
@@ -130,18 +130,19 @@ export default function Contact() {
 
             <h3 className="font-serif contact-aside__sub">Follow Us</h3>
             <div className="contact-socials">
-              {SOCIALS.map((item) => (
-                <a
+              {SOCIALS.map((item) => {
+                const SocialItem = item.url ? 'a' : 'div'
+                return <SocialItem
                   key={item.label}
                   href={item.url}
-                  target={item.url.startsWith('http') ? '_blank' : undefined}
-                  rel={item.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  target={item.url?.startsWith('http') ? '_blank' : undefined}
+                  rel={item.url?.startsWith('http') ? 'noopener noreferrer' : undefined}
                   className="contact-social"
                 >
                   <div className="contact-social__label">{item.label}</div>
                   <div className="contact-social__handle">{item.handle}</div>
-                </a>
-              ))}
+                </SocialItem>
+              })}
             </div>
           </aside>
 

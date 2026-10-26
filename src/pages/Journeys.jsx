@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import SoftImage from '../components/SoftImage.jsx'
 import { track } from '../lib/analytics.js'
+import defaultHomepage from '../data/homepage.js'
+import { journeyPriceBadge, normalizeHomepage } from '../lib/homepageContent.js'
 import './Journeys.css'
 import './JourneysExtras.css'
 
@@ -59,6 +61,7 @@ function JourneyDetail({ journey }) {
           <span>{journey.duration}</span>
           <h2 className="font-serif">The Journey</h2>
           <p>{journey.summary}</p>
+          {journeyPriceBadge(journey) && <p><strong>{journeyPriceBadge(journey)}</strong></p>}
           {journey.priceApproved && journey.price && journey.groupBasis
             ? <p>{journey.price} · {journey.groupBasis}</p>
             : <p>Price and private group basis are confirmed in your personal proposal.</p>}
@@ -101,12 +104,12 @@ function JourneyDetail({ journey }) {
 
 export default function Journeys() {
   const { slug } = useParams()
-  const [configured, setConfigured] = useState([])
+  const [configured, setConfigured] = useState(defaultHomepage.journeys)
   useEffect(() => {
     let active = true
     fetch('/api/homepage.php')
       .then((response) => response.ok ? response.json() : Promise.reject(new Error('Unavailable')))
-      .then((data) => { if (active) setConfigured(data.homepage?.journeys || []) })
+      .then((data) => { if (active && data.homepage) setConfigured(normalizeHomepage(data.homepage).journeys) })
       .catch(() => {})
     return () => { active = false }
   }, [])
@@ -134,6 +137,7 @@ export default function Journeys() {
                 <span>{journey.duration}</span>
                 <h2 className="font-serif">{journey.title}</h2>
                 <p>{journey.summary}</p>
+                {journeyPriceBadge(journey) && <strong>{journeyPriceBadge(journey)}</strong>}
                 <em>{journey.priceApproved && journey.price && journey.groupBasis ? `${journey.price} · ${journey.groupBasis}` : 'Price confirmed in your proposal'}</em>
               </div>
             </Link>

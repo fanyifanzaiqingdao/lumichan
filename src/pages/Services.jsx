@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { track } from '../lib/analytics.js'
+import defaultHomepage from '../data/homepage.js'
+import { normalizeHomepage } from '../lib/homepageContent.js'
+import BookingPolicy from '../components/BookingPolicy.jsx'
 import './Services.css'
 
 const defaultServices = [
@@ -9,8 +12,8 @@ const defaultServices = [
     number: '01',
     title: 'Journey Planning & Local Support',
     tagline: 'Plan it yourself. Travel with a local expert in your pocket.',
-    price: 'From RMB 999 / trip',
-    priceDetail: '1-5 days: RMB 999 · 5-10 days: RMB 1,599',
+    price: 'From USD 99 / trip',
+    priceDetail: '1-5 days: USD 99 · 6-10 days: USD 199',
     description:
       'Already know where you want to go, but not sure how everything works in China? We help turn your ideas into a practical trip and stay available when you need local help along the way.',
     included: [
@@ -33,7 +36,7 @@ const defaultServices = [
     number: '02',
     title: 'Private Road Trip',
     tagline: 'Your own car. Your own pace. No tour-bus timetable.',
-    price: 'From RMB 1,999 / day / vehicle',
+    price: 'From USD 299 / day / vehicle',
     priceDetail: 'Recommended for up to 4 travelers',
     description:
       'Want the freedom of independent travel without worrying about transportation, routes or local logistics? We arrange your journey, private vehicle and English-speaking driver, while our local team supports you throughout the trip.',
@@ -44,20 +47,22 @@ const defaultServices = [
       'Comfortable vehicle selected for the route and group needs',
       'Local hotel and restaurant recommendations',
       'Booking assistance and travel support during the journey',
+      'Travel insurance included',
       'One Lumichan welcome meal and welcome gift',
     ],
     perfectFor:
-      'Western Sichuan routes, family travel, limited vacation time, flexible pacing and travelers who want someone else to handle logistics.',
+      'Western Sichuan and routes where private transport makes travel easier; family travel, including journeys with children; travelers with limited vacation time; flexible pacing without a fixed group-tour schedule.',
     support: 'Local support during the confirmed journey schedule.',
-    goodToKnow: 'Accommodation, meals and insurance arrangements are confirmed in your written proposal.',
+    goodToKnow: 'Accommodation and meals are not included unless stated in your quotation.',
     booking: 'Changes and cancellation terms are confirmed before booking.',
   },
   {
     id: 'signature-private-journey',
+    includedHeading: 'Your journey may include',
     number: '03',
     title: 'Signature Private Journey',
     tagline: 'Designed around you - not around a standard itinerary.',
-    price: 'From RMB 4,999 / day / vehicle',
+    price: 'From USD 699 / day / vehicle',
     priceDetail: 'Final pricing depends on the itinerary and service requirements',
     description:
       "This is Lumichan's fully customized travel experience for guests who want deeper access, more personal service and greater flexibility.",
@@ -69,16 +74,20 @@ const defaultServices = [
       'Personalized cultural experiences',
       'Local experts, artists, craftspeople or cultural specialists',
       'Business, institutional or professional visits where available',
+      'Special-interest travel designed around your personal goals',
+      'Travel insurance included',
       'Priority support, welcome meal and welcome gift',
     ],
     perfectFor:
       'Guests who value privacy, flexibility and deeper experiences, or have specific interests that require strong local knowledge and coordination.',
     support: 'Priority support before and during the confirmed journey.',
-    goodToKnow: 'Accommodation, meals, special experiences and insurance arrangements are confirmed in your written proposal.',
+    goodToKnow: 'Accommodation, meals and special experiences are quoted separately unless included in your confirmed package.',
     booking: 'Changes and cancellation terms are confirmed before booking.',
   },
   {
     id: 'educational-cultural-journeys',
+    includedHeading: 'Programs may include',
+    audienceHeading: 'Designed for',
     number: '04',
     title: 'Educational & Cultural Journeys',
     tagline: 'Travel that goes beyond visiting - into learning, exchange and understanding.',
@@ -99,7 +108,7 @@ const defaultServices = [
       'Dedicated journey management from preparation to completion',
     ],
     perfectFor:
-      'University and student groups, Chinese-language learning programs, cultural exchange programs, corporate learning and institutions seeking customized China programs.',
+      'University and student groups; Chinese-language learning programs; international cultural exchange programs; corporate learning and study visits; institutions looking for customized China programs.',
     support: 'Dedicated program management from preparation to completion.',
     goodToKnow: 'Program cancellation and date-change terms are confirmed in writing before booking.',
     booking: 'Program cancellation and date-change terms are confirmed before booking.',
@@ -108,16 +117,17 @@ const defaultServices = [
 ]
 
 export default function Services() {
-  const [configured, setConfigured] = useState([])
-  const [policyVersion, setPolicyVersion] = useState('')
+  const [configured, setConfigured] = useState(defaultHomepage.services)
+  const [policyVersion, setPolicyVersion] = useState(defaultHomepage.bookingPolicyVersion)
   useEffect(() => {
     let active = true
     fetch('/api/homepage.php')
       .then((response) => response.ok ? response.json() : Promise.reject(new Error('Unavailable')))
       .then((data) => {
         if (active) {
-          setConfigured(data.homepage?.services || [])
-          setPolicyVersion(data.homepage?.bookingPolicyVersion || '')
+          const homepage = normalizeHomepage(data.homepage)
+          setConfigured(homepage.services)
+          setPolicyVersion(homepage.bookingPolicyVersion)
         }
       })
       .catch(() => {})
@@ -128,16 +138,19 @@ export default function Services() {
     const details = saved?.details || {}
     return {
       ...service,
+      bookingPolicy: saved?.bookingPolicy,
+      bookingApproved: saved?.bookingApproved,
+      serviceId: saved?.id,
       title: saved?.title || service.title,
-      price: saved?.price || service.price,
+      price: saved ? [saved.price, saved.unit].filter(Boolean).join(' ') : service.price,
       booking: saved?.bookingApproved && policyVersion ? saved.booking : service.booking,
-      tagline: details.tagline || service.tagline,
+      tagline: details.tagline || saved?.summary || service.tagline,
       description: details.description || service.description,
       included: Array.isArray(details.included) && details.included.length ? details.included : service.included,
       perfectFor: details.perfectFor || service.perfectFor,
       support: details.support || service.support,
       goodToKnow: details.goodToKnow || service.goodToKnow,
-      priceDetail: details.priceDetail || service.priceDetail,
+      priceDetail: details.priceDetail || saved?.priceNote || service.priceDetail,
     }
   })
   return (
@@ -177,13 +190,13 @@ export default function Services() {
 
               <div className="service-detail__grid">
                 <section>
-                  <h3>What&apos;s Included</h3>
+                  <h3>{service.includedHeading || "What's Included"}</h3>
                   <ul>
                     {service.included.map((item) => <li key={item}>{item}</li>)}
                   </ul>
                 </section>
                 <section>
-                  <h3>Perfect for You If</h3>
+                  <h3>{service.audienceHeading || 'Perfect for You If'}</h3>
                   <p>{service.perfectFor}</p>
                   <h3>Support Hours / Good to Know</h3>
                   <p>{service.support}</p>
@@ -191,12 +204,9 @@ export default function Services() {
                 </section>
               </div>
 
-              <div className={`service-booking${service.legalPending ? ' is-pending' : ''}`}>
-                <span>Booking terms</span>
-                <p>{service.booking}</p>
-              </div>
+              <BookingPolicy service={service} version={policyVersion} />
 
-              <Link to="/traveler#inquiry" className="btn btn-gold" onClick={() => track('cta_click', { label: 'Plan my journey', destination: '/traveler#inquiry', section: service.id })}>Plan my journey</Link>
+              <Link to={`/traveler?service=${service.serviceId}#inquiry`} className="btn btn-gold" onClick={() => track('cta_click', { label: 'Plan my journey', destination: '/traveler#inquiry', section: service.id })}>Plan my journey</Link>
             </article>
           ))}
         </div>

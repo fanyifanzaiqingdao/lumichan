@@ -1,0 +1,28 @@
+.lc-chat { position: fixed; right: 24px; bottom: 24px; z-index: 1100; font: 14px/1.5 Inter, system-ui, sans-serif; color: #243b32; letter-spacing: 0; }
+.lc-chat *, .support-center * { box-sizing: border-box; letter-spacing: 0; }
+.lc-chat button, .lc-chat input, .lc-chat textarea { font: inherit; }
+.lc-chat button { cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid #cbd7d0; border-radius: 6px; padding: 8px 12px; background: white; color: #254335; min-height: 36px; }
+.lc-chat button:disabled { opacity: .5; cursor: default; }
+.lc-chat :focus-visible { outline: 3px solid #b67d58; outline-offset: 3px; }
+.lc-chat .lc-chat-launcher { border-radius: 30px; background: #284b3c; color: white; padding: 14px 20px; box-shadow: 0 5px 22px #0003; border: 1px solid #759786; min-height: 54px; }
+.lc-chat-panel { width: min(400px, calc(100vw - 32px)); height: min(760px, calc(100dvh - 48px)); display: flex; flex-direction: column; background: #fff; border: 1px solid #ced8d2; border-radius: 8px; box-shadow: 0 16px 60px #0004; overflow: hidden; }
+.lc-chat-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; background: #284b3c; color: white; flex: none; }
+.lc-chat-header strong { font-size: 16px; }.lc-chat-header span { display: block; font-size: 12px; color: #dfebe3; margin-top: 3px; }
+.lc-chat-header button { background: transparent; color: white; border: 0; width: 36px; padding: 0; }
+.lc-chat-hours { padding: 10px 20px; background: #edf3ef; font-size: 11px; flex: none; }.lc-chat-hours span { display: block; font-weight: 600; }
+.lc-chat-welcome { padding: 24px; overflow-y: auto; }.lc-chat-welcome h2 { font: 600 24px/1.25 Georgia, serif; margin: 12px 0; color: #284b3c; }.lc-chat-welcome p { margin: 12px 0; }
+.lc-chat-check { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; margin: 18px 0; }.lc-chat-check input { flex: none; margin: 4px 0 0; width: 17px; height: 17px; accent-color: #284b3c; }
+.lc-chat a { color: #315f4c; text-decoration: underline; overflow-wrap: anywhere; }
+.lc-chat .lc-chat-primary { width: 100%; background: #284b3c; color: white; border-color: #284b3c; min-height: 44px; }
+.lc-chat-email { display: flex; gap: 8px; margin-top: 20px; font-size: 12px; align-items: center; }
+.lc-chat-error { margin: 0; padding: 10px 16px; font-size: 12px; background: #fff1ed; color: #9c3224; flex: none; overflow-wrap: anywhere; }
+.lc-chat-log { padding: 16px; overflow-y: auto; flex: 1; min-height: 80px; overscroll-behavior: contain; background: #f6f8f7; }
+.lc-chat-message { max-width: 94%; margin: 0 0 14px; padding: 10px 12px; background: white; border: 1px solid #dde5e0; border-radius: 6px; overflow-wrap: anywhere; }.lc-chat-message p { margin: 5px 0; white-space: pre-wrap; font-size: 13px; }.lc-chat-message small { font-size: 10px; font-weight: 600; }.lc-chat-message time { display: block; font-size: 9px; color: #6c7b73; }
+.lc-chat-message--visitor { margin-left: auto; background: #e3eee7; }.lc-chat-message--system { background: transparent; border: 0; max-width: 100%; padding: 0 4px; color: #65756b; }
+.lc-chat-topics { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 16px; border-top: 1px solid #dde5e0; }.lc-chat-topics button { font-size: 11px; padding: 5px 8px; min-height: 30px; }
+.lc-chat-controls { padding: 10px 16px 12px; flex: none; border-top: 1px solid #dde5e0; max-height: 50%; overflow-y: auto; }.lc-chat-controls summary { cursor: pointer; font-size: 12px; margin-bottom: 8px; }.lc-chat-controls summary svg { vertical-align: middle; margin-right: 5px; }
+.lc-chat-contact { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }.lc-chat-contact label { flex: 1; min-width: 140px; font-size: 11px; }.lc-chat-contact input { width: 100%; padding: 7px; border: 1px solid #bacac1; border-radius: 4px; }.lc-chat-contact small { width: 100%; font-size: 10px; }
+.lc-chat-composer { display: flex; gap: 8px; align-items: flex-end; }.lc-chat-composer textarea { min-width: 0; flex: 1; resize: none; border: 1px solid #bdccc3; border-radius: 6px; padding: 9px; color: #243b32; background: #fff; }.lc-chat-composer button { width: 40px; height: 40px; background: #284b3c; color: white; flex: none; }
+.lc-chat-tools { display: flex; justify-content: space-between; margin-top: 5px; }.lc-chat-tools button { font-size: 11px; border: 0; padding: 5px 0; min-height: 30px; }.lc-chat-tools button:last-child { padding: 5px 8px; }
+.lc-chat-note { font-size: 11px; margin: 4px 0 8px; }.lc-chat-expiry { display: block; font-size: 9px; color: #67786d; }
+@media (max-width: 560px) { .lc-chat { right: 14px; bottom: calc(14px + env(safe-area-inset-bottom)); }.lc-chat-panel { position: fixed; inset: 0; width: 100%; height: 100dvh; border-radius: 0; padding-bottom: env(safe-area-inset-bottom); }.lc-chat input, .lc-chat textarea { font-size: 16px; }.lc-chat-header { padding-top: max(14px, env(safe-area-inset-top)); }.lc-chat-controls { max-height: 48%; }.lc-chat-launcher span { font-size: 12px; } }

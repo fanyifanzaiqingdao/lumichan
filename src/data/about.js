@@ -6,10 +6,10 @@ import photoWang from '../assets/about/wang.jpg'
 
 export const ABOUT_INTRO = {
   eyebrow: 'About Lumichan',
-  title: 'Go Deeper. Travel Personally. Connect Through Culture.',
+  title: 'Lumichan',
   paragraphs: [
-    'Lumichan creates private, tailor-made journeys for travelers who want to experience China beyond sightseeing.',
-    'Rooted in Chengdu and deeply connected with Western Sichuan, we bring together local culture, nature and genuine human connection. From the highlands of Western Sichuan to culturally rich destinations across China, every journey is designed around your interests, pace and way of traveling.',
+    'Your local partner for private journeys in China.',
+    'Lumichan designs private journeys for travelers who want flexibility, local insight and meaningful cultural encounters. Rooted in Chengdu, our home ground is Sichuan, Western Sichuan and Chongqing. Every journey is shaped around your interests, pace and way of traveling.',
     'We believe the best journeys are not about seeing more, but experiencing more deeply.',
     'We help you enter the place, understand it, and connect with the people and culture behind it.',
   ],
@@ -27,53 +27,47 @@ export const ABOUT_VISION = {
 
 export const ABOUT_TEAM = [
   {
-    name: 'Jason Lee',
+    name: 'Jason Li',
     role: 'Founder & Journey Director',
     photo: photoJason,
     bio: [
-      'Born and raised in Chengdu, Junjie has spent many years working in business hospitality and the travel industry, giving him a deep understanding of private service and the expectations of discerning travelers. His experience with personalized journeys eventually inspired the creation of Lumichan and many of the company’s signature routes.',
-      'With a strong connection to Sichuan and its surrounding regions, Junjie has spent years exploring the history, traditions and everyday culture of the area. He has a particular interest in Tibetan culture, Sichuan’s local heritage and Daoist philosophy, which continue to influence the way Lumichan designs its journeys.',
-      'For Junjie, private travel is not simply about comfort or exclusivity. It is about understanding each traveler and creating the right way for them to experience a place. Through thoughtful routes, local connections and genuine cultural encounters, he hopes Lumichan can help more international travelers discover a deeper and more personal side of China.',
+      'A Chengdu native with experience in business hospitality and customized travel, Jason brings local knowledge of Sichuan, its people and its travel resources.',
+      'His years exploring the history, traditions and everyday culture of Sichuan and its surrounding regions shape Lumichan’s journeys. His particular interests include Tibetan culture, Sichuan’s local heritage and Daoist philosophy.',
     ],
   },
   {
     name: 'Jin Lu',
-    role: 'Operations & Guest Experience Director',
+    role: 'Operations & Guest Experience',
     photo: photoJinLu,
     bio: [
-      'Jin holds a master’s degree in Translation and Interpreting from the University of New South Wales in Australia. Her career has taken her from cross-cultural business and public relations to large-scale operations and customer experience, giving her a strong understanding of how thoughtful planning can turn complex journeys into seamless experiences.',
-      'Earlier in her career, Jin worked with an international business group between China and Saudi Arabia, coordinating global travel, cross-border communication and high-level events across different cultural settings. She later moved into operations management, where she led teams, developed service standards and improved customer experiences across large retail networks.',
-      'At Lumichan, Jin focuses on the details behind every journey — from service standards and operational coordination to guest communication and experience quality. She believes that a meaningful trip should feel effortless to the traveler, even when a great deal of care and preparation is happening behind the scenes.',
+      'Jin has a cross-cultural education background at UNSW in Australia. She has coordinated international travel and cross-cultural communication, and led teams and service operations across large retail networks.',
+      'At Lumichan, she oversees operational coordination, service standards and guest communication, bringing careful preparation, clear communication and consistent support to every journey.',
     ],
   },
   {
     name: 'Fabio Feng',
-    role: 'Marketing Director',
+    role: 'International Collaboration',
     photo: photoFabio,
     bio: [
-      'Fabio spent five years living and studying in Italy, graduating in Design from the Accademia di Belle Arti di Firenze before later completing an MBA at Sichuan University. Surrounded by European art, architecture and everyday culture, he developed a lasting fascination with how aesthetics, culture and lifestyle shape the way people experience a place.',
-      'At Lumichan, Fabio leads marketing and brand storytelling, bringing together his background in design, business and cross-cultural communication. He is especially interested in finding creative ways to introduce China’s landscapes, traditions and everyday life to international travelers — not simply as things to see, but as cultures and stories to understand.',
-      'Outside of work, he enjoys travel, photography, art and design, as well as fitness and sports. Wherever he goes, his camera is usually close by, capturing the small details, people and landscapes that give a place its character.',
+      'Fabio brings a cross-cultural perspective shaped by design and business education and experience in Italy.',
+      'His focus is how Lumichan presents travel products to overseas partners, connecting destination knowledge with different travel expectations.',
     ],
   },
   {
     name: 'Yuli Fan',
-    role: 'Cross-Cultural Specialist & Tour Experience Designer',
+    role: 'Cultural Experience Design',
     photo: photoYuli,
     bio: [
-      'Yuli holds a master’s degree from the University of Hamburg and spent five years studying, living and traveling across Europe. Her years abroad gave her a deep understanding of how people from different cultural backgrounds see, communicate and experience the world.',
-      'Today, she teaches Chinese language and intercultural communication at the university level and is also a certified teacher of Chinese to speakers of other languages (CTCSOL). At Lumichan, Yuli brings this cross-cultural perspective into the design of private journeys, study tours and cultural programs, helping international travelers understand China not only through what they see, but through the stories, traditions and everyday life behind it.',
-      'Outside of work, she enjoys traveling, music and design, and is always looking for thoughtful ways to turn culture into experiences that feel natural, engaging and personal.',
+      'With a background in intercultural education in Germany, Yuli focuses on cultural interpretation and experiences that make local life more accessible to international travelers.',
+      'She brings different travel expectations together through the stories, traditions and everyday life behind a destination.',
     ],
   },
   {
     name: 'Wang',
-    role: 'Western Sichuan Guide',
+    role: 'Road Trip Expert',
     photo: photoWang,
     bio: [
-      'Wang has been exploring China independently since the age of 15 and began self-driving journeys at 18. Over the years, the road has taken him from the tropical heat of Sanya to the northern lights of Mohe, the midnight sunsets of Xinjiang, and deep into the grasslands and highlands of Western Sichuan.',
-      'With more than five years of self-driving experience, Wang knows that the best journeys often happen beyond the planned stops. Western Sichuan has become one of the places he knows and loves most — for its vast landscapes, local culture and the people he meets along the way. As a guide, he enjoys helping travelers experience this side of China with the same curiosity and sense of freedom that first inspired him to explore.',
-      'His philosophy is simple: We only live once — explore what calls you.',
+      'A destination guide and experienced road traveler, Wang contributes practical knowledge of Western Sichuan routes, landscapes and travel conditions.',
     ],
   },
   {
@@ -86,6 +80,47 @@ export const ABOUT_TEAM = [
       'With a practical, problem-solving mindset, he believes technology should make travel simpler — not more complicated — for both our team and our guests.',
     ],
   },
+]
+
+export const ABOUT_EXPERTISE = [
+  ['Destination knowledge', 'Routes, seasonal conditions and cultural context in Sichuan and Chongqing.'],
+  ['Private journey design', 'Itineraries shaped around your pace, interests and group needs.'],
+  ['Local coordination', 'Transport, guides, reservations and experiences arranged within the agreed scope.'],
+  ['Guest support', 'Preparation before departure, communication during travel and feedback after the journey.'],
+]
+
+export const ABOUT_DESTINATIONS = [
+  ['Chengdu & Beyond', 'Explore Taoist heritage, Sanxingdui, the Leshan Giant Buddha, and the living traditions of Bashu.'],
+  ['Western Sichuan Road Trip', 'Discover Tibetan culture and dramatic mountain scenery at your own pace.'],
+  ['Chengdu & Chongqing', 'Experience pandas, local cuisine, historic streets, gongfu tea, and traditional ear cleaning.'],
+]
+
+// Company profile, pages 5 and 9: cultural experiences and tailored travel examples.
+export const ABOUT_CULTURAL_EXPERIENCES = [
+  ['Local Food Culture', 'Tea, Sichuan cooking and the rhythms of daily life.'],
+  ['Community Encounters', 'Thoughtful visits shaped around local hosts and customs.'],
+  ['Arts & Traditions', 'Activities that offer context beyond major landmarks.'],
+]
+
+export const ABOUT_TRAVEL_STYLES = [
+  { title: 'For families', interests: ['Pandas', 'Easy pacing', 'Hands-on local experiences'] },
+  { title: 'For culture lovers', interests: ['Tea houses', 'Local traditions', 'Deeper cultural context'] },
+  { title: 'For food travelers', interests: ['Sichuan flavors', 'Markets', 'Neighborhood dining'] },
+]
+
+export const ABOUT_PARTNERSHIPS = [
+  ['Net-rate purchasing', 'Purchase agreed customized travel services and build your own retail offer for your clients.'],
+  ['Local ground handling', 'Selected China arrangements within your itinerary and an agreed scope of responsibility.'],
+  ['Joint product design', 'Combine our destination knowledge with your market insight to shape private travel programs.'],
+]
+
+export const PARTNER_STEPS = [
+  ['Inquiry', 'Traveler needs and dates'],
+  ['Design', 'Route and services'],
+  ['Quotation', 'Scope and net rate'],
+  ['Agreement', 'Responsibilities and booking'],
+  ['Delivery', 'Local coordination'],
+  ['Feedback', 'Review and improve'],
 ]
 
 export const WHY_CHOOSE = {

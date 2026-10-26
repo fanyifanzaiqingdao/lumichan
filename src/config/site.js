@@ -2,11 +2,13 @@
 export const SITE = {
   siteUrl: 'https://lumichan.com.cn',
   contactEmail: 'jin.lu@lumichan.com.cn',
+  legalCompanyName: '寰宇纵横国际旅行社（重庆）有限公司四川第四分公司',
+  wechatHandle: 'lumichan_china',
   phoneDisplay: '+86 13551117121',
   // International format, digits only (no + / spaces)
-  whatsappNumber: import.meta.env.VITE_WHATSAPP_NUMBER || '8613551117121',
+  whatsappNumber: import.meta.env.VITE_WHATSAPP_NUMBER || '',
   address:
-    'No. 140, Annex to No. 198 Shijicheng Road, No. 12, Middle Section of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China',
+    'No. 140, Annex of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China',
   whatsappPrefill: "Hi Lumichan! I'd like to book a consultation.",
 }
 

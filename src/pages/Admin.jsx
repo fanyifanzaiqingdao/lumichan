@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import defaultHomepage from '../data/homepage.js'
+import { normalizeHomepage, quotationTemplate } from '../lib/homepageContent.js'
 import './Admin.css'
 
 const AUTH_API = '/api/admin-auth.php'
@@ -162,7 +163,7 @@ export default function Admin() {
 
   async function loadHomepage() {
     const data = await api(HOMEPAGE_API)
-    const saved = data.homepage || {}
+    const saved = normalizeHomepage(data.homepage || {})
     setHomepage({
       ...defaultHomepage,
       ...saved,
@@ -179,6 +180,23 @@ export default function Admin() {
   async function loadInquiries() {
     const data = await api(INQUIRIES_API)
     setInquiries(data.inquiries || [])
+  }
+
+  async function downloadQuotation(serviceId) {
+    try {
+      const response = await fetch('/api/homepage.php')
+      if (!response.ok) throw new Error('无法读取已发布的政策')
+      const data = await response.json()
+      const text = quotationTemplate(normalizeHomepage(data.homepage), serviceId)
+      const url = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }))
+      const link = document.createElement('a')
+      link.href = url
+      link.download = 'Lumichan-proposal-' + serviceId + '.txt'
+      link.click()
+      setTimeout(() => URL.revokeObjectURL(url), 1000)
+    } catch (error) {
+      window.alert(error.message)
+    }
   }
 
   async function loadLeads() {
@@ -291,6 +309,9 @@ export default function Admin() {
         if (target[key] == null) target[key] = typeof key === 'number' ? [] : {}
         target = target[key]
       })
+      if (path[0] === 'services' && path.length === 3 && path[2] === 'image' && target.image !== value) {
+        target.media = { ...target.media, source: '', consentOrLicenseRecord: '', published: false }
+      }
       target[path.at(-1)] = value
       return next
     })
@@ -696,6 +717,7 @@ export default function Admin() {
           <p className="admin-muted">首页配置 · 产品上架 · 向导审核 · 旅游线索</p>
         </div>
         <div className="admin-top__actions">
+          <Link to="/support" className="btn btn-outline">客服中心</Link>
           <Link
             to={tab === 'homepage' ? '/traveler' : tab === 'guides' ? '/traveler/guides' : '/traveler/itineraries'}
             className="btn btn-outline"
@@ -868,11 +890,31 @@ export default function Admin() {
                       <label>图片 alt
                         <input value={item.imageAlt || ''} onChange={(e) => updateHomepage(['services', index, 'imageAlt'], e.target.value)} />
                       </label>
-                      <label className="span-2">
-                        预订说明
-                        <textarea rows={2} value={item.booking || ''} onChange={(e) => updateHomepage(['services', index, 'booking'], e.target.value)} />
-                      </label>
+                      {['unit', 'priceNote', 'imageCaption', 'imageFocalPoint'].map((field) => <label key={field}>{field}
+                        <input value={item[field] || ''} onChange={(e) => updateHomepage(['services', index, field], e.target.value)} />
+                      </label>)}
+                      <label className="span-2">包含亮点（每行一项，共三项）<textarea rows={3} value={(item.includedHighlights || []).join('\n')} onChange={(e) => updateHomepageList(['services', index, 'includedHighlights'], e.target.value)} /></label>
+                      <label>图片来源<input value={item.media?.source || ''} onChange={(e) => updateHomepage(['services', index, 'media', 'source'], e.target.value)} /></label>
+                      <label>图片授权记录<input value={item.media?.consentOrLicenseRecord || ''} onChange={(e) => updateHomepage(['services', index, 'media', 'consentOrLicenseRecord'], e.target.value)} /></label>
+                      <label className="span-2"><input type="checkbox" checked={item.media?.published !== false} onChange={(e) => updateHomepage(['services', index, 'media', 'published'], e.target.checked)} /> 发布服务图片</label>
+                      <label className="span-2"><input type="checkbox" checked={!!item.media?.aiGenerated} onChange={(e) => updateHomepage(['services', index, 'media', 'aiGenerated'], e.target.checked)} /> AI 生成示意图</label>
+                      <p className="span-2 admin-muted">替换图片后默认未发布，请填写新图片的来源和授权记录后再发布。下架图片不影响服务文案和预约入口。</p>
+                      <div className="span-2 admin-service-preview">
+                        <figure><img src={item.image} alt={item.imageAlt || ''} style={{ objectPosition: item.imageFocalPoint }} /><figcaption>桌面裁切</figcaption></figure>
+                        <figure><img src={item.image} alt={item.imageAlt || ''} style={{ objectPosition: item.imageFocalPoint }} /><figcaption>手机裁切</figcaption></figure>
+                      </div>
                       <label className="span-2"><input type="checkbox" checked={!!item.bookingApproved} onChange={(e) => updateHomepage(['services', index, 'bookingApproved'], e.target.checked)} /> 取消/改期条款已审批</label>
+                      <label>政策状态<select value={item.bookingPolicy?.status || 'draft'} onChange={(e) => updateHomepage(['services', index, 'bookingPolicy', 'status'], e.target.value)}><option value="draft">草稿</option><option value="approved">已审批</option></select></label>
+                      {['version', 'dateChange', 'termsHref', 'confirmedBy', 'confirmedOn', 'sourceDocument', 'sourceSha256'].map((field) => <label key={field}>{field}
+                        <input value={item.bookingPolicy?.[field] || ''} onChange={(e) => updateHomepage(['services', index, 'bookingPolicy', field], e.target.value)} />
+                      </label>)}
+                      <p className="span-2 admin-muted">首页固定引用第 1 档 100% 摘要。修改条款时请更新审批记录和版本；完整档位及脚注同步用于详情、条款页和报价模板。</p>
+                      {(item.bookingPolicy?.refundSteps || []).map((step, stepIndex) => <div className="span-2 admin-form-grid" key={stepIndex}>
+                        <label>适用时间 / 阶段<input value={step.when} onChange={(e) => updateHomepage(['services', index, 'bookingPolicy', 'refundSteps', stepIndex, 'when'], e.target.value)} /></label>
+                        <label>退款比例 / 状态<input value={step.refund} onChange={(e) => updateHomepage(['services', index, 'bookingPolicy', 'refundSteps', stepIndex, 'refund'], e.target.value)} /></label>
+                      </div>)}
+                      <label className="span-2">政策脚注（每行一项）<textarea rows={3} value={(item.bookingPolicy?.footnotes || []).join('\n')} onChange={(e) => updateHomepageList(['services', index, 'bookingPolicy', 'footnotes'], e.target.value)} /></label>
+                      <button type="button" className="btn btn-outline span-2" onClick={() => downloadQuotation(item.id)}>下载报价模板（使用已保存的政策）</button>
                       {['tagline', 'priceDetail', 'description', 'perfectFor', 'support', 'goodToKnow'].map((field) => (
                         <label className="span-2" key={field}>详情 {field}
                           <textarea rows={field === 'description' ? 4 : 2} value={item.details?.[field] || ''} onChange={(e) => updateHomepage(['services', index, 'details', field], e.target.value)} />
@@ -919,6 +961,10 @@ export default function Admin() {
                         价格
                         <input value={item.price || ''} onChange={(e) => updateHomepage(['journeys', index, 'price'], e.target.value)} />
                       </label>
+                      <label>图片上的起价标签（如 From USD 299，留空不显示）
+                        <input value={item.priceBadge || ''} onChange={(e) => updateHomepage(['journeys', index, 'priceBadge'], e.target.value)} />
+                      </label>
+                      <label><input type="checkbox" checked={!!item.priceBadgeApproved} onChange={(e) => updateHomepage(['journeys', index, 'priceBadgeApproved'], e.target.checked)} /> 起价标签已批准发布（不代表最终报价）</label>
                       <label className="span-2">
                         标签（每行一个）
                         <textarea rows={3} value={(item.tags || []).join('\n')} onChange={(e) => updateHomepageList(['journeys', index, 'tags'], e.target.value)} />
@@ -948,6 +994,14 @@ export default function Admin() {
 
               <div className="admin-home-card">
                 <h2 className="font-serif">Why / Steps / FAQ</h2>
+                {(homepage.whyGallery || []).map((image, index) => <fieldset key={index} className="admin-form-grid">
+                  <legend>轮播图片 {index + 1}</legend>
+                  <label>图片路径<input value={image.src || ''} onChange={(e) => updateHomepage(['whyGallery', index, 'src'], e.target.value)} />
+                    <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['whyGallery', index, 'src'])} />
+                  </label>
+                  <label>图片 alt<input value={image.alt || ''} onChange={(e) => updateHomepage(['whyGallery', index, 'alt'], e.target.value)} /></label>
+                  <label><input type="checkbox" checked={!!image.aiGenerated} onChange={(e) => updateHomepage(['whyGallery', index, 'aiGenerated'], e.target.checked)} /> AI 生成示意图（非真实客户或场地照片）</label>
+                </fieldset>)}
                 <div className="admin-form-grid">
                   <label className="span-2">
                     Why 图片路径
@@ -963,7 +1017,11 @@ export default function Admin() {
                   </label>
                   <label className="span-2">
                     步骤（每行：编号 | 标题 | 描述 | 标签）
-                    <textarea rows={7} value={(homepage.steps || []).map((item) => item.join(' | ')).join('\n')} onChange={(e) => updateHomepagePairList(['steps'], e.target.value)} />
+                    <textarea rows={7} value={(homepage.process?.steps || []).map((item) => [item.number, item.title, item.body, item.reassurance].join(' | ')).join('\n')} onChange={(e) => {
+                      const rows = e.target.value.split('\n').map((line) => line.split('|').map((part) => part.trim()))
+                      updateHomepage(['process', 'steps'], rows.map(([number, title, body, reassurance], i) => ({ order: i + 1, number, title, body, reassurance })))
+                      updateHomepage(['steps'], rows)
+                    }} />
                   </label>
                   <label className="span-2">
                     FAQ（每行：问题 | 答案）
@@ -982,35 +1040,26 @@ export default function Admin() {
                 </div>
               </div>
               <div className="admin-home-card">
-                <h2 className="font-serif">Vlog</h2>
-                <p className="admin-muted">仅在视频、封面、字幕摘要、alt 和授权记录齐全并启用时显示。</p>
-                {(homepage.vlogs || []).map((item, index) => (
-                  <div className="admin-home-repeat" key={index}>
-                    <div className="admin-form-grid">
-                      {['title', 'cover', 'video', 'subtitle', 'caption', 'alt', 'consentRecord'].map((field) => <label key={field}>{field}<input value={item[field] || ''} onChange={(e) => updateHomepage(['vlogs', index, field], e.target.value)} /></label>)}
-                      <label>上传封面<input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['vlogs', index, 'cover'])} /></label>
-                      <label><input type="checkbox" checked={!!item.published} onChange={(e) => updateHomepage(['vlogs', index, 'published'], e.target.checked)} /> 发布</label>
-                    </div>
-                    <button type="button" className="btn btn-outline" onClick={() => removeHomepageItem('vlogs', index)}>删除</button>
-                  </div>
-                ))}
-                <button type="button" className="btn btn-outline" onClick={() => addHomepageItem('vlogs', { title: '', cover: '', video: '', subtitle: '', caption: '', alt: '', consentRecord: '', published: false })}>新增 Vlog</button>
+                <h2 className="font-serif">流程视频已停用</h2>
+                <p className="admin-muted">3.0 版本仅保留六步流程，不读取或展示历史视频。</p>
               </div>
               <div className="admin-home-card">
                 <h2 className="font-serif">Guest Stories / 旅客评价</h2>
                 <p className="admin-muted">首页标题：Words From Our Travelers。介绍：Real journeys. Real experiences. Stories worth sharing.</p>
-                <p className="admin-muted">评价仅在真实来源及发布授权记录齐全并启用时显示。无已发布评价时，首页保留栏目标题、介绍和暂无评价提示，不显示虚构评价。</p>
+                <p className="admin-muted">照片和评价均需授权并审批。正式环境无已发布评价时隐藏整栏；开发和测试环境保留三张设计占位，不发布虚构证言。</p>
                 {(homepage.reviews || []).map((item, index) => (
                   <div className="admin-home-repeat" key={index}>
                     <div className="admin-form-grid">
-                      {['quote', 'identity', 'tripType', 'tripDate', 'photo', 'photoAlt', 'sourceRecord', 'consentRecord'].map((field) => <label key={field}>{field}<input value={item[field] || ''} onChange={(e) => updateHomepage(['reviews', index, field], e.target.value)} /></label>)}
-                      <label>上传照片<input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['reviews', index, 'photo'])} /></label>
+                      {['id', 'quote', 'guestDisplayName', 'tripContext', 'image', 'imageAlt', 'imageFocalPoint', 'imageConsentRecord', 'reviewConsentRecord'].map((field) => <label key={field}>{field}<input value={item[field] || ''} onChange={(e) => updateHomepage(['reviews', index, field], e.target.value)} /></label>)}
+                      <label>顺序<input type="number" min="1" value={item.order || index + 1} onChange={(e) => updateHomepage(['reviews', index, 'order'], Number(e.target.value))} /></label>
+                      <label>审批<select value={item.status || 'draft'} onChange={(e) => updateHomepage(['reviews', index, 'status'], e.target.value)}><option value="draft">草稿</option><option value="approved">已审批</option></select></label>
+                      <label>上传照片<input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['reviews', index, 'image'])} /></label>
                       <label><input type="checkbox" checked={!!item.published} onChange={(e) => updateHomepage(['reviews', index, 'published'], e.target.checked)} /> 发布</label>
                     </div>
                     <button type="button" className="btn btn-outline" onClick={() => removeHomepageItem('reviews', index)}>删除</button>
                   </div>
                 ))}
-                <button type="button" className="btn btn-outline" onClick={() => addHomepageItem('reviews', { quote: '', identity: '', tripType: '', tripDate: '', photo: '', photoAlt: '', sourceRecord: '', consentRecord: '', published: false })}>新增 Review</button>
+                <button type="button" className="btn btn-outline" onClick={() => addHomepageItem('reviews', { id: crypto.randomUUID(), order: (homepage.reviews?.length || 0) + 1, quote: '', guestDisplayName: '', tripContext: '', image: '', imageAlt: '', imageFocalPoint: '50% 50%', imageConsentRecord: '', reviewConsentRecord: '', status: 'draft', published: false })}>新增 Review</button>
               </div>
             </div>
           )}

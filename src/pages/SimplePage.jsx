@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
+import ServicePolicies from '../components/ServicePolicies.jsx'
 import './SimplePage.css'
 
 function Block({ block }) {
+  if (block.type === 'service-policies') return <ServicePolicies />
   if (block.type === 'h2') {
     return <h2 className="font-serif simple-page__h2">{block.text}</h2>
   }

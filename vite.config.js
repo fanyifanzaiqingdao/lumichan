@@ -29,6 +29,8 @@ function stripPrivateFiles(staging) {
       if (staging) {
         await writeFile(resolve(root, 'robots.txt'), 'User-agent: *\nDisallow: /\n')
         await rm(resolve(root, 'sitemap.xml'), { force: true })
+      } else {
+        await rm(resolve(root, 'images/guest-photo-placeholder.svg'), { force: true })
       }
     },
   }
@@ -42,7 +44,7 @@ export default defineConfig(({ mode }) => ({
     proxy: {
       // Local: run `php -S 127.0.0.1:8080 -t public` then npm run dev
       '/api': {
-        target: 'http://127.0.0.1:8080',
+        target: process.env.LUMICHAN_API_PROXY || 'http://127.0.0.1:8080',
         changeOrigin: true,
       },
     },

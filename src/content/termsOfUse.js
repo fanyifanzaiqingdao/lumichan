@@ -1,6 +1,6 @@
 export default {
   title: "Terms of Use",
-  updated: "August 16, 2026 Welcome to Lumichan. These Terms of Use govern your access to and use of the Lumichan website, including its content, features and information. This website is operated by \u5bf0\u5b87\u7eb5\u6a2a\u56fd\u9645\u65c5\u884c\u793e\uff08\u91cd\u5e86\uff09\u6709\u9650\u516c\u53f8\u6210\u90fd\u9e93\u7c73\u7985\u5206\u516c\u53f8, trading as Lumichan (\u201cLumichan\u201d, \u201cwe\u201d, \u201cus\u201d or \u201cour\u201d). By accessing or using this website, you agree to these Terms of Use. If you do not agree with these Terms, please do not use the website.",
+  updated: "August 16, 2026 Welcome to Lumichan. These Terms of Use govern your access to and use of the Lumichan website, including its content, features and information. This website is operated by 寰宇纵横国际旅行社（重庆）有限公司四川第四分公司, trading as Lumichan (\u201cLumichan\u201d, \u201cwe\u201d, \u201cus\u201d or \u201cour\u201d). By accessing or using this website, you agree to these Terms of Use. If you do not agree with these Terms, please do not use the website.",
   blocks: [
   {
     "type": "hr"
@@ -225,7 +225,7 @@ export default {
   },
   {
     "type": "p",
-    "text": "These Terms of Use and any dispute relating specifically to your use of the Lumichan website will be governed by the laws applicable to 寰宇纵横国际旅行社（重庆）有限公司成都麓米禅分公司, unless mandatory law requires otherwise. If the website is operated by a Lumichan legal entity established in the People's Republic of China, these Terms will be governed by the applicable laws of the People's Republic of China. We encourage users to contact us first so that any issue can be discussed and, where possible, resolved amicably. Where a dispute cannot be resolved through communication, it may be submitted to the competent court or other dispute resolution mechanism applicable to the relevant Lumichan legal entity."
+    "text": "These Terms of Use and any dispute relating specifically to your use of the Lumichan website will be governed by the laws applicable to 寰宇纵横国际旅行社（重庆）有限公司四川第四分公司, unless mandatory law requires otherwise. If the website is operated by a Lumichan legal entity established in the People's Republic of China, these Terms will be governed by the applicable laws of the People's Republic of China. We encourage users to contact us first so that any issue can be discussed and, where possible, resolved amicably. Where a dispute cannot be resolved through communication, it may be submitted to the competent court or other dispute resolution mechanism applicable to the relevant Lumichan legal entity."
   },
   {
     "type": "hr"
@@ -236,7 +236,7 @@ export default {
   },
   {
     "type": "p",
-    "text": "If you have questions about these Terms of Use or the Lumichan website, please contact: Lumichan Legal Company Name: 寰宇纵横国际旅行社（重庆）有限公司成都麓米禅分公司Registered Address: No. 140, Annex to No. 198 Shijicheng Road, No. 12, Middle Section of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China Email: jin.lu@lumichan.com.cn Telephone: +86 13551117121"
+    "text": "If you have questions about these Terms of Use or the Lumichan website, please contact: Lumichan Legal Company Name: 寰宇纵横国际旅行社（重庆）有限公司四川第四分公司 Registered Address: No. 140, Annex of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China Email: jin.lu@lumichan.com.cn Telephone: +86 13551117121"
   },
   {
     "type": "hr"

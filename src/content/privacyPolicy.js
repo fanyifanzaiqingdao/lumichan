@@ -2,8 +2,20 @@ export default {
   title: "Privacy Policy",
   blocks: [
   {
+    type: 'h2',
+    text: 'Website Support Chat Notice (October 22, 2026)',
+  },
+  {
+    type: 'p',
+    text: 'Website support chats and optional contact details are stored in our support database for 30 days from the start of each conversation, then deleted by a scheduled cleanup. Verified, authorized Lumichan staff can view conversations; designated agents can reply. A private browser token allows you to return to the same conversation on this device. You can delete your conversation in the chat window. Do not share passport, payment, medical or other sensitive information in chat.',
+  },
+  {
+    type: 'p',
+    text: 'Only with your optional consent, up to four recent messages are sent to DeepSeek to identify relevant, approved support answers. We remove recognizable email addresses and long phone-like numbers, but this does not guarantee that all personal information is removed. The separate contact-email field is not sent to the model. You may use quick answers and human support without enabling AI processing. Enterprise WeChat notifications contain a conversation reference and a login-protected workbench link, not the conversation text or your contact details. Emails, service-provider records and server backups are managed separately; contact jin.lu@lumichan.com.cn about deletion requests involving those records.',
+  },
+  {
     "type": "p",
-    "text": "Privacy Policy Last Updated: August 16, 2026 At Lumichan, we respect your privacy and are committed to protecting the personal information you share with us. This Privacy Policy explains how 寰宇纵横国际旅行社（重庆）有限公司成都麓米禅分公司, operating under the brand Lumichan (“Lumichan”, “we”, “us” or “our”), collects, uses, stores and shares personal information when you visit our website, contact us, make an enquiry, book a journey or travel with us. Please read this Privacy Policy carefully to understand how we handle your information."
+    "text": "Privacy Policy Last Updated: August 16, 2026 At Lumichan, we respect your privacy and are committed to protecting the personal information you share with us. This Privacy Policy explains how 寰宇纵横国际旅行社（重庆）有限公司四川第四分公司, operating under the brand Lumichan (“Lumichan”, “we”, “us” or “our”), collects, uses, stores and shares personal information when you visit our website, contact us, make an enquiry, book a journey or travel with us. Please read this Privacy Policy carefully to understand how we handle your information."
   },
   {
     "type": "hr"
@@ -14,7 +26,7 @@ export default {
   },
   {
     "type": "p",
-    "text": "Lumichan designs private, tailor-made journeys and cultural travel experiences in China. For the purposes of this Privacy Policy, the entity responsible for processing your personal information is: Legal Company Name: 寰宇纵横国际旅行社（重庆）有限公司成都麓米禅分公司 Brand: Lumichan Registered Address: No. 140, Annex to No. 198 Shijicheng Road, No. 12, Middle Section of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China Email: jin.lu@lumichan.com.cn Telephone:+86 13551117121"
+    "text": "Lumichan designs private, tailor-made journeys and cultural travel experiences in China. For the purposes of this Privacy Policy, the entity responsible for processing your personal information is: Legal Company Name: 寰宇纵横国际旅行社（重庆）有限公司四川第四分公司 Brand: Lumichan Registered Address: No. 140, Annex of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China Email: jin.lu@lumichan.com.cn Telephone:+86 13551117121"
   },
   {
     "type": "hr"
@@ -261,7 +273,7 @@ export default {
   },
   {
     "type": "p",
-    "text": "If you have questions about this Privacy Policy, wish to exercise your privacy rights or have concerns about how Lumichan handles your personal information, please contact: Lumichan Legal Company Name: 寰宇纵横国际旅行社（重庆）有限公司成都麓米禅分公司 Registered Address: No. 140, Annex to No. 198 Shijicheng Road, No. 12, Middle Section of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China Email: jin.lu@lumichan.com.cn Telephone: +86 13551117121 We will review privacy enquiries and respond in accordance with applicable legal requirements."
+    "text": "If you have questions about this Privacy Policy, wish to exercise your privacy rights or have concerns about how Lumichan handles your personal information, please contact: Lumichan Legal Company Name: 寰宇纵横国际旅行社（重庆）有限公司四川第四分公司 Registered Address: No. 140, Annex of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China Email: jin.lu@lumichan.com.cn Telephone: +86 13551117121 We will review privacy enquiries and respond in accordance with applicable legal requirements."
   },
   {
     "type": "hr"

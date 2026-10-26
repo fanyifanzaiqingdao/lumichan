@@ -20,6 +20,15 @@ return [
     'smtp_pass' => 'your-app-password',
 
     'admin_password' => 'change-me-now',
+    // Enable only after importing support-schema.sql and scheduling support-maintenance.php.
+    'support_enabled' => false,
+    'deepseek_api_key' => '', // Prefer the DEEPSEEK_API_KEY server environment variable.
+    'deepseek_support_model' => 'deepseek-flash',
+    'support_daily_ai_limit' => 200,
+    'support_public_url' => 'https://test.lumichan.com.cn',
+    'support_wecom_webhook' => '', // Private enterprise WeChat group robot webhook.
+    'support_reply_emails' => ['jin.lu@lumichan.com.cn'],
+    'support_disabled_emails' => [], // Revoke departed employees here.
     // Travel Lead Finder AI drafts read DeepSeek from the server environment:
     // DEEPSEEK_API_KEY=your-private-key
     // Do not put this key in frontend code or commit it to git.

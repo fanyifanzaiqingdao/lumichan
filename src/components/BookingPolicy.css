@@ -1,0 +1,18 @@
+.booking-policy { margin: 22px 0 18px; padding: 16px 18px; border: 1px solid #c9a22780; border-radius: 12px; background: #c9a22709; color: #f5f1e8; }
+.booking-policy__header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; }
+.booking-policy__header strong { border-radius: 30px; padding: 6px 12px; background: #e0c15a; color: #0b1017; font: 700 12px/1.5 Manrope, sans-serif; }
+.booking-policy__header span { color: #b3b9c1; }
+.booking-policy__steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
+.booking-policy__steps > div { min-width: 0; padding: 12px; background: #0b101780; border-radius: 8px; }
+.booking-policy__steps dt { font-size: 13px; color: #b3b9c1; }
+.booking-policy__steps dd { margin: 5px 0 0; color: #e0c15a; font: 600 24px/1.2 "DM Sans", sans-serif; overflow-wrap: anywhere; }
+.booking-policy__steps small { display: block; font: 400 13px/1.5 "DM Sans", sans-serif; color: #b3b9c1; }
+.booking-policy .booking-policy__change { border-top: 1px solid #c9a22730; padding-top: 12px; margin: 0 0 8px; font-size: 14px; color: #f5f1e8; }
+.booking-policy .booking-policy__note, .booking-policy .booking-policy__version { margin: 6px 0 0; color: #b3b9c1; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.booking-policy__version a { text-decoration: underline; }
+.booking-policy--summary .booking-policy__steps { grid-template-columns: 1fr; }
+.booking-policy--summary .booking-policy__steps > div { display: grid; grid-template-columns: auto 1fr; column-gap: 14px; background: none; padding: 0; }
+.booking-policy--summary dt { grid-column: 2; grid-row: 1; align-self: start; padding-top: 3px; }
+.booking-policy--summary dd { grid-column: 1; grid-row: 1; font-size: 30px; align-self: center; margin: 0; }
+.booking-policy__refund-label { display: block; font-weight: 400; }
+@media(max-width:767px) { .booking-policy { padding: 16px 14px; } .booking-policy__steps dd { font-size: 23px; } .booking-policy--summary .booking-policy__steps dd { font-size: 28px; } }

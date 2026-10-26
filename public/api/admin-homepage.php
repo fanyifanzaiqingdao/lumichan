@@ -10,7 +10,7 @@ $file = is_file($live) ? $live : __DIR__ . '/data/homepage.json';
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $json = is_file($file) ? json_decode((string) file_get_contents($file), true) : [];
-    api_json(200, ['ok' => true, 'homepage' => is_array($json) ? $json : []]);
+    api_json(200, ['ok' => true, 'homepage' => is_array($json) ? homepage_upgrade($json) : []]);
 }
 
 $body = api_read_json_body();

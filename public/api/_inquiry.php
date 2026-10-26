@@ -25,7 +25,7 @@ function inquiry_validate(array $input): array
     $email = inquiry_text($input, 'email', 200, true);
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) throw new InvalidArgumentException('Invalid email');
     $contact = inquiry_text($input, 'preferred_contact', 20, true);
-    if (!in_array($contact, ['Email', 'WhatsApp', 'WeChat', 'LINE'], true)) throw new InvalidArgumentException('Invalid preferred_contact');
+    if (!in_array($contact, ['Email', 'Ins', 'WeChat'], true)) throw new InvalidArgumentException('Invalid preferred_contact');
     $handle = inquiry_text($input, 'contact_handle', 80);
     if ($contact !== 'Email' && $handle === '') throw new InvalidArgumentException('Contact handle required');
     $travelers = filter_var($input['travelers'] ?? null, FILTER_VALIDATE_INT);

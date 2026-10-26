@@ -1,7 +1,7 @@
 import { Suspense, lazy } from 'react'
 import { Navigate, Route, Routes, useParams } from 'react-router-dom'
 import Layout from './components/Layout.jsx'
-import WhatsAppFloat from './components/WhatsAppFloat.jsx'
+import SupportChat from './components/SupportChat.jsx'
 import Seo from './components/Seo.jsx'
 import Home from './pages/Home.jsx'
 
@@ -12,6 +12,7 @@ const Contact = lazy(() => import('./pages/Contact.jsx'))
 const About = lazy(() => import('./pages/About.jsx'))
 const BecomeGuide = lazy(() => import('./pages/BecomeGuide.jsx'))
 const Admin = lazy(() => import('./pages/Admin.jsx'))
+const SupportCenter = lazy(() => import('./pages/SupportCenter.jsx'))
 const Services = lazy(() => import('./pages/Services.jsx'))
 const Journeys = lazy(() => import('./pages/Journeys.jsx'))
 
@@ -124,10 +125,11 @@ export default function App() {
           </Route>
           <Route path="/guide" element={<BecomeGuide />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/support" element={<SupportCenter />} />
           <Route path="*" element={<Navigate to="/traveler" replace />} />
         </Routes>
       </Suspense>
-      <WhatsAppFloat />
+      <SupportChat />
     </>
   )
 }

@@ -122,7 +122,10 @@ export default {
     },
     {
       "type": "p",
-      "text": "Cancellation requests must be made in writing by the person responsible for the Booking. Your specific cancellation conditions will be stated in your Booking Confirmation and may vary depending on the Journey and supplier arrangements. Where cancellation occurs, Lumichan may deduct reasonable and necessary costs already incurred or committed on your behalf, including non-refundable payments made to accommodation providers, transportation companies, activity providers or other suppliers, subject to applicable law and your confirmed travel agreement. Any refundable balance will be returned according to the payment and refund terms applicable to your Booking. We strongly recommend purchasing travel insurance that includes appropriate trip cancellation and interruption coverage."
+      "text": "Cancellation requests must be made in writing by the person responsible for the Booking. The applicable service schedule, one-time date change and conditions are set out below and included in your proposal. Any non-refundable third-party costs must be disclosed and approved as required by the applicable service terms. These schedules should be read together with your Booking Confirmation."
+    },
+    {
+      "type": "service-policies"
     },
     {
       "type": "hr"
@@ -338,7 +341,7 @@ export default {
     },
     {
       "type": "p",
-      "text": "If you have questions about these Booking Terms and Conditions or your Journey, please contact: Lumichan Legal Company Name: 寰宇纵横国际旅行社（重庆）有限公司成都麓米禅分公司 Registered Address: No. 140, Annex to No. 198 Shijicheng Road, No. 12, Middle Section of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China Email: jin.lu@lumichan.com.cn Telephone / WhatsApp: +86 13551117121"
+      "text": "If you have questions about these Booking Terms and Conditions or your Journey, please contact: Lumichan Legal Company Name: 寰宇纵横国际旅行社（重庆）有限公司四川第四分公司 Registered Address: No. 140, Annex of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China Email: jin.lu@lumichan.com.cn Telephone / WhatsApp: +86 13551117121"
     },
     {
       "type": "hr"

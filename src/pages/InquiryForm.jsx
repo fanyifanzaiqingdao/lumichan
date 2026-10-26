@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
 const INTERESTS = ['Flexibility', 'Comfort', 'Culture', 'Nature', 'Budget clarity', 'Easy planning']
-const CONTACTS = ['Email', 'WhatsApp', 'WeChat', 'LINE']
+const CONTACTS = ['Email', 'Ins', 'WeChat']
 
 function ErrorText({ message, field }) {
   return message ? <span className="inquiry-error" id={`error-${field}`}>{message}</span> : null
@@ -19,6 +19,14 @@ export default function InquiryForm({ services, track, config }) {
   const [status, setStatus] = useState('idle')
   const [errors, setErrors] = useState({})
   const [serverError, setServerError] = useState('')
+  const location = useLocation()
+  useEffect(() => {
+    const selected = services.find((item) => item.id === new URLSearchParams(location.search).get('service'))
+    if (!selected) return
+    setService(selected.title)
+    preferencesRef.current.open = true
+    formRef.current.elements.name.focus({ preventScroll: true })
+  }, [location.key, location.search, services])
 
   function markStarted(event) {
     const field = event.target.name
@@ -48,7 +56,7 @@ export default function InquiryForm({ services, track, config }) {
     const handle = String(values.get('contact_handle') || '').trim()
     if (name.length < 2 || name.length > 100) nextErrors.name = 'Enter a name between 2 and 100 characters.'
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) nextErrors.email = 'Enter a valid email address.'
-    if (contact !== 'Email' && !handle) nextErrors.contact_handle = `Enter your ${contact} account or number.`
+    if (contact !== 'Email' && !handle) nextErrors.contact_handle = `Enter your ${contact} account.`
     if (!Number.isInteger(travelers) || travelers < 1) nextErrors.travelers = 'Enter at least one traveler.'
     if (!dates) nextErrors.travel_dates = 'Enter dates or an approximate month.'
     if (!values.has('privacy_consent')) nextErrors.privacy_consent = 'Please agree to the Privacy Policy.'
@@ -123,7 +131,7 @@ export default function InquiryForm({ services, track, config }) {
         <summary>More travel preferences <span>(optional)</span></summary>
         <div className="inquiry-preferences__fields">
       <label>Preferred contact<select name="preferred_contact" value={contact} onChange={(event) => setContact(event.target.value)}>{CONTACTS.map((option) => <option key={option}>{option}</option>)}</select></label>
-      {contact !== 'Email' && <label>{contact} account or number *<input name="contact_handle" autoComplete="off" maxLength={80} aria-invalid={!!errors.contact_handle} aria-describedby={errors.contact_handle ? 'error-contact_handle' : undefined} /><ErrorText field="contact_handle" message={errors.contact_handle} /></label>}
+      {contact !== 'Email' && <label>{contact} account *<input name="contact_handle" autoComplete="off" maxLength={80} aria-invalid={!!errors.contact_handle} aria-describedby={errors.contact_handle ? 'error-contact_handle' : undefined} /><ErrorText field="contact_handle" message={errors.contact_handle} /></label>}
       <label>Country / region<input name="country" autoComplete="country-name" maxLength={100} /></label>
       <label>Destinations<input name="destinations" placeholder="Not sure yet" maxLength={200} /></label>
       <label>Preferred service<select name="preferred_service" value={service} onChange={(event) => setService(event.target.value)}><option value="">Not sure yet</option>{services.map((item) => <option key={item.id}>{item.title}</option>)}</select></label>
@@ -138,6 +146,7 @@ export default function InquiryForm({ services, track, config }) {
       <input className="inquiry-honeypot" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       {serverError && <p className="inquiry-server-error inquiry-form__wide" role="alert">{serverError}</p>}
       <button type="submit" className="btn btn-gold inquiry-form__submit" disabled={status === 'sending'}>{status === 'sending' ? 'Sending...' : config.submitLabel}</button>
+      <p className="inquiry-form__note inquiry-form__wide">Enquiry only · No payment required to submit</p>
     </form>
   )
 }

@@ -1,0 +1,85 @@
+import defaults from '../data/homepage.js'
+
+export function normalizeHomepage(saved = {}) {
+  const migrated = saved.schemaVersion !== 3
+  const homepage = {
+    ...defaults,
+    ...saved,
+    schemaVersion: 3,
+    bookingPolicyVersion: migrated ? defaults.bookingPolicyVersion : saved.bookingPolicyVersion,
+    copy: { ...defaults.copy, ...saved.copy, process: { ...defaults.copy.process, ...saved.copy?.process, eyebrow: 'How it works' } },
+    services: defaults.services.map((seed) => {
+      const current = saved.services?.find((item) => item.id === seed.id)
+      if (!current) return seed
+      if (!migrated) return { ...seed, ...current }
+      return { ...current, ...seed, image: current.image ?? seed.image, imageAlt: current.imageAlt ?? seed.imageAlt,
+        imageFocalPoint: current.imageFocalPoint ?? seed.imageFocalPoint, media: { ...seed.media, ...current.media } }
+    }),
+    process: {
+      steps: saved.process?.steps || (saved.steps || defaults.steps).map(([number, title, body, reassurance], index) => ({ order: index + 1, number, title, body, reassurance })),
+      videoEnabled: false,
+      videos: [],
+    },
+    vlogs: saved.vlogs || [],
+  }
+  // Apply the approved revision once, retaining unrelated CMS content and later edits.
+  if (saved.contentRevision !== defaults.contentRevision) {
+    homepage.services = homepage.services.map((service) => {
+      const seed = defaults.services.find((item) => item.id === service.id)
+      const fields = ['price', 'unit', 'priceNote']
+      if (service.id !== 'planning') fields.push('image', 'imageAlt', 'imageFocalPoint', 'media')
+      return { ...service, ...Object.fromEntries(fields.map((key) => [key, seed[key]])),
+        ...(service.details ? { details: { ...service.details, priceDetail: seed.priceNote } } : {}) }
+    })
+    homepage.journeys = defaults.journeys.map((seed) => {
+      const current = saved.journeys?.find((item) => item.slug === seed.slug) || seed
+      return { ...current, ...Object.fromEntries(['title', 'summary', 'tags', 'priceBadge', 'priceBadgeApproved'].map((key) => [key, seed[key]])) }
+    })
+    homepage.whyGallery = defaults.whyGallery.map((image) => ({ ...image }))
+    homepage.faqs = (homepage.faqs || defaults.faqs).map((faq) => faq[0] === defaults.faqs[0][0] ? defaults.faqs[0] : faq)
+    homepage.contentRevision = defaults.contentRevision
+  }
+  return homepage
+}
+
+export function journeyPriceBadge(journey) {
+  return journey.priceBadgeApproved === true && /^From USD [1-9][\d,]*(?:\.\d{2})?$/.test(journey.priceBadge || '') ? journey.priceBadge : ''
+}
+
+export function serviceImage(service) {
+  if (service.media?.published === false) return null
+  return service.image || null
+}
+
+export function approvedPolicy(service, version) {
+  const policy = service?.bookingPolicy
+  return service?.bookingApproved === true && policy?.status === 'approved' && policy.version === version &&
+    policy.homepageRefundSummary?.stepIndex === 0 && /^100%\*?$/.test(policy.refundSteps?.[0]?.refund) &&
+    policy.dateChange && policy.footnotes?.length ? policy : null
+}
+
+export function publishedReviews(reviews = []) {
+  return reviews.filter((item) => item.published === true && item.status === 'approved' &&
+    item.image && !/placeholder/i.test(item.image) && item.imageAlt && item.imageConsentRecord && item.quote &&
+    item.guestDisplayName && item.tripContext && item.reviewConsentRecord)
+    .sort((a, b) => (a.order || 0) - (b.order || 0))
+}
+
+export function quotationTemplate(homepage, serviceId) {
+  const service = homepage.services.find((item) => item.id === serviceId)
+  const policy = approvedPolicy(service, homepage.bookingPolicyVersion)
+  if (!policy) throw new Error('Approved service policy required')
+  return [
+    'LUMICHAN | JOURNEY PROPOSAL', service.title,
+    'Guest: ____________________', 'Travel dates: ____________________',
+    'Travelers: ____________________', 'Confirmed itinerary: ____________________',
+    'Final price and currency: ____________________',
+    'Included services: ____________________', 'Excluded services: ____________________',
+    'Payment schedule: ____________________', '', 'BOOKING AND CANCELLATION',
+    ...policy.refundSteps.map((step) => step.when + ': ' + step.refund + (step.refund.includes('%') ? ' refund' : '')),
+    policy.dateChange, ...policy.footnotes,
+    '', 'Pre-approved non-refundable costs and approval record: ____________________',
+    'Policy version: ' + policy.version, 'Terms: ' + policy.termsHref,
+    'Guest confirmation and date: ____________________',
+  ].join('\n')
+}
