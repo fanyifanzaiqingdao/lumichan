@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import SoftImage from './SoftImage.jsx'
 import { track } from '../lib/analytics.js'
 import './Header.css'
@@ -17,6 +17,8 @@ const NAV = [
 
 export default function Header({ transparent = false, dark = false }) {
   const [open, setOpen] = useState(false)
+  const servicePage = useLocation().pathname === '/traveler/services'
+  const inquiryHref = servicePage ? '/traveler/contact' : '/traveler#inquiry'
   const menuRef = useRef(null)
   const toggleRef = useRef(null)
 
@@ -75,15 +77,15 @@ export default function Header({ transparent = false, dark = false }) {
             </NavLink>
           ))}
           <Link
-            to="/traveler#inquiry"
+            to={inquiryHref}
             className="btn btn-gold nav__cta-mobile"
-            onClick={() => { setOpen(false); track('cta_click', { label: 'Plan My Journey', destination: '/traveler#inquiry', section: 'mobile_menu' }) }}
+            onClick={() => { setOpen(false); track('cta_click', { label: 'Plan My Journey', destination: inquiryHref, section: 'mobile_menu' }) }}
           >
             Plan My Journey
           </Link>
         </nav>
 
-        <Link to="/traveler#inquiry" className="btn btn-gold header-cta" aria-label="Plan My Journey" onClick={() => { setOpen(false); track('cta_click', { label: 'Plan My Journey', destination: '/traveler#inquiry', section: 'header' }) }}>
+        <Link to={inquiryHref} className="btn btn-gold header-cta" aria-label="Plan My Journey" onClick={() => { setOpen(false); track('cta_click', { label: 'Plan My Journey', destination: inquiryHref, section: 'header' }) }}>
           <span className="header-cta__full">Plan My Journey</span>
           <span className="header-cta__short">Plan trip</span>
         </Link>

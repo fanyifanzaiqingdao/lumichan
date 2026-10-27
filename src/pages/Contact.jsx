@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { SITE, whatsappUrl } from '../config/site.js'
+import defaultHomepage from '../data/homepage.js'
+import { canonicalServiceId } from '../lib/servicesPage.js'
 import './Contact.css'
 
 const CONTACT_API = import.meta.env.VITE_CONTACT_API || '/api/contact.php'
@@ -24,7 +26,9 @@ const SOCIALS = [
 ]
 
 export default function Contact() {
-  const { state } = useLocation()
+  const { state, search } = useLocation()
+  const requested = canonicalServiceId(new URLSearchParams(search).get('service') || '')
+  const requestedService = defaultHomepage.services.find((item) => item.id === requested)
   const guideName = state?.guide
   const [status, setStatus] = useState('idle')
   const [errorMsg, setErrorMsg] = useState('')
@@ -32,12 +36,17 @@ export default function Contact() {
     name: '',
     email: '',
     phone: '',
-    subject: guideName ? `Guide inquiry: ${guideName}` : state?.subject || '',
+    preferred_service: requestedService?.id || '',
+    subject: guideName ? `Guide inquiry: ${guideName}` : state?.subject || (requestedService ? `Service inquiry: ${requestedService.title}` : ''),
     message: guideName
       ? `Hi, I'd like to inquire about booking guide ${guideName}.\n\nDates:\nGroup size:\nNotes:\n`
       : '',
     website: '',
   })
+
+  useEffect(() => {
+    setForm((previous) => ({ ...previous, preferred_service: requestedService?.id || '', subject: state?.subject || (guideName ? `Guide inquiry: ${guideName}` : requestedService ? `Service inquiry: ${requestedService.title}` : previous.subject) }))
+  }, [requestedService?.id, state?.subject, guideName])
 
   function update(field, value) {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -67,6 +76,7 @@ export default function Contact() {
         name: '',
         email: '',
         phone: '',
+        preferred_service: '',
         subject: '',
         message: '',
         website: '',
@@ -195,6 +205,18 @@ export default function Contact() {
                     value={form.phone}
                     onChange={(e) => update('phone', e.target.value)}
                   />
+                </label>
+
+                <label>
+                  Preferred service (Optional)
+                  <select name="preferred_service" value={form.preferred_service} onChange={(event) => {
+                    const id = event.target.value
+                    const selected = defaultHomepage.services.find((item) => item.id === id)
+                    setForm((previous) => ({ ...previous, preferred_service: id, subject: !previous.subject || previous.subject.startsWith('Service inquiry:') ? (selected ? `Service inquiry: ${selected.title}` : '') : previous.subject }))
+                  }}>
+                    <option value="">Not sure yet</option>
+                    {defaultHomepage.services.map((service) => <option key={service.id} value={service.id}>{service.title}</option>)}
+                  </select>
                 </label>
 
                 <label>

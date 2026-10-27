@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import defaultHomepage from '../data/homepage.js'
 import { normalizeHomepage, quotationTemplate } from '../lib/homepageContent.js'
+import ServicesPageEditor from '../components/ServicesPageEditor.jsx'
 import './Admin.css'
 
 const AUTH_API = '/api/admin-auth.php'
@@ -719,7 +720,7 @@ export default function Admin() {
         <div className="admin-top__actions">
           <Link to="/support" className="btn btn-outline">客服中心</Link>
           <Link
-            to={tab === 'homepage' ? '/traveler' : tab === 'guides' ? '/traveler/guides' : '/traveler/itineraries'}
+            to={tab === 'services-page' ? '/traveler/services' : tab === 'homepage' ? '/traveler' : tab === 'guides' ? '/traveler/guides' : '/traveler/itineraries'}
             className="btn btn-outline"
           >
             查看前台
@@ -739,7 +740,7 @@ export default function Admin() {
             <button type="button" className="btn btn-gold" onClick={() => openCreateLead()}>
               + 导入线索
             </button>
-          ) : (
+          ) : tab === 'services-page' || tab === 'inquiries' ? null : (
             <button type="button" className="btn btn-gold" disabled={saving} onClick={saveHomepage}>
               {saving ? '保存中…' : '保存首页配置'}
             </button>
@@ -748,6 +749,7 @@ export default function Admin() {
       </header>
 
       <div className="admin-tabs">
+        <button type="button" className={tab === 'services-page' ? 'is-active' : ''} onClick={() => setTab('services-page')}>Services 页面</button>
         <button type="button" className={tab === 'homepage' ? 'is-active' : ''} onClick={() => setTab('homepage')}>
           首页配置
         </button>
@@ -770,6 +772,8 @@ export default function Admin() {
       </div>
 
       {error && <p className="admin-error">{error}</p>}
+
+      {tab === 'services-page' && <ServicesPageEditor onSharedSettings={() => setTab('homepage')} />}
 
       {tab === 'homepage' && (
         <section className="admin-homepage-editor">
@@ -893,6 +897,7 @@ export default function Admin() {
                       {['unit', 'priceNote', 'imageCaption', 'imageFocalPoint'].map((field) => <label key={field}>{field}
                         <input value={item[field] || ''} onChange={(e) => updateHomepage(['services', index, field], e.target.value)} />
                       </label>)}
+                      {['road-trip','signature'].includes(item.id) && <label className="span-2"><span><input type="checkbox" checked={item.unitApproved === true} onChange={(event) => updateHomepage(['services', index, 'unitApproved'], event.target.checked)} /> 计价单位已获业务确认（请先填写准确单位）</span></label>}
                       <label className="span-2">包含亮点（每行一项，共三项）<textarea rows={3} value={(item.includedHighlights || []).join('\n')} onChange={(e) => updateHomepageList(['services', index, 'includedHighlights'], e.target.value)} /></label>
                       <label>图片来源<input value={item.media?.source || ''} onChange={(e) => updateHomepage(['services', index, 'media', 'source'], e.target.value)} /></label>
                       <label>图片授权记录<input value={item.media?.consentOrLicenseRecord || ''} onChange={(e) => updateHomepage(['services', index, 'media', 'consentOrLicenseRecord'], e.target.value)} /></label>

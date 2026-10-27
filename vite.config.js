@@ -22,7 +22,7 @@ function stripPrivateFiles(staging) {
       ])
       const data = resolve(root, 'api/data')
       for (const file of await readdir(data).catch(() => [])) {
-        if (file === 'guides.json' || file === 'homepage.live.json' || file.endsWith('.jsonl') || file.startsWith('rate_') || file === 'travel_leads.json') {
+        if (file === 'guides.json' || file.endsWith('.live.json') || file.endsWith('.jsonl') || file.startsWith('rate_') || file === 'travel_leads.json') {
           await rm(resolve(data, file), { force: true })
         }
       }

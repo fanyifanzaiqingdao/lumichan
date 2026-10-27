@@ -140,3 +140,17 @@ test('only photo and review approved stories are published', () => {
   }
   assert.equal(publishedReviews([{ ...valid, status: 'draft' }]).length, 0)
 })
+
+
+test('new service brief removes unconfirmed vehicle units without discarding confirmed custom units', () => {
+  const old = structuredClone(homepage)
+  old.services[1].unit = '/ day / vehicle'
+  old.services[1].unitApproved = false
+  old.services[2].unit = '/ confirmed custom group'
+  old.services[2].unitApproved = true
+  old.faqs[0][1] = 'Private Road Trip starts from USD 299 per day per vehicle.'
+  const result = normalizeHomepage(old)
+  assert.equal(result.services[1].unit, 'Starting reference')
+  assert.equal(result.services[2].unit, '/ confirmed custom group')
+  assert.doesNotMatch(result.faqs[0][1], /per day per vehicle/)
+})

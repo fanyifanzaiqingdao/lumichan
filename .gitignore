@@ -16,3 +16,5 @@ public/api/data/rate_*.json
 public/api/data/submissions.jsonl
 public/api/data/homepage.live.json
 public/uploads/
+
+public/api/data/services-page.live.json

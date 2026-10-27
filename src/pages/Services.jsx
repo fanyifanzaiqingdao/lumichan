@@ -1,216 +1,103 @@
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { track } from '../lib/analytics.js'
+import { useEffect, useRef, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { Tag, Users, Compass, CarFront, MessageSquare, ClipboardList, BadgeDollarSign, CalendarCheck, ShieldCheck, Headphones, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import defaultHomepage from '../data/homepage.js'
 import { normalizeHomepage } from '../lib/homepageContent.js'
+import { normalizeServicesPage, safeServiceLink, servicesPreview, visibleServiceMedia } from '../lib/servicesPage.js'
 import BookingPolicy from '../components/BookingPolicy.jsx'
+import { track } from '../lib/analytics.js'
 import './Services.css'
 
-const defaultServices = [
-  {
-    id: 'planning-support',
-    number: '01',
-    title: 'Journey Planning & Local Support',
-    tagline: 'Plan it yourself. Travel with a local expert in your pocket.',
-    price: 'From USD 99 / trip',
-    priceDetail: '1-5 days: USD 99 · 6-10 days: USD 199',
-    description:
-      'Already know where you want to go, but not sure how everything works in China? We help turn your ideas into a practical trip and stay available when you need local help along the way.',
-    included: [
-      'Personalized itinerary planning',
-      'Digital travel planning booklet',
-      'Hotel and local transportation recommendations',
-      'Support with payments, mobile connectivity and pre-trip preparation',
-      'Guidance on travel insurance and other practical questions',
-      'Online assistance during your journey',
-      'Local recommendations when plans change',
-    ],
-    perfectFor:
-      'Independent travelers who want a trusted local contact, more freedom, fewer mistakes and better value without hiring a full-time guide.',
-    support: 'Before your trip 08:00-16:00 China Time. During your trip 08:00-23:00 China Time.',
-    goodToKnow: 'Third-party costs are quoted separately and confirmed before booking.',
-    booking: 'Changes and cancellation terms are confirmed before booking.',
-  },
-  {
-    id: 'private-road-trip',
-    number: '02',
-    title: 'Private Road Trip',
-    tagline: 'Your own car. Your own pace. No tour-bus timetable.',
-    price: 'From USD 299 / day / vehicle',
-    priceDetail: 'Recommended for up to 4 travelers',
-    description:
-      'Want the freedom of independent travel without worrying about transportation, routes or local logistics? We arrange your journey, private vehicle and English-speaking driver, while our local team supports you throughout the trip.',
-    included: [
-      'Personalized itinerary planning and pre-trip travel support',
-      'Private vehicle throughout the journey',
-      'English-speaking driver',
-      'Comfortable vehicle selected for the route and group needs',
-      'Local hotel and restaurant recommendations',
-      'Booking assistance and travel support during the journey',
-      'Travel insurance included',
-      'One Lumichan welcome meal and welcome gift',
-    ],
-    perfectFor:
-      'Western Sichuan and routes where private transport makes travel easier; family travel, including journeys with children; travelers with limited vacation time; flexible pacing without a fixed group-tour schedule.',
-    support: 'Local support during the confirmed journey schedule.',
-    goodToKnow: 'Accommodation and meals are not included unless stated in your quotation.',
-    booking: 'Changes and cancellation terms are confirmed before booking.',
-  },
-  {
-    id: 'signature-private-journey',
-    includedHeading: 'Your journey may include',
-    number: '03',
-    title: 'Signature Private Journey',
-    tagline: 'Designed around you - not around a standard itinerary.',
-    price: 'From USD 699 / day / vehicle',
-    priceDetail: 'Final pricing depends on the itinerary and service requirements',
-    description:
-      "This is Lumichan's fully customized travel experience for guests who want deeper access, more personal service and greater flexibility.",
-    included: [
-      'One-to-one journey planning and travel concierge',
-      'Private vehicle with English-speaking driver',
-      'Professional guide and interpreter when required',
-      'Carefully selected hotels and restaurants',
-      'Personalized cultural experiences',
-      'Local experts, artists, craftspeople or cultural specialists',
-      'Business, institutional or professional visits where available',
-      'Special-interest travel designed around your personal goals',
-      'Travel insurance included',
-      'Priority support, welcome meal and welcome gift',
-    ],
-    perfectFor:
-      'Guests who value privacy, flexibility and deeper experiences, or have specific interests that require strong local knowledge and coordination.',
-    support: 'Priority support before and during the confirmed journey.',
-    goodToKnow: 'Accommodation, meals and special experiences are quoted separately unless included in your confirmed package.',
-    booking: 'Changes and cancellation terms are confirmed before booking.',
-  },
-  {
-    id: 'educational-cultural-journeys',
-    includedHeading: 'Programs may include',
-    audienceHeading: 'Designed for',
-    number: '04',
-    title: 'Educational & Cultural Journeys',
-    tagline: 'Travel that goes beyond visiting - into learning, exchange and understanding.',
-    price: 'Price depends on program',
-    priceDetail: 'Minimum 6 travelers · Institutional and organizational bookings',
-    description:
-      'Lumichan designs customized educational journeys in China for universities, schools, cultural organizations and corporate groups.',
-    included: [
-      'Customized study-tour curriculum development',
-      'Cooperation with universities and educational institutions',
-      'Chinese language and intercultural learning programs',
-      'Academic or specialist-led experiences',
-      'Traditional arts and heritage experiences',
-      'Company and institutional visits',
-      'Cultural expert exchanges',
-      'Private transportation with English-speaking driver',
-      'Accommodation and dining coordination',
-      'Dedicated journey management from preparation to completion',
-    ],
-    perfectFor:
-      'University and student groups; Chinese-language learning programs; international cultural exchange programs; corporate learning and study visits; institutions looking for customized China programs.',
-    support: 'Dedicated program management from preparation to completion.',
-    goodToKnow: 'Program cancellation and date-change terms are confirmed in writing before booking.',
-    booking: 'Program cancellation and date-change terms are confirmed before booking.',
-    legalPending: true,
-  },
-]
+const whyIcons = [Tag, Users, Compass, CarFront]
+const pricingIcons = [MessageSquare, ClipboardList, BadgeDollarSign, CalendarCheck]
+const vehicleIcons = [CarFront, Users, ShieldCheck, Headphones]
+const icons = (list, index) => { const Icon = list[index % list.length]; return <Icon aria-hidden="true" strokeWidth={1.5} /> }
+
+function ServiceImage({ image, className = '', eager = false }) {
+  const media = visibleServiceMedia(image)
+  if (!media) return <div className={'sp-image-empty ' + className} aria-hidden="true"><Compass /></div>
+  return <div className={'sp-image ' + className}>
+    <img src={media.src} alt={media.alt} style={{ objectPosition: media.focalPoint }} loading={eager ? 'eager' : 'lazy'} fetchPriority={eager ? 'high' : undefined} />
+    {media.aiGenerated && <span className="sp-image-label">AI illustration</span>}
+  </div>
+}
+function SectionHead({ module, centered = false }) {
+  return <div className={'sp-section-head' + (centered ? ' is-centered' : '')}>
+    {module.eyebrow && <p className="eyebrow">{module.eyebrow}</p>}
+    <h2>{module.title}</h2>{module.body && <p>{module.body}</p>}
+  </div>
+}
+function Action({ label = 'Plan My Journey', to = '/traveler/contact', section, className = '' }) {
+  const href = safeServiceLink(to)
+  return <Link to={href} className={'btn btn-gold ' + className} onClick={() => track('cta_click', { label, destination: href, section })}>{label}</Link>
+}
 
 export default function Services() {
-  const [configured, setConfigured] = useState(defaultHomepage.services)
-  const [policyVersion, setPolicyVersion] = useState(defaultHomepage.bookingPolicyVersion)
+  const [content, setContent] = useState(() => normalizeServicesPage())
+  const [home, setHome] = useState(defaultHomepage)
+  const [previewReviews, setPreviewReviews] = useState([])
+  const [fullImage, setFullImage] = useState(null)
+  const dialog = useRef(null)
+  const opener = useRef(null)
+  const gallery = useRef(null)
+  const location = useLocation()
   useEffect(() => {
-    let active = true
-    fetch('/api/homepage.php')
-      .then((response) => response.ok ? response.json() : Promise.reject(new Error('Unavailable')))
-      .then((data) => {
-        if (active) {
-          const homepage = normalizeHomepage(data.homepage)
-          setConfigured(homepage.services)
-          setPolicyVersion(homepage.bookingPolicyVersion)
-        }
-      })
-      .catch(() => {})
-    return () => { active = false }
+    const controller = new AbortController()
+    fetch('/api/services-page.php', { signal: controller.signal }).then((r) => r.ok ? r.json() : Promise.reject()).then((data) => setContent(normalizeServicesPage(data.page))).catch(() => {})
+    fetch('/api/homepage.php', { signal: controller.signal }).then((r) => r.ok ? r.json() : Promise.reject()).then((data) => setHome(normalizeHomepage(data.homepage))).catch(() => {})
+    if (servicesPreview) import('../data/serviceReviewPreview.js').then(({ default: reviews }) => { if (!controller.signal.aborted) setPreviewReviews(reviews) })
+    const previousTitle = document.title
+    document.title = 'Travel Services | Lumichan'
+    return () => { controller.abort(); document.title = previousTitle }
   }, [])
-  const services = defaultServices.map((service) => {
-    const saved = configured.find((item) => item.id === service.id || item.href?.endsWith('#' + service.id))
-    const details = saved?.details || {}
-    return {
-      ...service,
-      bookingPolicy: saved?.bookingPolicy,
-      bookingApproved: saved?.bookingApproved,
-      serviceId: saved?.id,
-      title: saved?.title || service.title,
-      price: saved ? [saved.price, saved.unit].filter(Boolean).join(' ') : service.price,
-      booking: saved?.bookingApproved && policyVersion ? saved.booking : service.booking,
-      tagline: details.tagline || saved?.summary || service.tagline,
-      description: details.description || service.description,
-      included: Array.isArray(details.included) && details.included.length ? details.included : service.included,
-      perfectFor: details.perfectFor || service.perfectFor,
-      support: details.support || service.support,
-      goodToKnow: details.goodToKnow || service.goodToKnow,
-      priceDetail: details.priceDetail || saved?.priceNote || service.priceDetail,
-    }
-  })
-  return (
-    <div className="services-page">
-      <section className="section section-pad services-page__hero">
-        <div className="eyebrow">Services</div>
-        <h1 className="font-serif">Choose the Right Support for Your Journey.</h1>
-        <p>Compare Lumichan&apos;s four service types, then tell us what feels most useful for your trip.</p>
-      </section>
-
-      <div className="section services-page__layout">
-        <aside className="services-nav" aria-label="Service navigation">
-          {services.map((service) => (
-            <a key={service.id} href={`#${service.id}`}>
-              <span>{service.number}</span>
-              {service.title}
-            </a>
-          ))}
-        </aside>
-
-        <div className="services-detail-list">
-          {services.map((service) => (
-            <article id={service.id} key={service.id} className="service-detail">
-              <div className="service-detail__top">
-                <div>
-                  <span className="service-detail__number">{service.number}</span>
-                  <h2 className="font-serif">{service.title}</h2>
-                  <p className="service-detail__tagline">{service.tagline}</p>
-                </div>
-                <div className="service-detail__price">
-                  <strong>{service.price}</strong>
-                  <span>{service.priceDetail}</span>
-                </div>
-              </div>
-
-              <p className="service-detail__description">{service.description}</p>
-
-              <div className="service-detail__grid">
-                <section>
-                  <h3>{service.includedHeading || "What's Included"}</h3>
-                  <ul>
-                    {service.included.map((item) => <li key={item}>{item}</li>)}
-                  </ul>
-                </section>
-                <section>
-                  <h3>{service.audienceHeading || 'Perfect for You If'}</h3>
-                  <p>{service.perfectFor}</p>
-                  <h3>Support Hours / Good to Know</h3>
-                  <p>{service.support}</p>
-                  <p>{service.goodToKnow}</p>
-                </section>
-              </div>
-
-              <BookingPolicy service={service} version={policyVersion} />
-
-              <Link to={`/traveler?service=${service.serviceId}#inquiry`} className="btn btn-gold" onClick={() => track('cta_click', { label: 'Plan my journey', destination: '/traveler#inquiry', section: service.id })}>Plan my journey</Link>
-            </article>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
+  useEffect(() => {
+    // Preserve existing links from homepage and older shared URLs.
+    if (location.hash !== '#educational-cultural-journeys') return
+    document.getElementById('educational-cultural-journeys')?.scrollIntoView()
+  }, [location.hash, content])
+  useEffect(() => {
+    if (!fullImage) return
+    const element = dialog.current
+    const overflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    element.showModal()
+    return () => { element.close(); document.body.style.overflow = overflow; opener.current?.focus() }
+  }, [fullImage])
+  function moveGallery(direction) {
+    const element = gallery.current
+    element?.scrollBy({ left: direction * element.clientWidth * 0.75, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
+  }
+  const reviews = content.reviews.length ? content.reviews : servicesPreview ? previewReviews : []
+  const moduleCta = (module) => <div className="sp-section-cta"><Action label={module.ctaLabel} to={module.ctaUrl} section={module.id} /></div>
+  const render = {
+    hero: (m) => <section className="sp-hero" aria-labelledby="sp-title">
+      <ServiceImage image={m.image} className="sp-hero-image" eager />
+      <div className="sp-container sp-hero-copy"><p className="eyebrow">{m.eyebrow}</p><h1 id="sp-title">{m.title.split('\n').map((line, i) => <span key={i} className={i ? 'text-gold' : ''}>{line}</span>)}</h1><p className="sp-lead">{m.body}</p><p className="sp-hero-note">{m.note}</p><Link className="btn btn-outline" to={safeServiceLink(m.ctaUrl, "/traveler/services#services")}>{m.ctaLabel}</Link></div>
+    </section>,
+    why: (m) => <section className="sp-section sp-why"><div className="sp-container"><SectionHead module={m} centered /><div className="sp-four-grid">{m.items.map((item, i) => <article key={i}>{icons(whyIcons, i)}<h3>{item.title}</h3><p>{item.body}</p></article>)}</div></div></section>,
+    services: (m) => <section className="sp-section sp-services" id="services"><div className="sp-container"><SectionHead module={m} /><div className="sp-service-list">{content.services.filter((s) => s.visible).map((service, i) => {
+      const shared = home.services.find((item) => item.id === service.id)
+      const price = shared?.price || ''
+      const note = service.id === 'planning' ? shared?.priceNote : shared?.unit && shared.unitApproved === true ? shared.unit : 'Starting reference · pricing basis confirmed in your written quote'
+      return <article key={service.id} id={service.anchor} className="sp-service">
+        <ServiceImage image={service.image} className="sp-service-image" />
+        <div className="sp-service-copy"><div className="sp-number">{String(i + 1).padStart(2, '0')}<span /></div><h3>{service.title}</h3><p>{service.subtitle}</p><ul className="sp-points">{service.points.map((item) => <li key={item}>{item}</li>)}</ul>
+          <details><summary>See what&apos;s included</summary><div className="sp-detail-body"><ul>{service.included.map((item) => <li key={item}>{item}</li>)}</ul><p><strong>Best for:</strong> {service.bestFor}</p></div></details>
+          <details><summary>Flexible booking</summary><div className="sp-detail-body"><BookingPolicy service={{...shared, title:service.title}} version={home.bookingPolicyVersion} plain /><p>Refund calculations, date cut-offs and any non-refundable third-party costs are confirmed in your written agreement.</p><Link to="/traveler/booking-terms">Read Booking Terms →</Link></div></details>
+        </div><div className="sp-price"><span>From</span><strong>{price.replace(/^From\s+/i, '')}</strong><p>{note}</p><Action label={service.ctaLabel} to={service.ctaUrl} section={service.id} /></div>
+      </article>
+    })}</div><p className="sp-note sp-price-note">{m.note.replace(/USD (?:99|299|699)\b/g, (amount) => {
+      const id = { 'USD 99':'planning', 'USD 299':'road-trip', 'USD 699':'signature' }[amount]
+      return (home.services.find((service) => service.id === id)?.price || amount).replace(/^From\s+/i, '')
+    })}</p><p className="sp-education" id="educational-cultural-journeys">Planning an educational or cultural group journey? <Link to="/traveler/contact?service=education">Discuss a tailored program →</Link></p></div></section>,
+    pricing: (m) => <section className="sp-section sp-pricing"><div className="sp-container"><SectionHead module={m} centered /><ol className="sp-four-grid sp-pricing-steps">{m.items.map((item, i) => <li key={i}><span className="sp-step-icon">{icons(pricingIcons, i)}</span><h3>{item.title}</h3><p>{item.body}</p></li>)}</ol><div className="sp-direct"><div><ShieldCheck aria-hidden="true" /><div><strong>{m.stripTitle}</strong><p>{m.stripBody}</p></div></div><Action label={m.ctaLabel} to={m.ctaUrl} section="pricing" /></div></div></section>,
+    vehicles: (m) => <section className="sp-section sp-vehicles"><div className="sp-container"><SectionHead module={m} centered /><div className="sp-four-grid sp-vehicle-points">{m.points.map((point, i) => <div key={point}>{icons(vehicleIcons, i)}<span>{point}</span></div>)}</div><div className="sp-gallery-wrap"><button type="button" className="sp-gallery-arrow is-prev" aria-label="Previous vehicle images" onClick={() => moveGallery(-1)}><ChevronLeft /></button><div ref={gallery} className="sp-gallery" tabIndex={0} role="region" aria-label="Vehicle and journey illustrations" onKeyDown={(event) => { if (['ArrowLeft', 'ArrowRight'].includes(event.key)) { event.preventDefault(); moveGallery(event.key === 'ArrowLeft' ? -1 : 1) } }}>{content.gallery.filter((image) => visibleServiceMedia(image)).map((image, i) => <ServiceImage key={i} image={image} />)}</div><button type="button" className="sp-gallery-arrow is-next" aria-label="Next vehicle images" onClick={() => moveGallery(1)}><ChevronRight /></button></div><p className="sp-note">{m.note}</p>{moduleCta(m)}</div></section>,
+    idea: (m) => <section className="sp-section sp-idea"><ServiceImage image={m.image} className="sp-idea-image" /><div className="sp-container"><SectionHead module={m} /><div className="sp-idea-steps">{m.items.map((item, i) => <article key={i}>{icons(pricingIcons, i)}<div><h3>{item.title}</h3><p>{item.body}</p></div></article>)}</div>{moduleCta(m)}</div></section>,
+    reviews: (m) => <section className="sp-section sp-reviews"><div className="sp-container"><SectionHead module={m} />{!content.reviews.length && servicesPreview && <p className="sp-sample-notice">{m.note}</p>}<div className="sp-review-grid">{reviews.map((review, i) => <article key={i}>{visibleServiceMedia(review.image) && <button className="sp-review-image" aria-label={`View full ${content.reviews.length ? 'traveler photo' : 'illustration'} ${i + 1}`} onClick={(event) => { opener.current = event.currentTarget; setFullImage(review.image) }}><ServiceImage image={review.image} /></button>}<div>{!content.reviews.length && <strong className="sp-sample-label">AI SAMPLE · NOT A REAL REVIEW</strong>}<blockquote>“{review.text}”</blockquote>{content.reviews.length > 0 && review.displayName && <p>{review.displayName}</p>}</div></article>)}</div>{!reviews.length && <p className="sp-review-empty">{m.emptyText}</p>}</div></section>,
+    final: (m) => <section className="sp-section sp-final"><div className="sp-container"><h2>{m.title.split(/(Adventure)/).map((part, i) => <span key={i} className={part === 'Adventure' ? 'text-gold' : ''}>{part}</span>)}</h2><p>{m.body}</p><div><Action label={m.primaryLabel} to={m.primaryUrl} section="services_final" /><Link className="btn btn-outline" to={safeServiceLink(m.secondaryUrl, '/traveler/itineraries')}>{m.secondaryLabel}</Link></div></div></section>,
+  }
+  return <div className="services-page sp-page">{content.modules.filter((m) => m.visible).map((module) => <div key={module.id} data-service-module={module.id}>{render[module.id]?.(module)}</div>)}
+    {servicesPreview && <p className="sp-prototype-note">Service page design preview. Images marked AI are illustrative concepts.</p>}
+    <dialog ref={dialog} className="sp-lightbox" aria-label="Full travel image" onCancel={(event) => { event.preventDefault(); setFullImage(null) }} onClick={(event) => { if (event.target === event.currentTarget) setFullImage(null) }}><button type="button" aria-label="Close full image" onClick={() => setFullImage(null)}><X /></button>{fullImage && <img src={fullImage.src} alt={fullImage.alt} />}{fullImage?.aiGenerated && <p>AI illustration · not a customer photograph</p>}</dialog>
+  </div>
 }

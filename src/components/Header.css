@@ -90,6 +90,7 @@
 .header-cta__short { display: none; }
 
 .nav-toggle {
+  color: inherit;
   display: none;
   width: 2.5rem;
   height: 2.5rem;

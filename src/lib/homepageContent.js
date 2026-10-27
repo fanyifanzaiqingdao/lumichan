@@ -39,6 +39,9 @@ export function normalizeHomepage(saved = {}) {
     homepage.faqs = (homepage.faqs || defaults.faqs).map((faq) => faq[0] === defaults.faqs[0][0] ? defaults.faqs[0] : faq)
     homepage.contentRevision = defaults.contentRevision
   }
+  homepage.services = homepage.services.map((service) => ['road-trip','signature'].includes(service.id) && service.unitApproved !== true && service.unit === '/ day / vehicle'
+    ? { ...service, unit: 'Starting reference', unitApproved: false, priceNote: 'Final pricing basis confirmed in your written quote' } : service)
+  homepage.faqs = (homepage.faqs || []).map((faq) => faq[0] === defaults.faqs[0][0] && /per day per vehicle/.test(faq[1]) ? defaults.faqs[0] : faq)
   return homepage
 }
 

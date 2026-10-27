@@ -28,7 +28,7 @@ function support_knowledge(): array {
         }
     }
     $prices=implode("\n",array_map(static fn($s)=>$s['title'].': '.$s['price'].' '.$s['unit'],$home['services']));
-    $add('pricing','Starting prices currency per vehicle not per person / 起价计价单位', $prices."\nVehicle prices are per day, per vehicle, not per person. Final pricing and inclusions are confirmed in your proposal.",$prices."\n车辆服务按天、按车计价，不是每人价格。最终价格和包含项目以确认报价为准。");
+    $add('pricing','Starting prices and quotation basis / 起价与计价口径', $prices."\nRoad Trip and Signature starting references are not per-person or complete-package prices. The pricing unit, final price and inclusions must be confirmed in your written quote.",$prices."\nRoad Trip 和 Signature 为参考起价，不是每人价或完整套餐价；计价单位、最终价格和包含项目须以书面报价确认为准。");
     $add('planning-five-days','Five day planning support price / 5天规划价格','Planning support for a five-day trip is USD 99. This is the planning-support fee, not a complete travel package. Third-party services are quoted separately.','5 天行程规划支持费用为 USD 99。这是规划支持费用，不是整个旅行套餐价格；第三方服务另行报价。');
     foreach ($home['services'] as $service) if ($service['id']==='planning') {
         $add('planning-ranges','Planning fee by trip length, 1-5 and 6-10 days / 规划支持价格区间',

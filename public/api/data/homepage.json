@@ -132,8 +132,8 @@
       "price": "From USD 299",
       "booking": "One free date change with 7+ days’ notice.",
       "href": "/traveler/services#private-road-trip",
-      "unit": "/ day / vehicle",
-      "priceNote": "Recommended for up to 4 travelers",
+      "unit": "Starting reference",
+      "priceNote": "Final pricing basis confirmed in your written quote",
       "imageCaption": "Give me the car.",
       "includedHighlights": [
         "Private vehicle",
@@ -181,7 +181,8 @@
         "confirmedOn": "2026-10-12",
         "sourceSha256": "4ee026d58e55091d5d6ecd7a3826c845a36e7e7c7e443639a17dbf1f4777a5f0",
         "sourceDocument": "Lumichan_Developer_Revision_Brief.docx, sections 5–8; cites Lumichan_Travel_Services_type.pdf pages 2–5"
-      }
+      },
+      "unitApproved": false
     },
     {
       "id": "signature",
@@ -193,8 +194,8 @@
       "price": "From USD 699",
       "booking": "One free date change with 14+ days’ notice.",
       "href": "/traveler/services#signature-private-journey",
-      "unit": "/ day / vehicle",
-      "priceNote": "Final pricing depends on itinerary and service requirements",
+      "unit": "Starting reference",
+      "priceNote": "Final pricing basis confirmed in your written quote",
       "imageCaption": "Design it all.",
       "includedHighlights": [
         "One-to-one planning",
@@ -242,7 +243,8 @@
         "confirmedOn": "2026-10-12",
         "sourceSha256": "4ee026d58e55091d5d6ecd7a3826c845a36e7e7c7e443639a17dbf1f4777a5f0",
         "sourceDocument": "Lumichan_Developer_Revision_Brief.docx, sections 5–8; cites Lumichan_Travel_Services_type.pdf pages 2–5"
-      }
+      },
+      "unitApproved": false
     },
     {
       "id": "education",
@@ -452,7 +454,7 @@
   "faqs": [
     [
       "How much will my journey cost?",
-      "Planning support starts from USD 99 per trip. Private Road Trip starts from USD 299 per day per vehicle, and Signature Private Journey starts from USD 699 per day per vehicle. Your proposal confirms the final price, inclusions and group basis."
+      "Planning support starts from USD 99 per trip. Private Road Trip starts from USD 299, and Signature Private Journey starts from USD 699. Road Trip and Signature are starting references, not per-person or complete-package prices. The pricing basis, final price and inclusions are confirmed in your written quote."
     ],
     [
       "Do I need to know exactly where I want to go?",

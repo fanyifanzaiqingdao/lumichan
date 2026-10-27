@@ -121,6 +121,16 @@ function homepage_upgrade(array $homepage): array
         $homepage['whyGallery'] = $seed['whyGallery'];
         $homepage['contentRevision'] = $seed['contentRevision'];
     }
+    foreach ($homepage['services'] ?? [] as $i => $service) {
+        if (in_array($service['id'] ?? '', ['road-trip','signature'], true) && ($service['unitApproved'] ?? false) !== true && ($service['unit'] ?? '') === '/ day / vehicle') {
+            $homepage['services'][$i]['unit'] = 'Starting reference';
+            $homepage['services'][$i]['unitApproved'] = false;
+            $homepage['services'][$i]['priceNote'] = 'Final pricing basis confirmed in your written quote';
+        }
+    }
+    foreach ($homepage['faqs'] ?? [] as $i => $faq) {
+        if (($faq[0] ?? '') === $seed['faqs'][0][0] && str_contains($faq[1] ?? '', 'per day per vehicle')) $homepage['faqs'][$i] = $seed['faqs'][0];
+    }
     return $homepage;
 }
 
@@ -214,6 +224,7 @@ function homepage_validate(array $homepage): ?string
         if (($service['id'] ?? '') !== $ids[$index] || empty($service['title']) || empty($service['summary']) || empty($service['price'])) return 'Invalid service order or fields';
         $anchor = ['planning-support', 'private-road-trip', 'signature-private-journey', 'educational-cultural-journeys'][$index];
         if (($service['href'] ?? '') !== '/traveler/services#' . $anchor) return 'Invalid service route';
+        if (isset($service['unitApproved']) && !is_bool($service['unitApproved'])) return 'Unit approval must be a boolean';
         if (homepage_is_placeholder($service['price'])) return 'Service price cannot be a placeholder';
         $mediaError = homepage_service_media_error($service);
         if ($mediaError !== null) return $mediaError;

@@ -151,6 +151,7 @@ a.contact-info-card:hover {
 }
 
 .contact-form-rich input,
+.contact-form-rich select,
 .contact-form-rich textarea {
   width: 100%;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -162,6 +163,7 @@ a.contact-info-card:hover {
 }
 
 .contact-form-rich input:focus,
+.contact-form-rich select:focus,
 .contact-form-rich textarea:focus {
   outline: none;
   border-color: rgba(201, 162, 39, 0.55);

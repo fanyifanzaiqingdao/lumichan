@@ -21,6 +21,9 @@ $input = contact_read_input();
 $name = trim((string) ($input['name'] ?? ''));
 $email = trim((string) ($input['email'] ?? ''));
 $phone = trim((string) ($input['phone'] ?? ''));
+$preferredService = trim((string) ($input['preferred_service'] ?? ''));
+$serviceNames = ['planning' => 'Journey Planning & Local Support', 'road-trip' => 'Private Road Trip', 'signature' => 'Signature Private Journey', 'education' => 'Educational & Cultural Journeys'];
+if ($preferredService !== '' && !isset($serviceNames[$preferredService])) api_json(400, ['ok' => false, 'error' => 'Invalid preferred service']);
 $subjectInput = trim((string) ($input['subject'] ?? ''));
 $message = trim((string) ($input['message'] ?? ''));
 $honeypot = trim((string) ($input['website'] ?? ''));
@@ -60,6 +63,8 @@ $record = [
     'email' => $email,
     'phone' => $phone,
     'subject' => $subjectInput,
+    'preferred_service' => $preferredService,
+    'preferred_service_title' => $serviceNames[$preferredService] ?? 'Not sure yet',
     'message' => $message,
 ];
 
@@ -77,7 +82,8 @@ if ($saveToFile) {
 $mailOk = true;
 if ($sendMail) {
     $subject = $subjectPrefix . ' ' . $subjectInput;
-    $body = "Name: {$name}\nEmail: {$email}\nPhone: {$phone}\nSubject: {$subjectInput}\nIP: {$ip}\nTime: {$record['time']}\n\nMessage:\n{$message}\n";
+    $serviceTitle = $serviceNames[$preferredService] ?? 'Not sure yet';
+    $body = "Preferred service: {$serviceTitle}\nName: {$name}\nEmail: {$email}\nPhone: {$phone}\nSubject: {$subjectInput}\nIP: {$ip}\nTime: {$record['time']}\n\nMessage:\n{$message}\n";
     $mailOk = api_send_mail($toEmail, $subject, $body, $email);
 }
 

@@ -561,3 +561,5 @@
     grid-template-columns: 1fr;
   }
 }
+
+.admin-service-module{margin:18px 0;padding:20px;border:1px solid #cbd5e1;border-radius:12px;background:#fff}.admin-service-module>summary{font-weight:700;cursor:pointer;min-height:44px;overflow-wrap:anywhere}.admin-service-module fieldset{min-width:0;border:1px solid #cbd5e1;border-radius:8px;margin:12px 0;padding:16px}.admin-service-module legend{font-weight:600}.admin-service-module input[type=checkbox]{width:auto}.admin-service-module:has(>summary:focus-visible){outline:3px solid #c9a227}.admin-service-module .admin-form-grid{margin-top:15px}
