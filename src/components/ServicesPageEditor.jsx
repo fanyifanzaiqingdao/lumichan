@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import seed from '../lib/servicesPage.js'
 
-const LABELS = {title:'标题',eyebrow:'小标题',body:'正文',note:'说明',emptyText:'暂无评价文案',order:'排序',visible:'显示模块',ctaLabel:'按钮文案',ctaUrl:'按钮链接',subtitle:'简介',points:'可见卖点（每行一项）',included:'包含内容（每行一项）',bestFor:'适合人群',image:'图片',src:'图片路径',alt:'图片描述 alt',focalPoint:'裁切焦点（横向% 纵向%）',aiGenerated:'AI 示意素材',authorized:'已有正式展示授权',licenseRecord:'素材来源／授权记录',published:'显示图片',items:'内容项',stripTitle:'说明条标题',stripBody:'说明条正文',primaryLabel:'主按钮文案',primaryUrl:'主按钮链接',secondaryLabel:'次按钮文案',secondaryUrl:'次按钮链接',text:'评价原文',source:'核验来源',permission:'评价授权记录',displayName:'展示名（可留空）',verified:'来源已核验',status:'发布状态'}
+const LABELS = {title:'标题',description:'说明',intervalMs:'轮换间隔（毫秒，2500–15000）',enabled:'显示故事',frames:'静帧',entityName:'登记主体',registeredAddressChinese:'登记地址（中文）',registeredAddressEnglish:'登记地址（英文）',version:'版本',reviewedBy:'审核人',reviewedAt:'审核日期',effectiveDate:'生效日期',contactAddress:'页脚联系地址',email:'页脚邮箱',eyebrow:'小标题',body:'正文',note:'说明',emptyText:'暂无评价文案',order:'排序',visible:'显示模块',ctaLabel:'按钮文案',ctaUrl:'按钮链接',subtitle:'简介',points:'可见卖点（每行一项）',included:'包含内容（每行一项）',bestFor:'适合人群',image:'图片',src:'图片路径',alt:'图片描述 alt',focalPoint:'裁切焦点（横向% 纵向%）',aiGenerated:'AI 示意素材',authorized:'已有正式展示授权',licenseRecord:'素材来源／授权记录',published:'显示图片',items:'内容项',stripTitle:'说明条标题',stripBody:'说明条正文',primaryLabel:'主按钮文案',primaryUrl:'主按钮链接',secondaryLabel:'次按钮文案',secondaryUrl:'次按钮链接',text:'评价原文',source:'核验来源',permission:'评价授权记录',displayName:'展示名（可留空）',verified:'来源已核验',status:'发布状态'}
 const emptyImage = () => ({src:'',alt:'',focalPoint:'50% 50%',aiGenerated:false,licenseRecord:'',authorized:false,published:true})
-function Fields({ value, path, change }) {
+export function Fields({ value, path, change }) {
   return <div className="admin-form-grid">{Object.entries(value).filter(([key]) => !['id','anchor','schemaVersion','aiSample'].includes(key) && !(['why','services','reviews','final'].includes(value.id) && ['ctaLabel','ctaUrl'].includes(key))).map(([key, item]) => {
     const name = LABELS[key] || key
     const nextPath = [...path, key]
@@ -13,8 +13,8 @@ function Fields({ value, path, change }) {
     }
     if (item && typeof item === 'object') return <fieldset className="span-2" key={key}><legend>{name}</legend><Fields value={item} path={nextPath} change={change} />{key === 'image' && <ImageUpload path={nextPath} change={change} />}</fieldset>
     if (typeof item === 'boolean') return <label key={key}><span><input type="checkbox" checked={item} onChange={(e) => change(nextPath,e.target.checked)} /> {name}</span></label>
-    if (key === 'status') return <label key={key}>{name}<select aria-label={name} value={item} onChange={(e) => change(nextPath,e.target.value)}><option value="draft">草稿</option><option value="published">发布（需核验及授权）</option></select></label>
-    if (typeof item === 'number') return <label key={key}>{name}<input aria-label={name} type="number" min="0" max="100" value={item} onChange={(e) => change(nextPath,Number(e.target.value))} /></label>
+    if (key === 'status') return <label key={key}>{name}<select aria-label={name} value={item} onChange={(e) => change(nextPath,e.target.value)}><option value="draft">草稿</option><option value={value.registeredAddressChinese !== undefined ? "approved" : "published"}>{value.registeredAddressChinese !== undefined ? "审核通过" : "发布（需核验及授权）"}</option></select></label>
+    if (typeof item === 'number') return <label key={key}>{name}<input aria-label={name} type="number" min={key === "intervalMs" ? 2500 : 0} max={key === "intervalMs" ? 15000 : 100} value={item} onChange={(e) => change(nextPath,Number(e.target.value))} /></label>
     return <label className={['body','note','text','bestFor','subtitle','permission','licenseRecord'].includes(key) ? 'span-2' : ''} key={key}>{name}{['body','note','text','bestFor','subtitle','permission','licenseRecord','title'].includes(key) ? <textarea aria-label={name} rows={key === 'text' ? 4 : 2} value={item || ''} onChange={(e) => change(nextPath,e.target.value)} /> : <input aria-label={name} value={item || ''} onChange={(e) => change(nextPath,e.target.value)} />}</label>
   })}</div>
 }

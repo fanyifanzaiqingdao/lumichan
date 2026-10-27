@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react'
 import SoftImage from './SoftImage.jsx'
 
-export default function JourneyGallery({ images = [] }) {
+export default function JourneyGallery({ images = [], intervalMs = 5000, label = "Journeys with Lumichan" }) {
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
   const [hovered, setHovered] = useState(false)
@@ -24,12 +24,12 @@ export default function JourneyGallery({ images = [] }) {
     if (!rotating) return
     const timer = window.setInterval(() => {
       if (!document.hidden) setIndex((value) => (value + 1) % images.length)
-    }, 5000)
+    }, Math.min(15000, Math.max(2500, intervalMs)))
     return () => window.clearInterval(timer)
-  }, [rotating, images.length])
+  }, [rotating, images.length, intervalMs])
   const current = index % Math.max(images.length, 1)
   const move = (offset) => { setPaused(true); setIndex((current + offset + images.length) % images.length) }
-  return <div ref={root} className="journey-gallery" role="region" aria-roledescription="carousel" aria-label="Journeys with Lumichan"
+  return <div ref={root} className="journey-gallery" role="region" aria-roledescription="carousel" aria-label={label}
     onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
     onFocusCapture={() => setFocused(true)} onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false) }}>
     <div className="journey-gallery__slides" aria-live={rotating ? 'off' : 'polite'}>

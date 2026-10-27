@@ -7,7 +7,7 @@ export function normalizeHomepage(saved = {}) {
     ...saved,
     schemaVersion: 3,
     bookingPolicyVersion: migrated ? defaults.bookingPolicyVersion : saved.bookingPolicyVersion,
-    copy: { ...defaults.copy, ...saved.copy, process: { ...defaults.copy.process, ...saved.copy?.process, eyebrow: 'How it works' } },
+    copy: { ...defaults.copy, ...saved.copy, process: { ...defaults.copy.process, ...saved.copy?.process, eyebrow: saved.copy?.process?.eyebrow || defaults.copy.process.eyebrow } },
     services: defaults.services.map((seed) => {
       const current = saved.services?.find((item) => item.id === seed.id)
       if (!current) return seed
@@ -42,6 +42,27 @@ export function normalizeHomepage(saved = {}) {
   homepage.services = homepage.services.map((service) => ['road-trip','signature'].includes(service.id) && service.unitApproved !== true && service.unit === '/ day / vehicle'
     ? { ...service, unit: 'Starting reference', unitApproved: false, priceNote: 'Final pricing basis confirmed in your written quote' } : service)
   homepage.faqs = (homepage.faqs || []).map((faq) => faq[0] === defaults.faqs[0][0] && /per day per vehicle/.test(faq[1]) ? defaults.faqs[0] : faq)
+  if (saved.homepageLayoutRevision !== defaults.homepageLayoutRevision) {
+    homepage.copy = { ...homepage.copy, ...defaults.copy }
+    if (!saved.hero?.title || saved.hero.title === 'Explore China More Deeply. Travel With Confidence') homepage.hero = { ...defaults.hero, ...homepage.hero, title: defaults.hero.title }
+    homepage.hero = { ...defaults.hero, ...homepage.hero }
+    homepage.whyGallery = defaults.whyGallery
+    homepage.whyItems = defaults.whyItems
+    homepage.storySequences = defaults.storySequences
+    homepage.services = homepage.services.map((service) => {
+      const seed = defaults.services.find((item) => item.id === service.id)
+      const oldImage = !service.image || service.image.startsWith('/images/home-revision2/')
+      return { ...service, detailPageUrl: seed.detailPageUrl, titleLinkEnabled: seed.titleLinkEnabled, imageLinkEnabled: seed.imageLinkEnabled,
+        ...(oldImage ? { image: seed.image, imageAlt: seed.imageAlt, media: { ...seed.media, ...(service.media?.published === false ? { published: false } : {}) } } : {}) }
+    })
+    homepage.journeys = homepage.journeys.map((journey) => ({ ...journey, showHomepagePrice: false }))
+    if ((saved.faqs || []).length !== 5) homepage.faqs = defaults.faqs
+    if ((saved.process?.steps || []).some((step) => ['Inquiry', 'Booking', 'Before you travel'].includes(step.title))) homepage.process.steps = defaults.process.steps
+    homepage.homepageLayoutRevision = defaults.homepageLayoutRevision
+  }
+  homepage.footer = { ...defaults.footer, ...saved.footer }
+  homepage.legalIdentity = { ...defaults.legalIdentity, ...saved.legalIdentity }
+  homepage.storySequences ??= defaults.storySequences
   return homepage
 }
 
@@ -62,7 +83,7 @@ export function approvedPolicy(service, version) {
 }
 
 export function publishedReviews(reviews = []) {
-  return reviews.filter((item) => item.published === true && item.status === 'approved' &&
+  return reviews.filter((item) => item.published === true && item.status === 'approved' && item.layoutOnly !== true && item.aiGenerated !== true && item.reviewSource &&
     item.image && !/placeholder/i.test(item.image) && item.imageAlt && item.imageConsentRecord && item.quote &&
     item.guestDisplayName && item.tripContext && item.reviewConsentRecord)
     .sort((a, b) => (a.order || 0) - (b.order || 0))

@@ -123,16 +123,16 @@ export default function InquiryForm({ services, track, config }) {
   return (
     <form className="inquiry-form" ref={formRef} onSubmit={submit} onChange={markStarted} noValidate>
       {status === 'success' && <div className="inquiry-success" role="status"><h3>{config.successTitle}</h3><p>{config.successBody}</p></div>}
-      <label>Full name *<input name="name" autoComplete="name" maxLength={100} aria-invalid={!!errors.name} aria-describedby={errors.name ? 'error-name' : undefined} /><ErrorText field="name" message={errors.name} /></label>
-      <label>Email *<input name="email" type="email" autoComplete="email" maxLength={200} aria-invalid={!!errors.email} aria-describedby={errors.email ? 'error-email' : undefined} /><ErrorText field="email" message={errors.email} /></label>
-      <label>Number of travelers *<input name="travelers" type="number" min="1" step="1" inputMode="numeric" aria-invalid={!!errors.travelers} aria-describedby={errors.travelers ? 'error-travelers' : undefined} /><ErrorText field="travelers" message={errors.travelers} /></label>
-      <label>Travel dates or month *<input name="travel_dates" placeholder="Exact dates or approximate month" maxLength={100} aria-invalid={!!errors.travel_dates} aria-describedby={errors.travel_dates ? 'error-travel_dates' : undefined} /><ErrorText field="travel_dates" message={errors.travel_dates} /></label>
+      <label>Full name *<input required name="name" autoComplete="name" maxLength={100} aria-invalid={!!errors.name} aria-describedby={errors.name ? 'error-name' : undefined} /><ErrorText field="name" message={errors.name} /></label>
+      <label>Email *<input required name="email" type="email" autoComplete="email" maxLength={200} aria-invalid={!!errors.email} aria-describedby={errors.email ? 'error-email' : undefined} /><ErrorText field="email" message={errors.email} /></label>
+      <label>Number of travelers *<input required name="travelers" type="number" min="1" step="1" inputMode="numeric" aria-invalid={!!errors.travelers} aria-describedby={errors.travelers ? 'error-travelers' : undefined} /><ErrorText field="travelers" message={errors.travelers} /></label>
+      <label>Travel dates or month *<input required name="travel_dates" placeholder="Exact dates or approximate month" maxLength={100} aria-invalid={!!errors.travel_dates} aria-describedby={errors.travel_dates ? 'error-travel_dates' : undefined} /><ErrorText field="travel_dates" message={errors.travel_dates} /></label>
       <details className="inquiry-preferences inquiry-form__wide" ref={preferencesRef}>
         <summary>More travel preferences <span>(optional)</span></summary>
         <div className="inquiry-preferences__fields">
       <label>Preferred contact<select name="preferred_contact" value={contact} onChange={(event) => setContact(event.target.value)}>{CONTACTS.map((option) => <option key={option}>{option}</option>)}</select></label>
-      {contact !== 'Email' && <label>{contact} account *<input name="contact_handle" autoComplete="off" maxLength={80} aria-invalid={!!errors.contact_handle} aria-describedby={errors.contact_handle ? 'error-contact_handle' : undefined} /><ErrorText field="contact_handle" message={errors.contact_handle} /></label>}
       <label>Country / region<input name="country" autoComplete="country-name" maxLength={100} /></label>
+      {contact !== 'Email' && <label>{contact} account *<input required name="contact_handle" autoComplete="off" maxLength={80} aria-invalid={!!errors.contact_handle} aria-describedby={errors.contact_handle ? 'error-contact_handle' : undefined} /><ErrorText field="contact_handle" message={errors.contact_handle} /></label>}
       <label>Destinations<input name="destinations" placeholder="Not sure yet" maxLength={200} /></label>
       <label>Preferred service<select name="preferred_service" value={service} onChange={(event) => setService(event.target.value)}><option value="">Not sure yet</option>{services.map((item) => <option key={item.id}>{item.title}</option>)}</select></label>
       <label>Traveling with children<select name="traveling_with_children" value={children ? 'yes' : 'no'} onChange={(event) => setChildren(event.target.value === 'yes')}><option value="no">No</option><option value="yes">Yes</option></select></label>

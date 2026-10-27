@@ -133,9 +133,9 @@ test('unpublished service images stay hidden across migration and empty API imag
 })
 
 test('only photo and review approved stories are published', () => {
-  const valid = { id: '1', published: true, status: 'approved', image: '/uploads/authorized.jpg', imageAlt: 'Authorized trip photo', imageConsentRecord: 'photo-record', quote: 'Authorized review fixture', guestDisplayName: 'Test', tripContext: 'Test trip', reviewConsentRecord: 'review-record' }
+  const valid = { id: '1', published: true, status: 'approved', image: '/uploads/authorized.jpg', imageAlt: 'Authorized trip photo', imageConsentRecord: 'photo-record', quote: 'Authorized review fixture', guestDisplayName: 'Test', tripContext: 'Test trip', reviewConsentRecord: 'review-record', reviewSource: 'verified-source' }
   assert.equal(publishedReviews([valid]).length, 1)
-  for (const field of ['image', 'imageAlt', 'imageConsentRecord', 'quote', 'guestDisplayName', 'tripContext', 'reviewConsentRecord']) {
+  for (const field of ['image', 'imageAlt', 'imageConsentRecord', 'quote', 'guestDisplayName', 'tripContext', 'reviewConsentRecord', 'reviewSource']) {
     assert.equal(publishedReviews([{ ...valid, [field]: '' }]).length, 0)
   }
   assert.equal(publishedReviews([{ ...valid, status: 'draft' }]).length, 0)
@@ -153,4 +153,21 @@ test('new service brief removes unconfirmed vehicle units without discarding con
   assert.equal(result.services[1].unit, 'Starting reference')
   assert.equal(result.services[2].unit, '/ confirmed custom group')
   assert.doesNotMatch(result.faqs[0][1], /per day per vehicle/)
+})
+
+test('homepage V2.2 keeps service prices/policies and upgrades layouts once', () => {
+  const old = structuredClone(homepage)
+  delete old.homepageLayoutRevision
+  old.services[1].price = 'From USD 329'
+  old.services[0].image = '/uploads/custom-planning.jpg'
+  const result = normalizeHomepage(old)
+  assert.equal(result.services[1].price, 'From USD 329')
+  assert.deepEqual(result.services[1].bookingPolicy, old.services[1].bookingPolicy)
+  assert.equal(result.services[0].image, old.services[0].image)
+  assert.equal(result.faqs.length, 5)
+  assert.ok(result.journeys.every(journey => journey.showHomepagePrice === false))
+  assert.equal(result.storySequences.length, 3)
+  assert.ok(result.storySequences.every(story => story.frames.length === 4))
+  result.services[0].titleLinkEnabled = false
+  assert.equal(normalizeHomepage(result).services[0].titleLinkEnabled, false)
 })

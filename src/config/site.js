@@ -7,6 +7,7 @@ export const SITE = {
   phoneDisplay: '+86 13551117121',
   // International format, digits only (no + / spaces)
   whatsappNumber: import.meta.env.VITE_WHATSAPP_NUMBER || '',
+  // Contact location; legal registration is separately reviewed in homepage.legalIdentity.
   address:
     'No. 140, Annex of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China',
   whatsappPrefill: "Hi Lumichan! I'd like to book a consultation.",

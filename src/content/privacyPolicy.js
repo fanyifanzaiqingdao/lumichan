@@ -26,7 +26,7 @@ export default {
   },
   {
     "type": "p",
-    "text": "Lumichan designs private, tailor-made journeys and cultural travel experiences in China. For the purposes of this Privacy Policy, the entity responsible for processing your personal information is: Legal Company Name: 寰宇纵横国际旅行社（重庆）有限公司四川第四分公司 Brand: Lumichan Registered Address: No. 140, Annex of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China Email: jin.lu@lumichan.com.cn Telephone:+86 13551117121"
+    "text": "Lumichan designs private, tailor-made journeys and cultural travel experiences in China. For the purposes of this Privacy Policy, the entity responsible for processing your personal information is: Legal Company Name: 寰宇纵横国际旅行社（重庆）有限公司四川第四分公司 Brand: Lumichan Registered Address: {{REGISTERED_ADDRESS}} Contact Address: No. 140, Annex of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China Email: jin.lu@lumichan.com.cn Telephone:+86 13551117121"
   },
   {
     "type": "hr"
@@ -273,7 +273,7 @@ export default {
   },
   {
     "type": "p",
-    "text": "If you have questions about this Privacy Policy, wish to exercise your privacy rights or have concerns about how Lumichan handles your personal information, please contact: Lumichan Legal Company Name: 寰宇纵横国际旅行社（重庆）有限公司四川第四分公司 Registered Address: No. 140, Annex of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China Email: jin.lu@lumichan.com.cn Telephone: +86 13551117121 We will review privacy enquiries and respond in accordance with applicable legal requirements."
+    "text": "If you have questions about this Privacy Policy, wish to exercise your privacy rights or have concerns about how Lumichan handles your personal information, please contact: Lumichan Legal Company Name: 寰宇纵横国际旅行社（重庆）有限公司四川第四分公司 Registered Address: {{REGISTERED_ADDRESS}} Contact Address: No. 140, Annex of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China Email: jin.lu@lumichan.com.cn Telephone: +86 13551117121 We will review privacy enquiries and respond in accordance with applicable legal requirements."
   },
   {
     "type": "hr"

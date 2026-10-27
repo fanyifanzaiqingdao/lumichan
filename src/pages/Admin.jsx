@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import defaultHomepage from '../data/homepage.js'
 import { normalizeHomepage, quotationTemplate } from '../lib/homepageContent.js'
-import ServicesPageEditor from '../components/ServicesPageEditor.jsx'
+import ServicesPageEditor, { Fields as ContentFields } from '../components/ServicesPageEditor.jsx'
 import './Admin.css'
 
 const AUTH_API = '/api/admin-auth.php'
@@ -824,6 +824,8 @@ export default function Admin() {
                     <input value={homepage.hero?.image || ''} onChange={(e) => updateHomepage(['hero', 'image'], e.target.value)} />
                     <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['hero', 'image'])} />
                   </label>
+                  <label>手机首屏图片（留空沿用桌面图）<input value={homepage.hero?.mobileImage || ''} onChange={(event) => updateHomepage(['hero','mobileImage'],event.target.value)} /><input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => uploadHomepageImage(event.target.files?.[0],['hero','mobileImage'])} /></label>
+                  <label>首屏裁切焦点<input value={homepage.hero?.imageFocalPoint || '50% 50%'} onChange={(event) => updateHomepage(['hero','imageFocalPoint'],event.target.value)} /></label>
                   <label className="span-2">
                     标题
                     <input value={homepage.hero?.title || ''} onChange={(e) => updateHomepage(['hero', 'title'], e.target.value)} />
@@ -887,6 +889,9 @@ export default function Admin() {
                         链接
                         <input value={item.href || ''} onChange={(e) => updateHomepage(['services', index, 'href'], e.target.value)} />
                       </label>
+                      <label>服务详情地址<input value={item.detailPageUrl || item.href || ''} onChange={(event) => updateHomepage(['services',index,'detailPageUrl'],event.target.value)} /></label>
+                      <label><span><input type="checkbox" disabled={item.id === 'education'} checked={item.id !== 'education' && item.titleLinkEnabled !== false} onChange={(event) => updateHomepage(['services',index,'titleLinkEnabled'],event.target.checked)} /> 标题链接</span></label>
+                      <label><span><input type="checkbox" disabled={item.id === 'education'} checked={item.id !== 'education' && item.imageLinkEnabled !== false} onChange={(event) => updateHomepage(['services',index,'imageLinkEnabled'],event.target.checked)} /> 主图链接</span></label>
                       <label>图片路径
                         <input value={item.image || ''} onChange={(e) => updateHomepage(['services', index, 'image'], e.target.value)} />
                         <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['services', index, 'image'])} />
@@ -966,6 +971,7 @@ export default function Admin() {
                         价格
                         <input value={item.price || ''} onChange={(e) => updateHomepage(['journeys', index, 'price'], e.target.value)} />
                       </label>
+                      <label><span><input type="checkbox" checked={item.showHomepagePrice === true} onChange={(event) => updateHomepage(['journeys',index,'showHomepagePrice'],event.target.checked)} /> 首页显示已审批价格（默认关闭）</span></label>
                       <label>图片上的起价标签（如 From USD 299，留空不显示）
                         <input value={item.priceBadge || ''} onChange={(e) => updateHomepage(['journeys', index, 'priceBadge'], e.target.value)} />
                       </label>
@@ -1044,18 +1050,17 @@ export default function Admin() {
                   ))}
                 </div>
               </div>
-              <div className="admin-home-card">
-                <h2 className="font-serif">流程视频已停用</h2>
-                <p className="admin-muted">3.0 版本仅保留六步流程，不读取或展示历史视频。</p>
-              </div>
+              <div className="admin-home-card"><h2>Journey Stories 静帧序列</h2><p>三组各四帧；默认自动切换，可手动暂停，遵循减弱动态偏好。这里不是视频。</p>{(homepage.storySequences || []).map((story,index) => <details key={story.id} className="admin-service-module"><summary>{story.title}</summary><ContentFields value={story} path={['storySequences',index]} change={updateHomepage} /></details>)}</div>
+              <div className="admin-home-card"><h2>页脚联系信息</h2><ContentFields value={homepage.footer || {}} path={['footer']} change={updateHomepage} /></div>
+              <div className="admin-home-card"><h2>登记主体与登记地址（与联系地址分开）</h2><p>附件登记地址为待核验草稿。填写审核人与生效日期并审核通过后，才对正式页面发布。</p><ContentFields value={homepage.legalIdentity || {}} path={['legalIdentity']} change={updateHomepage} /></div>
               <div className="admin-home-card">
                 <h2 className="font-serif">Guest Stories / 旅客评价</h2>
-                <p className="admin-muted">首页标题：Words From Our Travelers。介绍：Real journeys. Real experiences. Stories worth sharing.</p>
-                <p className="admin-muted">照片和评价均需授权并审批。正式环境无已发布评价时隐藏整栏；开发和测试环境保留三张设计占位，不发布虚构证言。</p>
+                <p className="admin-muted">首页标题和介绍可在上方 reviews 文案配置中修改。</p>
+                <p className="admin-muted">照片和评价均需授权并审批。正式环境无真实授权评价时保留栏目空态；开发和测试环境显示明确标注的 AI 样例。</p>
                 {(homepage.reviews || []).map((item, index) => (
                   <div className="admin-home-repeat" key={index}>
                     <div className="admin-form-grid">
-                      {['id', 'quote', 'guestDisplayName', 'tripContext', 'image', 'imageAlt', 'imageFocalPoint', 'imageConsentRecord', 'reviewConsentRecord'].map((field) => <label key={field}>{field}<input value={item[field] || ''} onChange={(e) => updateHomepage(['reviews', index, field], e.target.value)} /></label>)}
+                      {['id', 'quote', 'guestDisplayName', 'tripContext', 'image', 'imageAlt', 'imageFocalPoint', 'imageConsentRecord', 'reviewConsentRecord', 'reviewSource'].map((field) => <label key={field}>{field}<input value={item[field] || ''} onChange={(e) => updateHomepage(['reviews', index, field], e.target.value)} /></label>)}
                       <label>顺序<input type="number" min="1" value={item.order || index + 1} onChange={(e) => updateHomepage(['reviews', index, 'order'], Number(e.target.value))} /></label>
                       <label>审批<select value={item.status || 'draft'} onChange={(e) => updateHomepage(['reviews', index, 'status'], e.target.value)}><option value="draft">草稿</option><option value="approved">已审批</option></select></label>
                       <label>上传照片<input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['reviews', index, 'image'])} /></label>
@@ -1064,7 +1069,7 @@ export default function Admin() {
                     <button type="button" className="btn btn-outline" onClick={() => removeHomepageItem('reviews', index)}>删除</button>
                   </div>
                 ))}
-                <button type="button" className="btn btn-outline" onClick={() => addHomepageItem('reviews', { id: crypto.randomUUID(), order: (homepage.reviews?.length || 0) + 1, quote: '', guestDisplayName: '', tripContext: '', image: '', imageAlt: '', imageFocalPoint: '50% 50%', imageConsentRecord: '', reviewConsentRecord: '', status: 'draft', published: false })}>新增 Review</button>
+                <button type="button" className="btn btn-outline" onClick={() => addHomepageItem('reviews', { id: crypto.randomUUID(), order: (homepage.reviews?.length || 0) + 1, quote: '', guestDisplayName: '', tripContext: '', image: '', imageAlt: '', imageFocalPoint: '50% 50%', imageConsentRecord: '', reviewConsentRecord: '', reviewSource: '', layoutOnly: false, aiGenerated: false, status: 'draft', published: false })}>新增 Review</button>
               </div>
             </div>
           )}

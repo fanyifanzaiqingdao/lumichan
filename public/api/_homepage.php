@@ -41,8 +41,11 @@ function homepage_public(array $homepage): array
         }
         if (empty($journey['detailsApproved'])) unset($homepage['journeys'][$index]['details']);
     }
+    if (($homepage['legalIdentity']['status'] ?? '') !== 'approved') unset($homepage['legalIdentity']);
     $homepage['vlogs'] = [];
     $homepage['reviews'] = array_values(array_filter($homepage['reviews'] ?? [], 'homepage_review_approved'));
+    foreach ($homepage['reviews'] as &$review) foreach (['imageConsentRecord','reviewConsentRecord','reviewSource'] as $field) $review[$field] = 'verified';
+    unset($review);
     return $homepage;
 }
 
@@ -97,8 +100,8 @@ function homepage_upgrade(array $homepage): array
         }
     }
     $homepage['process']['videos'] = [];
-    $homepage['copy']['process']['eyebrow'] = 'How it works';
-    $homepage['copy']['services']['disclaimer'] = 'Booking and cancellation terms vary by service. View the applicable terms before booking.';
+    $homepage['copy']['process']['eyebrow'] ??= $seed['copy']['process']['eyebrow'];
+    $homepage['copy']['services']['disclaimer'] ??= $seed['copy']['services']['disclaimer'];
     if (($homepage['contentRevision'] ?? '') !== $seed['contentRevision']) {
         foreach ($homepage['services'] ?? [] as $index => $service) {
             foreach ($seed['services'] as $current) {
@@ -131,6 +134,29 @@ function homepage_upgrade(array $homepage): array
     foreach ($homepage['faqs'] ?? [] as $i => $faq) {
         if (($faq[0] ?? '') === $seed['faqs'][0][0] && str_contains($faq[1] ?? '', 'per day per vehicle')) $homepage['faqs'][$i] = $seed['faqs'][0];
     }
+    if (($homepage['homepageLayoutRevision'] ?? '') !== ($seed['homepageLayoutRevision'] ?? '')) {
+        $homepage['copy'] = array_replace($homepage['copy'] ?? [], $seed['copy']);
+        $oldTitle = $homepage['hero']['title'] ?? '';
+        $homepage['hero'] = array_replace($seed['hero'], $homepage['hero'] ?? []);
+        if ($oldTitle === '' || $oldTitle === 'Explore China More Deeply. Travel With Confidence') $homepage['hero']['title'] = $seed['hero']['title'];
+        foreach (['whyGallery','whyItems','storySequences','homepageLayoutRevision'] as $key) $homepage[$key] = $seed[$key];
+        foreach ($homepage['services'] ?? [] as $i => $service) {
+            foreach ($seed['services'] as $current) {
+                if ($current['id'] !== ($service['id'] ?? '')) continue;
+                foreach (['detailPageUrl','titleLinkEnabled','imageLinkEnabled'] as $key) $homepage['services'][$i][$key] = $current[$key];
+                if (empty($service['image']) || str_starts_with($service['image'], '/images/home-revision2/')) {
+                    foreach (['image','imageAlt','media'] as $key) $homepage['services'][$i][$key] = $current[$key];
+                    if (($service['media']['published'] ?? true) === false) $homepage['services'][$i]['media']['published'] = false;
+                }
+            }
+        }
+        foreach ($homepage['journeys'] ?? [] as $i => $journey) $homepage['journeys'][$i]['showHomepagePrice'] = false;
+        if (count($homepage['faqs'] ?? []) !== 5) $homepage['faqs'] = $seed['faqs'];
+        foreach ($homepage['process']['steps'] ?? [] as $step) if (in_array($step['title'] ?? '', ['Inquiry','Booking','Before you travel'], true)) { $homepage['process']['steps'] = $seed['process']['steps']; break; }
+    }
+    $homepage['storySequences'] ??= $seed['storySequences'];
+    $homepage['footer'] ??= $seed['footer'];
+    $homepage['legalIdentity'] ??= $seed['legalIdentity'];
     return $homepage;
 }
 
@@ -171,8 +197,8 @@ function homepage_policy_approved(array $service, string $version): bool
 
 function homepage_review_approved(array $item): bool
 {
-    if (($item['published'] ?? false) !== true || ($item['status'] ?? '') !== 'approved') return false;
-    foreach (['id', 'image', 'imageAlt', 'imageConsentRecord', 'quote', 'guestDisplayName', 'tripContext', 'reviewConsentRecord'] as $field) {
+    if (($item['published'] ?? false) !== true || ($item['status'] ?? '') !== 'approved' || ($item['layoutOnly'] ?? false) === true || ($item['aiGenerated'] ?? false) === true) return false;
+    foreach (['id', 'image', 'imageAlt', 'imageConsentRecord', 'quote', 'guestDisplayName', 'tripContext', 'reviewConsentRecord', 'reviewSource'] as $field) {
         if (!is_string($item[$field] ?? null) || trim($item[$field]) === '') return false;
     }
     return homepage_valid_media($item['image']) && !preg_match('/placeholder/i', $item['image']);
@@ -181,15 +207,42 @@ function homepage_review_approved(array $item): bool
 function homepage_validate(array $homepage): ?string
 {
     if (($homepage['schemaVersion'] ?? null) !== 3) return 'Homepage schema version 3 is required';
-    foreach (['hero' => null, 'services' => 4, 'journeys' => 3, 'whyItems' => 4, 'steps' => 6, 'faqs' => 8] as $key => $count) {
+    foreach (['hero' => null, 'services' => 4, 'journeys' => 3, 'whyItems' => 4, 'steps' => 6, 'faqs' => 5] as $key => $count) {
         if (!isset($homepage[$key]) || !is_array($homepage[$key]) || ($count !== null && count($homepage[$key]) !== $count)) {
             return "Invalid {$key} structure";
         }
     }
+    if (isset($homepage['storySequences'])) {
+        if (!is_array($homepage['storySequences']) || count($homepage['storySequences']) !== 3) return 'Exactly three story sequences are required';
+        foreach ($homepage['storySequences'] as $story) {
+            foreach (['title','description','id'] as $field) if (!is_string($story[$field] ?? null) || strlen($story[$field]) > 800) return 'Invalid story text';
+            if (!is_bool($story['enabled'] ?? null) || !is_bool($story['aiGenerated'] ?? null) || !is_int($story['intervalMs'] ?? null) || $story['intervalMs'] < 2500 || $story['intervalMs'] > 15000) return 'Invalid story playback settings';
+            if (!is_array($story['frames'] ?? null) || count($story['frames']) !== 4) return 'Each story needs four frames';
+            foreach ($story['frames'] as $frame) if (!is_array($frame) || !homepage_valid_media($frame['src'] ?? null) || !is_string($frame['alt'] ?? null) || trim($frame['alt']) === '' || !is_bool($frame['aiGenerated'] ?? null)) return 'Invalid story frame';
+        }
+    }
+    foreach ($homepage['services'] as $service) {
+        if (isset($service['detailPageUrl']) && (!is_string($service['detailPageUrl']) || !preg_match('~^/traveler/services(?:#[a-z-]+)?$~', $service['detailPageUrl']))) return 'Invalid service detail link';
+        foreach (['titleLinkEnabled','imageLinkEnabled'] as $flag) if (isset($service[$flag]) && !is_bool($service[$flag])) return 'Service link flags must be boolean';
+        if (($service['id'] ?? '') === 'education' && (!empty($service['titleLinkEnabled']) || !empty($service['imageLinkEnabled']))) return 'Education title and image links remain disabled';
+    }
+    foreach ($homepage['journeys'] as $journey) if (isset($journey['showHomepagePrice']) && !is_bool($journey['showHomepagePrice'])) return 'Homepage price visibility must be boolean';
+    if (isset($homepage['footer'])) {
+        if (!is_string($homepage['footer']['contactAddress'] ?? null) || strlen($homepage['footer']['contactAddress']) > 1000 || !filter_var($homepage['footer']['email'] ?? '', FILTER_VALIDATE_EMAIL)) return 'Invalid footer contact settings';
+    }
+    if (isset($homepage['legalIdentity'])) {
+        $legal = $homepage['legalIdentity'];
+        foreach (['entityName','registeredAddressChinese','registeredAddressEnglish','version','reviewedBy','reviewedAt','effectiveDate'] as $field) if (!is_string($legal[$field] ?? null) || strlen($legal[$field]) > 1000) return 'Invalid legal identity field';
+        if (!in_array($legal['status'] ?? '', ['draft','approved'], true)) return 'Invalid legal review status';
+        if ($legal['status'] === 'approved') foreach (['entityName','registeredAddressChinese','registeredAddressEnglish','version','reviewedBy','reviewedAt','effectiveDate'] as $field) if (trim($legal[$field]) === '') return 'Legal publication requires review and effective date';
+    }
+    if (($homepage['legalIdentity']['status'] ?? '') === 'approved') foreach (['reviewedAt','effectiveDate'] as $field) if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $homepage['legalIdentity'][$field])) return 'Legal dates must use YYYY-MM-DD';
     $hero = $homepage['hero'];
     foreach (['eyebrow', 'title', 'subtitle', 'image'] as $key) {
         if (empty($hero[$key]) || !is_string($hero[$key]) || mb_strlen($hero[$key]) > 500) return "Invalid hero {$key}";
     }
+    if (!empty($hero['mobileImage']) && !homepage_valid_media($hero['mobileImage'])) return 'Invalid mobile hero image';
+    if (isset($hero['imageFocalPoint']) && !preg_match('/^(100|\d{1,2})% (100|\d{1,2})%$/', $hero['imageFocalPoint'])) return 'Invalid hero focal point';
     if (!homepage_valid_media($hero['image'])) return 'Invalid hero image';
     if (empty($hero['primaryCta']['label']) || !in_array($hero['primaryCta']['href'] ?? '', ['#inquiry', '/traveler#inquiry'], true)) return 'Invalid primary CTA';
     if (empty($hero['secondaryCta']['label']) || ($hero['secondaryCta']['href'] ?? '') !== '/traveler/services') return 'Invalid secondary CTA';
@@ -201,6 +254,8 @@ function homepage_validate(array $homepage): ?string
         'why' => ['eyebrow', 'title', 'intro'],
         'process' => ['eyebrow', 'title', 'intro'],
         'faq' => ['eyebrow', 'title'],
+        'reviews' => ['eyebrow','title','intro'],
+        'stories' => ['eyebrow','title'],
         'inquiry' => ['eyebrow', 'title', 'intro', 'reassurance'],
     ];
     foreach ($copyFields as $section => $fields) {
@@ -252,19 +307,20 @@ function homepage_validate(array $homepage): ?string
         }
     }
     foreach ($homepage['steps'] as $index => $step) {
-        if (!is_array($step) || count($step) < 4 || ($step[0] ?? '') !== str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) || empty($step[1]) || empty($step[2]) || empty($step[3])) return 'Six numbered journey steps are required';
+        if (!is_array($step) || count($step) < 4 || ($step[0] ?? '') !== str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) || empty($step[1]) || empty($step[2]) || !is_string($step[3] ?? null)) return 'Six numbered journey steps are required';
     }
     $process = $homepage['process'] ?? [];
     if (($process['videoEnabled'] ?? true) !== false || !empty($process['videos']) || !is_array($process['steps'] ?? null) || count($process['steps']) !== 6) return 'Process needs six steps and no videos';
     foreach ($process['steps'] as $index => $step) {
         if (($step['order'] ?? null) !== $index + 1 || ($step['number'] ?? '') !== sprintf('%02d', $index + 1)) return 'Process order must be 01 through 06';
-        foreach (['title', 'body', 'reassurance'] as $field) if (!is_string($step[$field] ?? null) || trim($step[$field]) === '') return 'Process text is required';
+        foreach (['title', 'body'] as $field) if (!is_string($step[$field] ?? null) || trim($step[$field]) === '') return 'Process text is required';
+        if (!is_string($step['reassurance'] ?? null)) return 'Invalid process reassurance';
     }
     foreach ($homepage['whyItems'] as $item) {
         if (!is_array($item) || count($item) < 2 || empty($item[0]) || empty($item[1])) return 'Four complete Why items are required';
     }
     foreach ($homepage['faqs'] as $faq) {
-        if (!is_array($faq) || count($faq) < 2 || empty($faq[0]) || empty($faq[1])) return 'Eight complete FAQs are required';
+        if (!is_array($faq) || count($faq) < 2 || empty($faq[0]) || empty($faq[1])) return 'Five complete FAQs are required';
     }
     foreach ($homepage['reviews'] ?? [] as $item) {
         if (!empty($item['published']) && !homepage_review_approved($item)) return 'Published reviews require approved photo and review consent, identity, context and alt';

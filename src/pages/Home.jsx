@@ -6,6 +6,8 @@ import { track } from '../lib/analytics.js'
 import InquiryForm from './InquiryForm.jsx'
 import BookingPolicy from '../components/BookingPolicy.jsx'
 import JourneyGallery from '../components/JourneyGallery.jsx'
+import JourneyStories from '../components/JourneyStories.jsx'
+import servicesPageSeed, { safeServiceLink } from '../lib/servicesPage.js'
 import { ChevronDown } from 'lucide-react'
 import { journeyPriceBadge, normalizeHomepage, publishedReviews, serviceImage } from '../lib/homepageContent.js'
 import './HomeBase.css'
@@ -18,13 +20,6 @@ function HeadingText({ text, accent }) {
   const index = text.indexOf(accent)
   if (index < 0) return text
   return <>{text.slice(0, index)}<span className="heading-accent">{accent}</span>{text.slice(index + accent.length)}</>
-}
-
-const serviceAnchors = {
-  planning: 'planning-support',
-  'road-trip': 'private-road-trip',
-  signature: 'signature-private-journey',
-  education: 'educational-cultural-journeys',
 }
 
 function safeList(items, fallback) {
@@ -53,10 +48,12 @@ function ReviewQuote({ item }) {
 export default function Home() {
   const [openFaq, setOpenFaq] = useState(0)
   const [content, setContent] = useState(defaultHomepage)
+  const [serviceDetails, setServiceDetails] = useState(servicesPageSeed.services)
   const [serviceMediaReady, setServiceMediaReady] = useState(false)
 
   useEffect(() => {
     let cancelled = false
+    fetch('/api/services-page.php').then((res) => res.ok ? res.json() : Promise.reject()).then((json) => { if (!cancelled && json.page?.services) setServiceDetails(json.page.services) }).catch(() => {})
     fetch('/api/homepage.php', { headers: { Accept: 'application/json' } })
       .then((res) => (res.ok ? res.json() : Promise.reject(new Error('Homepage API unavailable'))))
       .then((json) => {
@@ -103,13 +100,12 @@ export default function Home() {
   const steps = safeList(content.process?.steps, defaultHomepage.process.steps).slice().sort((a, b) => a.order - b.order)
   const faqs = safeList(content.faqs, defaultHomepage.faqs)
   const reviews = publishedReviews(safeList(content.reviews, []))
-  const reviewPreview = ReviewPreview && !reviews.length
 
   return (
-    <div className="home home--reference">
+    <div className="home home--reference home--v22">
       <section className="home-hero">
         <div className="home-hero__media" aria-hidden="true">
-          <SoftImage src={hero.image || defaultHomepage.hero.image} alt="" loading="eager" fetchPriority="high" width={1920} height={1080} />
+          <picture>{hero.mobileImage && <source media="(max-width: 767px)" srcSet={hero.mobileImage} />}<SoftImage src={hero.image || defaultHomepage.hero.image} style={{ objectPosition: hero.imageFocalPoint || "50% 50%" }} alt="" loading="eager" fetchPriority="high" width={1920} height={1080} /></picture>
         </div>
         <div className="section home-hero__content">
           <p className="eyebrow">{hero.eyebrow}</p>
@@ -133,32 +129,38 @@ export default function Home() {
           <p>{copy.services.intro}</p>
         </div>
         <div className="service-feature-list">
-          {services.map((service, index) => {
+          {[...services].sort((a, b) => ["road-trip", "planning", "signature", "education"].indexOf(a.id) - ["road-trip", "planning", "signature", "education"].indexOf(b.id)).map((service, index) => {
             const image = serviceMediaReady ? serviceImage(service) : null
             const imageAlt = service.imageAlt || service.title
+            const detail = serviceDetails.find((item) => item.id === service.id)
+            const href = safeServiceLink(service.detailPageUrl || service.href)
+            const linkedTitle = service.id !== 'education' && service.titleLinkEnabled !== false
+            const linkedImage = service.id !== 'education' && service.imageLinkEnabled !== false
+            const Visual = linkedImage ? Link : 'div'
             return (
-            <article className={`service-feature${serviceMediaReady && !image ? ' service-feature--text-only' : ''}`} key={service.id}>
+            <article className={`service-feature service-feature--${service.id}${serviceMediaReady && !image ? ' service-feature--text-only' : ''}`} key={service.id}>
               <div className="service-feature__copy">
-                <h3 className="font-serif">{service.title}</h3>
+                <h3 className="font-serif">{linkedTitle ? <Link to={href}>{service.title}</Link> : service.title}</h3>
                 <p>{service.summary}</p>
                 <ul className="service-feature__highlights">{safeList(service.includedHighlights, []).map((item) => <li key={item}>{item}</li>)}</ul>
                 <div className="service-feature__price"><strong>{service.price}</strong><span>{service.unit}</span></div>
                 <p className="service-feature__price-note">{service.priceNote}</p>
                 <details className="service-feature__policy">
-                  <summary>Flexible Booking <ChevronDown size={18} aria-hidden="true" /></summary>
+                  <summary>Service and booking details <ChevronDown size={18} aria-hidden="true" /></summary>
+                  {detail && <ul className="home-service-inclusions">{detail.included.map((item) => <li key={item}>{item}</li>)}</ul>}
                   <BookingPolicy service={service} version={content.bookingPolicyVersion} summary />
                 </details>
                 <div className="service-feature__actions">
-                  <Link to={`/traveler?service=${encodeURIComponent(service.id)}#inquiry`} className="btn btn-gold" onClick={() => track('cta_click', { service_id: service.id, section: 'services' })}>Plan my journey <span aria-hidden="true">→</span></Link>
-                  <Link to={service.href || `/traveler/services#${serviceAnchors[service.id] || 'planning-support'}`} className="text-gold-link" onClick={() => track('service_view', { service_id: service.id })}>Service &amp; booking details <span aria-hidden="true">↗</span></Link>
+                  <Link to={`/traveler/contact?service=${encodeURIComponent(service.id)}`} className="btn btn-gold" onClick={() => track('cta_click', { service_id: service.id, section: 'services' })}>Plan my journey <span aria-hidden="true">→</span></Link>
+
                 </div>
               </div>
-              {(!serviceMediaReady || image) && <div className="service-feature__visual">
+              {(!serviceMediaReady || image) && <Visual to={linkedImage ? href : undefined} aria-label={linkedImage ? `View ${service.title}` : undefined} className="service-feature__visual">
                 {image && <SoftImage src={image} alt={imageAlt} style={{ objectPosition: service.imageFocalPoint || '50% 50%' }} loading="lazy" width={800} height={900} />}
                 <span className="service-feature__number" aria-hidden="true">{service.number || String(index + 1).padStart(2, '0')}</span>
                 {service.media?.aiGenerated && <span className="ai-image-label">AI-generated illustration</span>}
-                <div className="service-feature__caption"><small>Your way to travel</small><strong>{service.imageCaption}</strong></div>
-              </div>}
+
+              </Visual>}
             </article>
           )})}
         </div>
@@ -181,15 +183,15 @@ export default function Home() {
               <article className="journey-card" key={journey.slug}>
                 <div className="journey-card__media">
                   <SoftImage src={journey.image} alt={journey.imageAlt || journey.title} loading="lazy" width={640} height={480} />
-                  {journeyPriceBadge(journey) && <span>{journeyPriceBadge(journey)}</span>}
+                  {journey.showHomepagePrice === true && journeyPriceBadge(journey) && <span>{journeyPriceBadge(journey)}</span>}
                 </div>
                 <div className="journey-card__body">
                   <h3 className="font-serif">{journey.title}</h3>
                   <p>{journey.summary}</p>
                   <div className="journey-card__tags">{safeList(journey.tags, []).map((tag) => <span key={tag}>{tag}</span>)}</div>
-                  {journey.priceApproved && journey.price && journey.groupBasis && !/\[|placeholder|RMB\s*[—-]/i.test(`${journey.price} ${journey.groupBasis}`) ? (
+                  {journey.showHomepagePrice === true && journey.priceApproved && journey.price && journey.groupBasis && !/\[|placeholder|RMB\s*[—-]/i.test(`${journey.price} ${journey.groupBasis}`) ? (
                     <div className="journey-card__price"><strong>{journey.price}</strong><small>{journey.groupBasis}</small></div>
-                  ) : <p className="journey-card__unpriced">Price confirmed in your proposal</p>}
+                  ) : null}
                   <Link to={`/traveler/journeys/${journey.slug}`} className="text-gold-link" onClick={() => track('journey_view', { journey_slug: journey.slug, placeholder: false })}>View journey <span aria-hidden="true">→</span></Link>
                 </div>
               </article>
@@ -222,15 +224,16 @@ export default function Home() {
           <ol className="home-timeline">
             {steps.map(({ number, title, body, reassurance }) => <li key={number}><span className="home-timeline__number">{number}</span><div><h3>{title}</h3><p>{body}</p><small>{reassurance}</small></div></li>)}
           </ol>
+          <JourneyStories stories={content.storySequences || defaultHomepage.storySequences} copy={copy.stories} />
         </div>
       </section>
 
-      {(reviews.length > 0 || reviewPreview) && <section className="home-reviews section section-pad" id="reviews" aria-labelledby="reviews-heading">
-        <div className="section-head"><p className="eyebrow">GUEST STORIES</p><h2 id="reviews-heading" className="font-serif">Words From Our <span className="heading-accent">Travelers</span></h2><p>Real journeys. Real experiences. Stories worth sharing.</p></div>
+      <section className="home-reviews section section-pad" id="reviews" aria-labelledby="reviews-heading">
+        <div className="section-head"><p className="eyebrow">{copy.reviews.eyebrow}</p><h2 id="reviews-heading" className="font-serif"><SentenceLines text={copy.reviews.title} /></h2><p>{copy.reviews.intro}</p></div>
         {reviews.length > 0
           ? <div className="review-grid">{reviews.map((item) => <ReviewQuote key={item.id} item={item} />)}</div>
-          : ReviewPreview && <Suspense fallback={null}><ReviewPreview /></Suspense>}
-      </section>}
+          : ReviewPreview ? <Suspense fallback={null}><ReviewPreview /></Suspense> : <p className="home-review-empty">Traveler stories will appear here once their sources and photo permissions have been verified.</p>}
+      </section>
 
       <section className="home-faq section-pad" id="faq">
         <div className="section">

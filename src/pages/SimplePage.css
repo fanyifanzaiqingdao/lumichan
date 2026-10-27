@@ -76,3 +76,5 @@
 .simple-page__body a {
   color: var(--gold);
 }
+
+.legal-draft-notice{padding:18px;border-left:3px solid #e0c15a;background:#e0c15a10;color:#e0c15a;line-height:1.7;margin-bottom:28px}

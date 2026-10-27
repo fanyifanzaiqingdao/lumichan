@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { SITE } from '../config/site.js'
 import SoftImage from './SoftImage.jsx'
@@ -37,6 +38,12 @@ const SOCIALS = [
 ]
 
 export default function Footer({ dark = false }) {
+  const [contact,setContact] = useState({ contactAddress: SITE.address, email: SITE.contactEmail })
+  useEffect(() => {
+    const controller = new AbortController()
+    fetch('/api/homepage.php', { signal: controller.signal }).then((response) => response.ok ? response.json() : Promise.reject()).then((data) => { if (data.homepage?.footer) setContact(data.homepage.footer) }).catch(() => {})
+    return () => controller.abort()
+  }, [])
   return (
     <footer className={`site-footer ${dark ? 'is-dark' : ''}`}>
       <div className="section site-footer__grid">
@@ -60,11 +67,11 @@ export default function Footer({ dark = false }) {
             ))}
           </div>
           <p className="footer-contact">
-            <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>
-            {SITE.address ? (
+            <a href={`mailto:${contact.email}`}>{contact.email}</a>
+            {contact.contactAddress ? (
               <>
                 <br />
-                <span>{SITE.address}</span>
+                <span>{contact.contactAddress}</span>
               </>
             ) : null}
           </p>

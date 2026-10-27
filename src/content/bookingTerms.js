@@ -341,7 +341,7 @@ export default {
     },
     {
       "type": "p",
-      "text": "If you have questions about these Booking Terms and Conditions or your Journey, please contact: Lumichan Legal Company Name: 寰宇纵横国际旅行社（重庆）有限公司四川第四分公司 Registered Address: No. 140, Annex of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China Email: jin.lu@lumichan.com.cn Telephone / WhatsApp: +86 13551117121"
+      "text": "If you have questions about these Booking Terms and Conditions or your Journey, please contact: Lumichan Legal Company Name: 寰宇纵横国际旅行社（重庆）有限公司四川第四分公司 Registered Address: {{REGISTERED_ADDRESS}} Contact Address: No. 140, Annex of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China Email: jin.lu@lumichan.com.cn Telephone: +86 13551117121"
     },
     {
       "type": "hr"
