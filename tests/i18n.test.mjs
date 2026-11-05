@@ -1,0 +1,61 @@
+import assert from 'node:assert/strict'
+import { test } from 'node:test'
+const storage = new Map()
+globalThis.localStorage = { getItem: key => storage.get(key), setItem: (key,value) => storage.set(key,value) }
+globalThis.document = { documentElement: { lang: 'en' } }
+const { loadLanguage, t, setLanguage, getLanguage, readLanguage, LANGUAGE_KEY } = await import('../src/i18n/runtime.js')
+await loadLanguage('zh')
+test('Chinese display strings preserve the underlying business data and whitespace', () => {
+  const service = { id:'road-trip', title:'Private Road Trip', price:'From USD 299' }
+  setLanguage('zh')
+  assert.equal(t(service.title),'私人公路旅行')
+  assert.equal(t(service.price),'USD 299 起')
+  assert.equal(t(' Plan my journey '),' 规划我的旅程 ')
+  assert.deepEqual(service,{ id:'road-trip', title:'Private Road Trip', price:'From USD 299' })
+  assert.equal(t(service),service)
+  assert.equal(t(null),null)
+  assert.equal(t(false),false)
+})
+test('language preference and HTML language stay in sync; unknown text falls back', () => {
+  setLanguage('zh')
+  assert.equal(storage.get(LANGUAGE_KEY),'zh')
+  assert.equal(readLanguage(),'zh')
+  assert.equal(document.documentElement.lang,'zh-CN')
+  assert.equal(t('New CMS copy awaiting translation'),'New CMS copy awaiting translation')
+  setLanguage('en')
+  assert.equal(t('Private Road Trip'),'Private Road Trip')
+  assert.equal(document.documentElement.lang,'en')
+  setLanguage('unexpected')
+  assert.equal(getLanguage(),'en')
+})
+test('dynamic accessible labels and validation messages use the selected language', () => {
+  setLanguage('zh')
+  assert.equal(t('Enter your WeChat account.'),'请输入你的 微信 账号。')
+  assert.equal(t('Show image 3'),'显示第 3 张图片')
+  assert.equal(t('2 of 5'),'第 2 张，共 5 张')
+  assert.equal(t('5 days'),'5 天')
+})
+test('staff interface and API errors support both languages', async () => {
+  const { apiErrorMessage } = await import('../src/i18n/errors.js')
+  setLanguage('en');assert.equal(t('运营后台'),'Operations Admin');assert.equal(t('密码错误'),'Incorrect password')
+  setLanguage('zh');assert.equal(t('Message Sent'),'留言已发送');assert.equal(t('Verified'),'已审核');assert.equal(t('/day'),'/ 天')
+  assert.equal(t(apiErrorMessage('Unknown internal SQL error',503)),'服务暂不可用，请稍后重试。')
+  assert.equal(t(apiErrorMessage('',429)),'请求过于频繁，请稍后再试。')
+})
+test('CMS overrides are independent for each language and do not mutate source data', async () => {
+  const { setOverrides } = await import('../src/i18n/runtime.js')
+  setOverrides([{source:'New headline',en:'English headline',zh:'中文标题',enabled:true}])
+  setLanguage('en');assert.equal(t('New headline'),'English headline')
+  setLanguage('zh');assert.equal(t('New headline'),'中文标题')
+  setOverrides([{source:'New headline',en:'English headline',zh:'中文标题',enabled:false}]);assert.equal(t('New headline'),'New headline')
+  setOverrides([])
+})
+test('language URLs keep legacy links, query strings and fragments intact', async () => {
+  const {localizedPath,stripLanguage,pathLanguage}=await import('../src/i18n/routes.js')
+  assert.equal(localizedPath('/traveler?service=planning#inquiry','zh'),'/zh/?service=planning#inquiry')
+  assert.equal(localizedPath('/zh/traveler/contact?service=road-trip','en'),'/traveler/contact?service=road-trip')
+  assert.equal(localizedPath('/admin','zh'),'/admin')
+  assert.equal(localizedPath('https://example.invalid','zh'),'https://example.invalid')
+  assert.equal(stripLanguage('/zh/traveler/services'),'/traveler/services')
+  assert.equal(pathLanguage('/zh/'),'zh')
+})

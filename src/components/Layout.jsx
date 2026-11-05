@@ -1,14 +1,18 @@
-import { useEffect } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
+import { Outlet, useLocation } from '../i18n/router.jsx'
 import Header from './Header.jsx'
 import Footer from './Footer.jsx'
 
 export default function Layout() {
-  const { pathname, hash, search, key } = useLocation()
+  const { pathname, hash, search, key, state } = useLocation()
+  const firstNavigation=useRef(true)
   useEffect(() => {
-    if (!hash) return
+    const initial=firstNavigation.current
+    firstNavigation.current=false
+    if (!hash || (!initial && state?.localeSwitch)) return
     const id = decodeURIComponent(hash.slice(1))
     const timer = window.setTimeout(() => {
+      if (document.activeElement?.closest('.language-switcher') || document.activeElement?.matches('input,textarea,select')) return
       const target = document.getElementById(id)
       target?.scrollIntoView({ block: 'start', behavior: 'smooth' })
       if (id === 'inquiry') {
@@ -20,7 +24,7 @@ export default function Layout() {
     }, 80)
     return () => window.clearTimeout(timer)
   }, [pathname, hash, search, key])
-  const isHome = pathname === '/traveler' || pathname === '/traveler/'
+  const isHome = pathname === '/' || pathname === '/traveler' || pathname === '/traveler/'
   const dark =
     isHome ||
     pathname.includes('ai-planner') ||

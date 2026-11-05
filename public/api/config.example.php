@@ -4,6 +4,8 @@
  * Do not commit config.php if it contains real secrets.
  */
 return [
+    // Required for Journey CMS: production / staging / local.
+    'content_environment' => 'local',
     'to_email' => 'you@example.com',
     'from_email' => 'you@example.com',
     'subject_prefix' => '[Lumichan]',

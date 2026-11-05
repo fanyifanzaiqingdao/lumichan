@@ -1,5 +1,12 @@
+import { publicContent } from '../lib/publicContent.js'
+import JourneysPageEditor from '../components/JourneysPageEditor.jsx'
+import { apiErrorMessage } from '../i18n/errors.js'
+import { t } from '../i18n/runtime.js'
+import TranslationEditor from '../components/TranslationEditor.jsx'
+import LanguageSwitcher from '../components/LanguageSwitcher.jsx'
+import AdminChatHistory from '../components/AdminChatHistory.jsx'
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '../i18n/router.jsx'
 import defaultHomepage from '../data/homepage.js'
 import { normalizeHomepage, quotationTemplate } from '../lib/homepageContent.js'
 import ServicesPageEditor, { Fields as ContentFields } from '../components/ServicesPageEditor.jsx'
@@ -106,7 +113,7 @@ async function api(url, options = {}) {
   })
   const json = await res.json().catch(() => ({}))
   if (!res.ok || json.ok === false) {
-    throw new Error(json.error || `请求失败 (${res.status})`)
+    throw new Error(apiErrorMessage(json.error, res.status))
   }
   return json
 }
@@ -185,7 +192,7 @@ export default function Admin() {
 
   async function downloadQuotation(serviceId) {
     try {
-      const response = await fetch('/api/homepage.php')
+      const response = await publicContent('/api/homepage.php')
       if (!response.ok) throw new Error('无法读取已发布的政策')
       const data = await response.json()
       const text = quotationTemplate(normalizeHomepage(data.homepage), serviceId)
@@ -196,7 +203,7 @@ export default function Admin() {
       link.click()
       setTimeout(() => URL.revokeObjectURL(url), 1000)
     } catch (error) {
-      window.alert(error.message)
+      window.alert(t(error.message))
     }
   }
 
@@ -362,7 +369,7 @@ export default function Admin() {
       body.append('image', file)
       const response = await fetch(UPLOAD_API, { method: 'POST', credentials: 'include', body })
       const result = await response.json().catch(() => ({}))
-      if (!response.ok || !result.ok) throw new Error(result.error || '图片上传失败')
+      if (!response.ok || !result.ok) throw new Error(apiErrorMessage(result.error,response.status))
       updateHomepage(path, result.path)
     } catch (err) {
       setError(err.message)
@@ -453,7 +460,7 @@ export default function Admin() {
   }
 
   async function removeProduct(product) {
-    if (!confirm(`确定删除「${product.title}」？`)) return
+    if (!confirm(t(`确定删除「${product.title}」？`))) return
     setError('')
     try {
       await api(`${PRODUCTS_API}?id=${encodeURIComponent(product.id)}`, { method: 'DELETE' })
@@ -549,7 +556,7 @@ export default function Admin() {
   }
 
   async function removeGuide(guide) {
-    if (!confirm(`确定删除向导「${guide.full_name}」？此操作不可撤销。`)) return
+    if (!confirm(t(`确定删除向导「${guide.full_name}」？此操作不可撤销。`))) return
     setError('')
     try {
       await api(`${GUIDES_API}?id=${encodeURIComponent(guide.id)}`, { method: 'DELETE' })
@@ -664,7 +671,7 @@ export default function Admin() {
   }
 
   async function removeLead(lead) {
-    if (!confirm(`确定删除线索「${lead.title || lead.url}」？`)) return
+    if (!confirm(t(`确定删除线索「${lead.title || lead.url}」？`))) return
     setError('')
     try {
       await api(`${LEADS_API}?id=${encodeURIComponent(lead.id)}`, { method: 'DELETE' })
@@ -677,7 +684,7 @@ export default function Admin() {
   if (booting) {
     return (
       <div className="admin-page">
-        <p className="admin-muted">加载中…</p>
+        <p className="admin-muted">{t("加载中…")}</p>
       </div>
     )
   }
@@ -685,26 +692,20 @@ export default function Admin() {
   if (!loggedIn) {
     return (
       <div className="admin-page admin-page--login">
-        <form className="admin-login" onSubmit={handleLogin}>
-          <h1 className="font-serif">Lumichan 后台</h1>
-          <p>管理首页、行程产品与向导审核</p>
-          <label>
-            管理密码
-            <input
+        <form className="admin-login" onSubmit={handleLogin}><LanguageSwitcher />
+          <h1 className="font-serif">{t("Lumichan 后台")}</h1>
+          <p>{t("管理首页、行程产品与向导审核")}</p>
+          <label>{t("管理密码")}<input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="config.php 里的 admin_password"
+              placeholder={t("config.php 里的 admin_password")}
               required
             />
           </label>
-          {error && <p className="admin-error">{error}</p>}
-          <button type="submit" className="btn btn-gold">
-            登录
-          </button>
-          <Link to="/traveler" className="admin-back">
-            ← 返回前台
-          </Link>
+          {t(error && <p className="admin-error">{t(error)}</p>)}
+          <button type="submit" className="btn btn-gold">{t("登录")}</button>
+          <Link to="/traveler" className="admin-back">{t("← 返回前台")}</Link>
         </form>
       </div>
     )
@@ -714,467 +715,383 @@ export default function Admin() {
     <div className="admin-page">
       <header className="admin-top">
         <div>
-          <h1 className="font-serif">运营后台</h1>
-          <p className="admin-muted">首页配置 · 产品上架 · 向导审核 · 旅游线索</p>
+          <h1 className="font-serif">{t("运营后台")}</h1>
+          <p className="admin-muted">{t("首页配置 · 产品上架 · 向导审核 · 旅游线索")}</p>
         </div>
-        <div className="admin-top__actions">
-          <Link to="/support" className="btn btn-outline">客服中心</Link>
+        <div className="admin-top__actions"><LanguageSwitcher />
+          <Link to="/support" className="btn btn-outline">{t("客服中心")}</Link>
           <Link
-            to={tab === 'services-page' ? '/traveler/services' : tab === 'homepage' ? '/traveler' : tab === 'guides' ? '/traveler/guides' : '/traveler/itineraries'}
+            to={tab === 'journeys' ? '/journeys' : tab === 'services-page' ? '/traveler/services' : tab === 'homepage' ? '/traveler' : tab === 'guides' ? '/traveler/guides' : '/traveler/itineraries'}
             className="btn btn-outline"
-          >
-            查看前台
-          </Link>
-          <button type="button" className="btn btn-outline" onClick={handleLogout}>
-            退出
-          </button>
-          {tab === 'products' ? (
-            <button type="button" className="btn btn-gold" onClick={openCreateProduct}>
-              + 新建产品
-            </button>
+          >{t("查看前台")}</Link>
+          <button type="button" className="btn btn-outline" onClick={handleLogout}>{t("退出")}</button>
+          {t(tab === 'products' ? (
+            <button type="button" className="btn btn-gold" onClick={openCreateProduct}>{t("+ 新建产品")}</button>
           ) : tab === 'guides' ? (
-            <button type="button" className="btn btn-gold" onClick={openCreateGuide}>
-              + 新建向导
-            </button>
+            <button type="button" className="btn btn-gold" onClick={openCreateGuide}>{t("+ 新建向导")}</button>
           ) : tab === 'leads' ? (
-            <button type="button" className="btn btn-gold" onClick={() => openCreateLead()}>
-              + 导入线索
-            </button>
-          ) : tab === 'services-page' || tab === 'inquiries' ? null : (
+            <button type="button" className="btn btn-gold" onClick={() => openCreateLead()}>{t("+ 导入线索")}</button>
+          ) : tab === 'journeys' || tab === 'services-page' || tab === 'inquiries' || tab === 'chat-history' || tab === 'translations' ? null : (
             <button type="button" className="btn btn-gold" disabled={saving} onClick={saveHomepage}>
-              {saving ? '保存中…' : '保存首页配置'}
+              {t(saving ? '保存中…' : '保存首页配置')}
             </button>
-          )}
+          ))}
         </div>
       </header>
 
       <div className="admin-tabs">
-        <button type="button" className={tab === 'services-page' ? 'is-active' : ''} onClick={() => setTab('services-page')}>Services 页面</button>
-        <button type="button" className={tab === 'homepage' ? 'is-active' : ''} onClick={() => setTab('homepage')}>
-          首页配置
+        <button type="button" className={tab === 'translations' ? 'is-active' : ''} onClick={() => setTab('translations')}>{t("Translations")}</button>
+        <button type="button" className={tab === 'chat-history' ? 'is-active' : ''} onClick={() => setTab('chat-history')}>{t("客户聊天记录")}</button>
+        <button type="button" className={tab === 'services-page' ? 'is-active' : ''} onClick={() => setTab('services-page')}>{t("Services 页面")}</button>
+        <button type="button" className={tab === 'journeys' ? 'is-active' : ''} onClick={() => setTab('journeys')}>{t("Journeys CMS")}</button>
+        <button type="button" className={tab === 'homepage' ? 'is-active' : ''} onClick={() => setTab('homepage')}>{t("首页配置")}</button>
+        <button type="button" className={tab === 'inquiries' ? 'is-active' : ''} onClick={() => { setTab('inquiries'); loadInquiries().catch((err) => setError(err.message)) }}>{t("咨询线索")}</button>
+        <button type="button" className={tab === 'products' ? 'is-active' : ''} onClick={() => setTab('products')}>{t("产品管理")}</button>
+        <button type="button" className={tab === 'guides' ? 'is-active' : ''} onClick={() => setTab('guides')}>{t("向导管理")}{t(guideCounts.pending > 0 && <span className="admin-tab-badge">{t(guideCounts.pending)}</span>)}
         </button>
-        <button type="button" className={tab === 'inquiries' ? 'is-active' : ''} onClick={() => { setTab('inquiries'); loadInquiries().catch((err) => setError(err.message)) }}>
-          咨询线索
-        </button>
-        <button type="button" className={tab === 'products' ? 'is-active' : ''} onClick={() => setTab('products')}>
-          产品管理
-        </button>
-        <button type="button" className={tab === 'guides' ? 'is-active' : ''} onClick={() => setTab('guides')}>
-          向导管理
-          {guideCounts.pending > 0 && <span className="admin-tab-badge">{guideCounts.pending}</span>}
-        </button>
-        <button type="button" className={tab === 'leads' ? 'is-active' : ''} onClick={() => setTab('leads')}>
-          旅游线索
-          {leads.filter((lead) => lead.status === 'new').length > 0 && (
-            <span className="admin-tab-badge">{leads.filter((lead) => lead.status === 'new').length}</span>
-          )}
+        <button type="button" className={tab === 'leads' ? 'is-active' : ''} onClick={() => setTab('leads')}>{t("旅游线索")}{t(leads.filter((lead) => lead.status === 'new').length > 0 && (
+            <span className="admin-tab-badge">{t(leads.filter((lead) => lead.status === 'new').length)}</span>
+          ))}
         </button>
       </div>
 
-      {error && <p className="admin-error">{error}</p>}
+      {t(error && <p className="admin-error">{t(error)}</p>)}
 
-      {tab === 'services-page' && <ServicesPageEditor onSharedSettings={() => setTab('homepage')} />}
+      {t(tab === 'translations' && <TranslationEditor />)}
+      {tab === 'journeys' && <JourneysPageEditor />}
+      {t(tab === 'services-page' && <ServicesPageEditor onSharedSettings={() => setTab('homepage')} />)}
 
-      {tab === 'homepage' && (
+      {t(tab === 'chat-history' && <AdminChatHistory />)}
+      {t(tab === 'homepage' && (
         <section className="admin-homepage-editor">
           <div className="admin-toolbar">
             <div>
-              <strong>首页表单配置</strong>
-              <p className="admin-muted">编辑首页文案、图片路径、服务卡片、旅程卡片、步骤和 FAQ。保存后刷新前台生效。</p>
+              <strong>{t("首页表单配置")}</strong>
+              <p className="admin-muted">{t("编辑首页文案、图片路径、服务卡片、旅程卡片、步骤和 FAQ。保存后刷新前台生效。")}</p>
             </div>
-            <button type="button" className="btn btn-outline" onClick={loadHomepage}>
-              重新加载
-            </button>
+            <button type="button" className="btn btn-outline" onClick={loadHomepage}>{t("重新加载")}</button>
           </div>
 
-          {homepage && (
+          {t(homepage && (
             <div className="admin-home-form">
               <div className="admin-home-card">
-                <h2 className="font-serif">SEO / 页面文案</h2>
+                <h2 className="font-serif">{t("SEO / 页面文案")}</h2>
                 <div className="admin-form-grid">
-                  <label className="span-2">SEO 标题
-                    <input maxLength={80} value={homepage.seo?.title || ''} onChange={(e) => updateHomepage(['seo', 'title'], e.target.value)} />
+                  <label className="span-2">{t("SEO 标题")}<input maxLength={80} value={homepage.seo?.title || ''} onChange={(e) => updateHomepage(['seo', 'title'], e.target.value)} />
                   </label>
-                  <label className="span-2">SEO 描述
-                    <textarea rows={2} maxLength={180} value={homepage.seo?.description || ''} onChange={(e) => updateHomepage(['seo', 'description'], e.target.value)} />
+                  <label className="span-2">{t("SEO 描述")}<textarea rows={2} maxLength={180} value={homepage.seo?.description || ''} onChange={(e) => updateHomepage(['seo', 'description'], e.target.value)} />
                   </label>
-                  {Object.entries(homepage.copy || {}).map(([section, fields]) => (
+                  {t(Object.entries(homepage.copy || {}).map(([section, fields]) => (
                     <div className="admin-home-repeat span-2" key={section}>
-                      <strong>{section}</strong>
+                      <strong>{t(section)}</strong>
                       <div className="admin-form-grid">
-                        {Object.entries(fields).map(([field, value]) => (
-                          <label className="span-2" key={field}>{field}
+                        {t(Object.entries(fields).map(([field, value]) => (
+                          <label className="span-2" key={field}>{t(field)}
                             <textarea rows={field === 'intro' ? 2 : 1} value={value} onChange={(e) => updateHomepage(['copy', section, field], e.target.value)} />
                           </label>
-                        ))}
+                        )))}
                       </div>
                     </div>
-                  ))}
+                  )))}
                 </div>
               </div>
               <div className="admin-home-card">
-                <h2 className="font-serif">Hero</h2>
+                <h2 className="font-serif">{t("Hero")}</h2>
                 <div className="admin-form-grid">
-                  <label>
-                    Eyebrow
-                    <input value={homepage.hero?.eyebrow || ''} onChange={(e) => updateHomepage(['hero', 'eyebrow'], e.target.value)} />
+                  <label>{t("Eyebrow")}<input value={homepage.hero?.eyebrow || ''} onChange={(e) => updateHomepage(['hero', 'eyebrow'], e.target.value)} />
                   </label>
-                  <label>
-                    图片路径
-                    <input value={homepage.hero?.image || ''} onChange={(e) => updateHomepage(['hero', 'image'], e.target.value)} />
+                  <label>{t("图片路径")}<input value={homepage.hero?.image || ''} onChange={(e) => updateHomepage(['hero', 'image'], e.target.value)} />
                     <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['hero', 'image'])} />
                   </label>
-                  <label>手机首屏图片（留空沿用桌面图）<input value={homepage.hero?.mobileImage || ''} onChange={(event) => updateHomepage(['hero','mobileImage'],event.target.value)} /><input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => uploadHomepageImage(event.target.files?.[0],['hero','mobileImage'])} /></label>
-                  <label>首屏裁切焦点<input value={homepage.hero?.imageFocalPoint || '50% 50%'} onChange={(event) => updateHomepage(['hero','imageFocalPoint'],event.target.value)} /></label>
-                  <label className="span-2">
-                    标题
-                    <input value={homepage.hero?.title || ''} onChange={(e) => updateHomepage(['hero', 'title'], e.target.value)} />
+                  <label>{t("手机首屏图片（留空沿用桌面图）")}<input value={homepage.hero?.mobileImage || ''} onChange={(event) => updateHomepage(['hero','mobileImage'],event.target.value)} /><input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => uploadHomepageImage(event.target.files?.[0],['hero','mobileImage'])} /></label>
+                  <label>{t("首屏裁切焦点")}<input value={homepage.hero?.imageFocalPoint || '50% 50%'} onChange={(event) => updateHomepage(['hero','imageFocalPoint'],event.target.value)} /></label>
+                  <label className="span-2">{t("标题")}<input value={homepage.hero?.title || ''} onChange={(e) => updateHomepage(['hero', 'title'], e.target.value)} />
                   </label>
-                  <label className="span-2">
-                    副标题
-                    <textarea rows={3} value={homepage.hero?.subtitle || ''} onChange={(e) => updateHomepage(['hero', 'subtitle'], e.target.value)} />
+                  <label className="span-2">{t("副标题")}<textarea rows={3} value={homepage.hero?.subtitle || ''} onChange={(e) => updateHomepage(['hero', 'subtitle'], e.target.value)} />
                   </label>
-                  <label>
-                    主按钮文字
-                    <input value={homepage.hero?.primaryCta?.label || ''} onChange={(e) => updateHomepage(['hero', 'primaryCta', 'label'], e.target.value)} />
+                  <label>{t("主按钮文字")}<input value={homepage.hero?.primaryCta?.label || ''} onChange={(e) => updateHomepage(['hero', 'primaryCta', 'label'], e.target.value)} />
                   </label>
-                  <label>
-                    主按钮链接
-                    <input value={homepage.hero?.primaryCta?.href || ''} onChange={(e) => updateHomepage(['hero', 'primaryCta', 'href'], e.target.value)} />
+                  <label>{t("主按钮链接")}<input value={homepage.hero?.primaryCta?.href || ''} onChange={(e) => updateHomepage(['hero', 'primaryCta', 'href'], e.target.value)} />
                   </label>
-                  <label>
-                    次按钮文字
-                    <input value={homepage.hero?.secondaryCta?.label || ''} onChange={(e) => updateHomepage(['hero', 'secondaryCta', 'label'], e.target.value)} />
+                  <label>{t("次按钮文字")}<input value={homepage.hero?.secondaryCta?.label || ''} onChange={(e) => updateHomepage(['hero', 'secondaryCta', 'label'], e.target.value)} />
                   </label>
-                  <label>
-                    次按钮链接
-                    <input value={homepage.hero?.secondaryCta?.href || ''} onChange={(e) => updateHomepage(['hero', 'secondaryCta', 'href'], e.target.value)} />
+                  <label>{t("次按钮链接")}<input value={homepage.hero?.secondaryCta?.href || ''} onChange={(e) => updateHomepage(['hero', 'secondaryCta', 'href'], e.target.value)} />
                   </label>
-                  <label className="span-2">
-                    信任点（每行一个）
-                    <textarea rows={4} value={(homepage.hero?.trustPoints || []).join('\n')} onChange={(e) => updateHomepageList(['hero', 'trustPoints'], e.target.value)} />
+                  <label className="span-2">{t("信任点（每行一个）")}<textarea rows={4} value={(homepage.hero?.trustPoints || []).join('\n')} onChange={(e) => updateHomepageList(['hero', 'trustPoints'], e.target.value)} />
                   </label>
                 </div>
               </div>
 
               <div className="admin-home-card">
-                <h2 className="font-serif">服务卡片</h2>
-                <label>Booking policy version（运营和法律批准后填写）
-                  <input value={homepage.bookingPolicyVersion || ''} onChange={(e) => updateHomepage(['bookingPolicyVersion'], e.target.value)} />
+                <h2 className="font-serif">{t("服务卡片")}</h2>
+                <label>{t("Booking policy version（运营和法律批准后填写）")}<input value={homepage.bookingPolicyVersion || ''} onChange={(e) => updateHomepage(['bookingPolicyVersion'], e.target.value)} />
                 </label>
-                {(homepage.services || []).map((item, index) => (
+                {t((homepage.services || []).map((item, index) => (
                   <div className="admin-home-repeat" key={item.id || index}>
                     <div className="admin-form-grid">
-                      <label>
-                        编号
-                        <input value={item.number || ''} onChange={(e) => updateHomepage(['services', index, 'number'], e.target.value)} />
+                      <label>{t("编号")}<input value={item.number || ''} onChange={(e) => updateHomepage(['services', index, 'number'], e.target.value)} />
                       </label>
-                      <label>
-                        ID
-                        <input value={item.id || ''} onChange={(e) => updateHomepage(['services', index, 'id'], e.target.value)} />
+                      <label>{t("ID")}<input value={item.id || ''} onChange={(e) => updateHomepage(['services', index, 'id'], e.target.value)} />
                       </label>
-                      <label className="span-2">
-                        标题
-                        <input value={item.title || ''} onChange={(e) => updateHomepage(['services', index, 'title'], e.target.value)} />
+                      <label className="span-2">{t("标题")}<input value={item.title || ''} onChange={(e) => updateHomepage(['services', index, 'title'], e.target.value)} />
                       </label>
-                      <label className="span-2">
-                        简介
-                        <textarea rows={2} value={item.summary || ''} onChange={(e) => updateHomepage(['services', index, 'summary'], e.target.value)} />
+                      <label className="span-2">{t("简介")}<textarea rows={2} value={item.summary || ''} onChange={(e) => updateHomepage(['services', index, 'summary'], e.target.value)} />
                       </label>
-                      <label>
-                        价格
-                        <input value={item.price || ''} onChange={(e) => updateHomepage(['services', index, 'price'], e.target.value)} />
+                      <label>{t("价格")}<input value={item.price || ''} onChange={(e) => updateHomepage(['services', index, 'price'], e.target.value)} />
                       </label>
-                      <label>
-                        链接
-                        <input value={item.href || ''} onChange={(e) => updateHomepage(['services', index, 'href'], e.target.value)} />
+                      <label>{t("链接")}<input value={item.href || ''} onChange={(e) => updateHomepage(['services', index, 'href'], e.target.value)} />
                       </label>
-                      <label>服务详情地址<input value={item.detailPageUrl || item.href || ''} onChange={(event) => updateHomepage(['services',index,'detailPageUrl'],event.target.value)} /></label>
-                      <label><span><input type="checkbox" disabled={item.id === 'education'} checked={item.id !== 'education' && item.titleLinkEnabled !== false} onChange={(event) => updateHomepage(['services',index,'titleLinkEnabled'],event.target.checked)} /> 标题链接</span></label>
-                      <label><span><input type="checkbox" disabled={item.id === 'education'} checked={item.id !== 'education' && item.imageLinkEnabled !== false} onChange={(event) => updateHomepage(['services',index,'imageLinkEnabled'],event.target.checked)} /> 主图链接</span></label>
-                      <label>图片路径
-                        <input value={item.image || ''} onChange={(e) => updateHomepage(['services', index, 'image'], e.target.value)} />
+                      <label>{t("服务详情地址")}<input value={item.detailPageUrl || item.href || ''} onChange={(event) => updateHomepage(['services',index,'detailPageUrl'],event.target.value)} /></label>
+                      <label><span><input type="checkbox" disabled={item.id === 'education'} checked={item.id !== 'education' && item.titleLinkEnabled !== false} onChange={(event) => updateHomepage(['services',index,'titleLinkEnabled'],event.target.checked)} />{t(" 标题链接")}</span></label>
+                      <label><span><input type="checkbox" disabled={item.id === 'education'} checked={item.id !== 'education' && item.imageLinkEnabled !== false} onChange={(event) => updateHomepage(['services',index,'imageLinkEnabled'],event.target.checked)} />{t(" 主图链接")}</span></label>
+                      <label>{t("图片路径")}<input value={item.image || ''} onChange={(e) => updateHomepage(['services', index, 'image'], e.target.value)} />
                         <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['services', index, 'image'])} />
                       </label>
-                      <label>图片 alt
-                        <input value={item.imageAlt || ''} onChange={(e) => updateHomepage(['services', index, 'imageAlt'], e.target.value)} />
+                      <label>{t("图片 alt")}<input value={item.imageAlt || ''} onChange={(e) => updateHomepage(['services', index, 'imageAlt'], e.target.value)} />
                       </label>
-                      {['unit', 'priceNote', 'imageCaption', 'imageFocalPoint'].map((field) => <label key={field}>{field}
+                      {t(['unit', 'priceNote', 'imageCaption', 'imageFocalPoint'].map((field) => <label key={field}>{t(field)}
                         <input value={item[field] || ''} onChange={(e) => updateHomepage(['services', index, field], e.target.value)} />
-                      </label>)}
-                      {['road-trip','signature'].includes(item.id) && <label className="span-2"><span><input type="checkbox" checked={item.unitApproved === true} onChange={(event) => updateHomepage(['services', index, 'unitApproved'], event.target.checked)} /> 计价单位已获业务确认（请先填写准确单位）</span></label>}
-                      <label className="span-2">包含亮点（每行一项，共三项）<textarea rows={3} value={(item.includedHighlights || []).join('\n')} onChange={(e) => updateHomepageList(['services', index, 'includedHighlights'], e.target.value)} /></label>
-                      <label>图片来源<input value={item.media?.source || ''} onChange={(e) => updateHomepage(['services', index, 'media', 'source'], e.target.value)} /></label>
-                      <label>图片授权记录<input value={item.media?.consentOrLicenseRecord || ''} onChange={(e) => updateHomepage(['services', index, 'media', 'consentOrLicenseRecord'], e.target.value)} /></label>
-                      <label className="span-2"><input type="checkbox" checked={item.media?.published !== false} onChange={(e) => updateHomepage(['services', index, 'media', 'published'], e.target.checked)} /> 发布服务图片</label>
-                      <label className="span-2"><input type="checkbox" checked={!!item.media?.aiGenerated} onChange={(e) => updateHomepage(['services', index, 'media', 'aiGenerated'], e.target.checked)} /> AI 生成示意图</label>
-                      <p className="span-2 admin-muted">替换图片后默认未发布，请填写新图片的来源和授权记录后再发布。下架图片不影响服务文案和预约入口。</p>
+                      </label>))}
+                      {t(['road-trip','signature'].includes(item.id) && <label className="span-2"><span><input type="checkbox" checked={item.unitApproved === true} onChange={(event) => updateHomepage(['services', index, 'unitApproved'], event.target.checked)} />{t(" 计价单位已获业务确认（请先填写准确单位）")}</span></label>)}
+                      <label className="span-2">{t("包含亮点（每行一项，共三项）")}<textarea rows={3} value={(item.includedHighlights || []).join('\n')} onChange={(e) => updateHomepageList(['services', index, 'includedHighlights'], e.target.value)} /></label>
+                      <label>{t("图片来源")}<input value={item.media?.source || ''} onChange={(e) => updateHomepage(['services', index, 'media', 'source'], e.target.value)} /></label>
+                      <label>{t("图片授权记录")}<input value={item.media?.consentOrLicenseRecord || ''} onChange={(e) => updateHomepage(['services', index, 'media', 'consentOrLicenseRecord'], e.target.value)} /></label>
+                      <label className="span-2"><input type="checkbox" checked={item.media?.published !== false} onChange={(e) => updateHomepage(['services', index, 'media', 'published'], e.target.checked)} />{t(" 发布服务图片")}</label>
+                      <label className="span-2"><input type="checkbox" checked={!!item.media?.aiGenerated} onChange={(e) => updateHomepage(['services', index, 'media', 'aiGenerated'], e.target.checked)} />{t(" AI 生成示意图")}</label>
+                      <p className="span-2 admin-muted">{t("替换图片后默认未发布，请填写新图片的来源和授权记录后再发布。下架图片不影响服务文案和预约入口。")}</p>
                       <div className="span-2 admin-service-preview">
-                        <figure><img src={item.image} alt={item.imageAlt || ''} style={{ objectPosition: item.imageFocalPoint }} /><figcaption>桌面裁切</figcaption></figure>
-                        <figure><img src={item.image} alt={item.imageAlt || ''} style={{ objectPosition: item.imageFocalPoint }} /><figcaption>手机裁切</figcaption></figure>
+                        <figure><img src={item.image} alt={t(item.imageAlt || '')} style={{ objectPosition: item.imageFocalPoint }} /><figcaption>{t("桌面裁切")}</figcaption></figure>
+                        <figure><img src={item.image} alt={t(item.imageAlt || '')} style={{ objectPosition: item.imageFocalPoint }} /><figcaption>{t("手机裁切")}</figcaption></figure>
                       </div>
-                      <label className="span-2"><input type="checkbox" checked={!!item.bookingApproved} onChange={(e) => updateHomepage(['services', index, 'bookingApproved'], e.target.checked)} /> 取消/改期条款已审批</label>
-                      <label>政策状态<select value={item.bookingPolicy?.status || 'draft'} onChange={(e) => updateHomepage(['services', index, 'bookingPolicy', 'status'], e.target.value)}><option value="draft">草稿</option><option value="approved">已审批</option></select></label>
-                      {['version', 'dateChange', 'termsHref', 'confirmedBy', 'confirmedOn', 'sourceDocument', 'sourceSha256'].map((field) => <label key={field}>{field}
+                      <label className="span-2"><input type="checkbox" checked={!!item.bookingApproved} onChange={(e) => updateHomepage(['services', index, 'bookingApproved'], e.target.checked)} />{t(" 取消/改期条款已审批")}</label>
+                      <label>{t("政策状态")}<select value={item.bookingPolicy?.status || 'draft'} onChange={(e) => updateHomepage(['services', index, 'bookingPolicy', 'status'], e.target.value)}><option value="draft">{t("草稿")}</option><option value="approved">{t("已审批")}</option></select></label>
+                      {t(['version', 'dateChange', 'termsHref', 'confirmedBy', 'confirmedOn', 'sourceDocument', 'sourceSha256'].map((field) => <label key={field}>{t(field)}
                         <input value={item.bookingPolicy?.[field] || ''} onChange={(e) => updateHomepage(['services', index, 'bookingPolicy', field], e.target.value)} />
-                      </label>)}
-                      <p className="span-2 admin-muted">首页固定引用第 1 档 100% 摘要。修改条款时请更新审批记录和版本；完整档位及脚注同步用于详情、条款页和报价模板。</p>
-                      {(item.bookingPolicy?.refundSteps || []).map((step, stepIndex) => <div className="span-2 admin-form-grid" key={stepIndex}>
-                        <label>适用时间 / 阶段<input value={step.when} onChange={(e) => updateHomepage(['services', index, 'bookingPolicy', 'refundSteps', stepIndex, 'when'], e.target.value)} /></label>
-                        <label>退款比例 / 状态<input value={step.refund} onChange={(e) => updateHomepage(['services', index, 'bookingPolicy', 'refundSteps', stepIndex, 'refund'], e.target.value)} /></label>
-                      </div>)}
-                      <label className="span-2">政策脚注（每行一项）<textarea rows={3} value={(item.bookingPolicy?.footnotes || []).join('\n')} onChange={(e) => updateHomepageList(['services', index, 'bookingPolicy', 'footnotes'], e.target.value)} /></label>
-                      <button type="button" className="btn btn-outline span-2" onClick={() => downloadQuotation(item.id)}>下载报价模板（使用已保存的政策）</button>
-                      {['tagline', 'priceDetail', 'description', 'perfectFor', 'support', 'goodToKnow'].map((field) => (
-                        <label className="span-2" key={field}>详情 {field}
+                      </label>))}
+                      <p className="span-2 admin-muted">{t("首页固定引用第 1 档 100% 摘要。修改条款时请更新审批记录和版本；完整档位及脚注同步用于详情、条款页和报价模板。")}</p>
+                      {t((item.bookingPolicy?.refundSteps || []).map((step, stepIndex) => <div className="span-2 admin-form-grid" key={stepIndex}>
+                        <label>{t("适用时间 / 阶段")}<input value={step.when} onChange={(e) => updateHomepage(['services', index, 'bookingPolicy', 'refundSteps', stepIndex, 'when'], e.target.value)} /></label>
+                        <label>{t("退款比例 / 状态")}<input value={step.refund} onChange={(e) => updateHomepage(['services', index, 'bookingPolicy', 'refundSteps', stepIndex, 'refund'], e.target.value)} /></label>
+                      </div>))}
+                      <label className="span-2">{t("政策脚注（每行一项）")}<textarea rows={3} value={(item.bookingPolicy?.footnotes || []).join('\n')} onChange={(e) => updateHomepageList(['services', index, 'bookingPolicy', 'footnotes'], e.target.value)} /></label>
+                      <button type="button" className="btn btn-outline span-2" onClick={() => downloadQuotation(item.id)}>{t("下载报价模板（使用已保存的政策）")}</button>
+                      {t(['tagline', 'priceDetail', 'description', 'perfectFor', 'support', 'goodToKnow'].map((field) => (
+                        <label className="span-2" key={field}>{t("详情 ")}{t(field)}
                           <textarea rows={field === 'description' ? 4 : 2} value={item.details?.[field] || ''} onChange={(e) => updateHomepage(['services', index, 'details', field], e.target.value)} />
                         </label>
-                      ))}
-                      <label className="span-2">详情 included（每行一项）
-                        <textarea rows={6} value={(item.details?.included || []).join('\n')} onChange={(e) => updateHomepageList(['services', index, 'details', 'included'], e.target.value)} />
+                      )))}
+                      <label className="span-2">{t("详情 included（每行一项）")}<textarea rows={6} value={(item.details?.included || []).join('\n')} onChange={(e) => updateHomepageList(['services', index, 'details', 'included'], e.target.value)} />
                       </label>
                     </div>
                   </div>
-                ))}
+                )))}
               </div>
 
               <div className="admin-home-card">
-                <h2 className="font-serif">旅程卡片</h2>
-                {(homepage.journeys || []).map((item, index) => (
+                <h2 className="font-serif">{t("旅程卡片")}</h2>
+                {t((homepage.journeys || []).map((item, index) => (
                   <div className="admin-home-repeat" key={item.slug || index}>
                     <div className="admin-form-grid">
-                      <label>
-                        Slug
-                        <input value={item.slug || ''} onChange={(e) => updateHomepage(['journeys', index, 'slug'], e.target.value)} />
+                      <label>{t("Slug")}<input value={item.slug || ''} onChange={(e) => updateHomepage(['journeys', index, 'slug'], e.target.value)} />
                       </label>
-                      <label>
-                        天数
-                        <input value={item.duration || ''} onChange={(e) => updateHomepage(['journeys', index, 'duration'], e.target.value)} />
+                      <label>{t("天数")}<input value={item.duration || ''} onChange={(e) => updateHomepage(['journeys', index, 'duration'], e.target.value)} />
                       </label>
-                      <label className="span-2">
-                        标题
-                        <input value={item.title || ''} onChange={(e) => updateHomepage(['journeys', index, 'title'], e.target.value)} />
+                      <label className="span-2">{t("标题")}<input value={item.title || ''} onChange={(e) => updateHomepage(['journeys', index, 'title'], e.target.value)} />
                       </label>
-                      <label className="span-2">
-                        简介
-                        <textarea rows={2} value={item.summary || ''} onChange={(e) => updateHomepage(['journeys', index, 'summary'], e.target.value)} />
+                      <label className="span-2">{t("简介")}<textarea rows={2} value={item.summary || ''} onChange={(e) => updateHomepage(['journeys', index, 'summary'], e.target.value)} />
                       </label>
-                      <label>
-                        图片路径
-                        <input value={item.image || ''} onChange={(e) => updateHomepage(['journeys', index, 'image'], e.target.value)} />
+                      <label>{t("图片路径")}<input value={item.image || ''} onChange={(e) => updateHomepage(['journeys', index, 'image'], e.target.value)} />
                         <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['journeys', index, 'image'])} />
                       </label>
-                      <label>图片 alt
-                        <input value={item.imageAlt || ''} onChange={(e) => updateHomepage(['journeys', index, 'imageAlt'], e.target.value)} />
+                      <label>{t("图片 alt")}<input value={item.imageAlt || ''} onChange={(e) => updateHomepage(['journeys', index, 'imageAlt'], e.target.value)} />
                       </label>
-                      <label>
-                        价格
-                        <input value={item.price || ''} onChange={(e) => updateHomepage(['journeys', index, 'price'], e.target.value)} />
+                      <label>{t("价格")}<input value={item.price || ''} onChange={(e) => updateHomepage(['journeys', index, 'price'], e.target.value)} />
                       </label>
-                      <label><span><input type="checkbox" checked={item.showHomepagePrice === true} onChange={(event) => updateHomepage(['journeys',index,'showHomepagePrice'],event.target.checked)} /> 首页显示已审批价格（默认关闭）</span></label>
-                      <label>图片上的起价标签（如 From USD 299，留空不显示）
-                        <input value={item.priceBadge || ''} onChange={(e) => updateHomepage(['journeys', index, 'priceBadge'], e.target.value)} />
+                      <label><span><input type="checkbox" checked={item.showHomepagePrice === true} onChange={(event) => updateHomepage(['journeys',index,'showHomepagePrice'],event.target.checked)} />{t(" 首页显示已审批价格（默认关闭）")}</span></label>
+                      <label>{t("图片上的起价标签（如 From USD 299，留空不显示）")}<input value={item.priceBadge || ''} onChange={(e) => updateHomepage(['journeys', index, 'priceBadge'], e.target.value)} />
                       </label>
-                      <label><input type="checkbox" checked={!!item.priceBadgeApproved} onChange={(e) => updateHomepage(['journeys', index, 'priceBadgeApproved'], e.target.checked)} /> 起价标签已批准发布（不代表最终报价）</label>
-                      <label className="span-2">
-                        标签（每行一个）
-                        <textarea rows={3} value={(item.tags || []).join('\n')} onChange={(e) => updateHomepageList(['journeys', index, 'tags'], e.target.value)} />
+                      <label><input type="checkbox" checked={!!item.priceBadgeApproved} onChange={(e) => updateHomepage(['journeys', index, 'priceBadgeApproved'], e.target.checked)} />{t(" 起价标签已批准发布（不代表最终报价）")}</label>
+                      <label className="span-2">{t("标签（每行一个）")}<textarea rows={3} value={(item.tags || []).join('\n')} onChange={(e) => updateHomepageList(['journeys', index, 'tags'], e.target.value)} />
                       </label>
-                      <label className="span-2">
-                        团型说明
-                        <input value={item.groupBasis || ''} onChange={(e) => updateHomepage(['journeys', index, 'groupBasis'], e.target.value)} />
+                      <label className="span-2">{t("团型说明")}<input value={item.groupBasis || ''} onChange={(e) => updateHomepage(['journeys', index, 'groupBasis'], e.target.value)} />
                       </label>
-                      <label className="span-2"><input type="checkbox" checked={!!item.priceApproved} onChange={(e) => updateHomepage(['journeys', index, 'priceApproved'], e.target.checked)} /> 价格和成团人数已批准发布</label>
-                      <label className="span-2"><input type="checkbox" checked={!!item.detailsApproved} onChange={(e) => updateHomepage(['journeys', index, 'detailsApproved'], e.target.checked)} /> 路线详情已批准发布</label>
-                      <label className="span-2">详情 highlights（每行一项）
-                        <textarea rows={4} value={(item.details?.highlights || []).join('\n')} onChange={(e) => updateHomepageList(['journeys', index, 'details', 'highlights'], e.target.value)} />
+                      <label className="span-2"><input type="checkbox" checked={!!item.priceApproved} onChange={(e) => updateHomepage(['journeys', index, 'priceApproved'], e.target.checked)} />{t(" 价格和成团人数已批准发布")}</label>
+                      <label className="span-2"><input type="checkbox" checked={!!item.detailsApproved} onChange={(e) => updateHomepage(['journeys', index, 'detailsApproved'], e.target.checked)} />{t(" 路线详情已批准发布")}</label>
+                      <label className="span-2">{t("详情 highlights（每行一项）")}<textarea rows={4} value={(item.details?.highlights || []).join('\n')} onChange={(e) => updateHomepageList(['journeys', index, 'details', 'highlights'], e.target.value)} />
                       </label>
-                      <label className="span-2">详情 suggested flow（每行一项，未经批准保持空白）
-                        <textarea rows={4} value={(item.details?.flow || []).join('\n')} onChange={(e) => updateHomepageList(['journeys', index, 'details', 'flow'], e.target.value)} />
+                      <label className="span-2">{t("详情 suggested flow（每行一项，未经批准保持空白）")}<textarea rows={4} value={(item.details?.flow || []).join('\n')} onChange={(e) => updateHomepageList(['journeys', index, 'details', 'flow'], e.target.value)} />
                       </label>
-                      {['idealFor', 'note'].map((field) => <label className="span-2" key={field}>详情 {field}
+                      {t(['idealFor', 'note'].map((field) => <label className="span-2" key={field}>{t("详情 ")}{t(field)}
                         <textarea rows={2} value={item.details?.[field] || ''} onChange={(e) => updateHomepage(['journeys', index, 'details', field], e.target.value)} />
-                      </label>)}
-                      <label className="span-2">详情 gallery（每行：图片路径 | alt）
-                        <textarea rows={3} value={(item.details?.gallery || []).map((image) => `${image.src} | ${image.alt}`).join('\n')} onChange={(e) => updateHomepageGallery(['journeys', index, 'details', 'gallery'], e.target.value)} />
+                      </label>))}
+                      <label className="span-2">{t("详情 gallery（每行：图片路径 | alt）")}<textarea rows={3} value={(item.details?.gallery || []).map((image) => `${image.src} | ${image.alt}`).join('\n')} onChange={(e) => updateHomepageGallery(['journeys', index, 'details', 'gallery'], e.target.value)} />
                       </label>
                     </div>
                   </div>
-                ))}
+                )))}
               </div>
 
               <div className="admin-home-card">
-                <h2 className="font-serif">Why / Steps / FAQ</h2>
-                {(homepage.whyGallery || []).map((image, index) => <fieldset key={index} className="admin-form-grid">
-                  <legend>轮播图片 {index + 1}</legend>
-                  <label>图片路径<input value={image.src || ''} onChange={(e) => updateHomepage(['whyGallery', index, 'src'], e.target.value)} />
+                <h2 className="font-serif">{t("Why / Steps / FAQ")}</h2>
+                {t((homepage.whyGallery || []).map((image, index) => <fieldset key={index} className="admin-form-grid">
+                  <legend>{t("轮播图片 ")}{t(index + 1)}</legend>
+                  <label>{t("图片路径")}<input value={image.src || ''} onChange={(e) => updateHomepage(['whyGallery', index, 'src'], e.target.value)} />
                     <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['whyGallery', index, 'src'])} />
                   </label>
-                  <label>图片 alt<input value={image.alt || ''} onChange={(e) => updateHomepage(['whyGallery', index, 'alt'], e.target.value)} /></label>
-                  <label><input type="checkbox" checked={!!image.aiGenerated} onChange={(e) => updateHomepage(['whyGallery', index, 'aiGenerated'], e.target.checked)} /> AI 生成示意图（非真实客户或场地照片）</label>
-                </fieldset>)}
+                  <label>{t("图片 alt")}<input value={image.alt || ''} onChange={(e) => updateHomepage(['whyGallery', index, 'alt'], e.target.value)} /></label>
+                  <label><input type="checkbox" checked={!!image.aiGenerated} onChange={(e) => updateHomepage(['whyGallery', index, 'aiGenerated'], e.target.checked)} />{t(" AI 生成示意图（非真实客户或场地照片）")}</label>
+                </fieldset>))}
                 <div className="admin-form-grid">
-                  <label className="span-2">
-                    Why 图片路径
-                    <input value={homepage.whyImage || ''} onChange={(e) => updateHomepage(['whyImage'], e.target.value)} />
+                  <label className="span-2">{t("Why 图片路径")}<input value={homepage.whyImage || ''} onChange={(e) => updateHomepage(['whyImage'], e.target.value)} />
                     <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['whyImage'])} />
                   </label>
-                  <label className="span-2">Why 图片 alt
-                    <input value={homepage.whyImageAlt || ''} onChange={(e) => updateHomepage(['whyImageAlt'], e.target.value)} />
+                  <label className="span-2">{t("Why 图片 alt")}<input value={homepage.whyImageAlt || ''} onChange={(e) => updateHomepage(['whyImageAlt'], e.target.value)} />
                   </label>
-                  <label className="span-2">
-                    Why 条目（每行：标题 | 描述）
-                    <textarea rows={5} value={(homepage.whyItems || []).map((item) => item.join(' | ')).join('\n')} onChange={(e) => updateHomepagePairList(['whyItems'], e.target.value)} />
+                  <label className="span-2">{t("Why 条目（每行：标题 | 描述）")}<textarea rows={5} value={(homepage.whyItems || []).map((item) => item.join(' | ')).join('\n')} onChange={(e) => updateHomepagePairList(['whyItems'], e.target.value)} />
                   </label>
-                  <label className="span-2">
-                    步骤（每行：编号 | 标题 | 描述 | 标签）
-                    <textarea rows={7} value={(homepage.process?.steps || []).map((item) => [item.number, item.title, item.body, item.reassurance].join(' | ')).join('\n')} onChange={(e) => {
+                  <label className="span-2">{t("步骤（每行：编号 | 标题 | 描述 | 标签）")}<textarea rows={7} value={(homepage.process?.steps || []).map((item) => [item.number, item.title, item.body, item.reassurance].join(' | ')).join('\n')} onChange={(e) => {
                       const rows = e.target.value.split('\n').map((line) => line.split('|').map((part) => part.trim()))
                       updateHomepage(['process', 'steps'], rows.map(([number, title, body, reassurance], i) => ({ order: i + 1, number, title, body, reassurance })))
                       updateHomepage(['steps'], rows)
                     }} />
                   </label>
-                  <label className="span-2">
-                    FAQ（每行：问题 | 答案）
-                    <textarea rows={8} value={(homepage.faqs || []).map((item) => item.join(' | ')).join('\n')} onChange={(e) => updateHomepagePairList(['faqs'], e.target.value)} />
+                  <label className="span-2">{t("FAQ（每行：问题 | 答案）")}<textarea rows={8} value={(homepage.faqs || []).map((item) => item.join(' | ')).join('\n')} onChange={(e) => updateHomepagePairList(['faqs'], e.target.value)} />
                   </label>
                 </div>
               </div>
               <div className="admin-home-card">
-                <h2 className="font-serif">咨询表单文案</h2>
+                <h2 className="font-serif">{t("咨询表单文案")}</h2>
                 <div className="admin-form-grid">
-                  {Object.entries(homepage.formConfig || {}).map(([field, value]) => (
-                    <label className="span-2" key={field}>{field}
+                  {t(Object.entries(homepage.formConfig || {}).map(([field, value]) => (
+                    <label className="span-2" key={field}>{t(field)}
                       <input value={value} onChange={(e) => updateHomepage(['formConfig', field], e.target.value)} />
                     </label>
-                  ))}
+                  )))}
                 </div>
               </div>
-              <div className="admin-home-card"><h2>Journey Stories 静帧序列</h2><p>三组各四帧；默认自动切换，可手动暂停，遵循减弱动态偏好。这里不是视频。</p>{(homepage.storySequences || []).map((story,index) => <details key={story.id} className="admin-service-module"><summary>{story.title}</summary><ContentFields value={story} path={['storySequences',index]} change={updateHomepage} /></details>)}</div>
-              <div className="admin-home-card"><h2>页脚联系信息</h2><ContentFields value={homepage.footer || {}} path={['footer']} change={updateHomepage} /></div>
-              <div className="admin-home-card"><h2>登记主体与登记地址（与联系地址分开）</h2><p>附件登记地址为待核验草稿。填写审核人与生效日期并审核通过后，才对正式页面发布。</p><ContentFields value={homepage.legalIdentity || {}} path={['legalIdentity']} change={updateHomepage} /></div>
+              <div className="admin-home-card"><h2>{t("Journey Stories 静帧序列")}</h2><p>{t("三组各四帧；默认自动切换，可手动暂停，遵循减弱动态偏好。这里不是视频。")}</p>{t((homepage.storySequences || []).map((story,index) => <details key={story.id} className="admin-service-module"><summary>{t(story.title)}</summary><ContentFields value={story} path={['storySequences',index]} change={updateHomepage} /></details>))}</div>
+              <div className="admin-home-card"><h2>{t("页脚联系信息")}</h2><ContentFields value={homepage.footer || {}} path={['footer']} change={updateHomepage} /></div>
+              <div className="admin-home-card"><h2>{t("登记主体与登记地址（与联系地址分开）")}</h2><p>{t("附件登记地址为待核验草稿。填写审核人与生效日期并审核通过后，才对正式页面发布。")}</p><ContentFields value={homepage.legalIdentity || {}} path={['legalIdentity']} change={updateHomepage} /></div>
               <div className="admin-home-card">
-                <h2 className="font-serif">Guest Stories / 旅客评价</h2>
-                <p className="admin-muted">首页标题和介绍可在上方 reviews 文案配置中修改。</p>
-                <p className="admin-muted">照片和评价均需授权并审批。正式环境无真实授权评价时保留栏目空态；开发和测试环境显示明确标注的 AI 样例。</p>
-                {(homepage.reviews || []).map((item, index) => (
+                <h2 className="font-serif">{t("Guest Stories / 旅客评价")}</h2>
+                <p className="admin-muted">{t("首页标题和介绍可在上方 reviews 文案配置中修改。")}</p>
+                <p className="admin-muted">{t("照片和评价均需授权并审批。正式环境无真实授权评价时保留栏目空态；开发和测试环境显示明确标注的 AI 样例。")}</p>
+                {t((homepage.reviews || []).map((item, index) => (
                   <div className="admin-home-repeat" key={index}>
                     <div className="admin-form-grid">
-                      {['id', 'quote', 'guestDisplayName', 'tripContext', 'image', 'imageAlt', 'imageFocalPoint', 'imageConsentRecord', 'reviewConsentRecord', 'reviewSource'].map((field) => <label key={field}>{field}<input value={item[field] || ''} onChange={(e) => updateHomepage(['reviews', index, field], e.target.value)} /></label>)}
-                      <label>顺序<input type="number" min="1" value={item.order || index + 1} onChange={(e) => updateHomepage(['reviews', index, 'order'], Number(e.target.value))} /></label>
-                      <label>审批<select value={item.status || 'draft'} onChange={(e) => updateHomepage(['reviews', index, 'status'], e.target.value)}><option value="draft">草稿</option><option value="approved">已审批</option></select></label>
-                      <label>上传照片<input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['reviews', index, 'image'])} /></label>
-                      <label><input type="checkbox" checked={!!item.published} onChange={(e) => updateHomepage(['reviews', index, 'published'], e.target.checked)} /> 发布</label>
+                      {t(['id', 'quote', 'guestDisplayName', 'tripContext', 'image', 'imageAlt', 'imageFocalPoint', 'imageConsentRecord', 'reviewConsentRecord', 'reviewSource'].map((field) => <label key={field}>{t(field)}<input value={item[field] || ''} onChange={(e) => updateHomepage(['reviews', index, field], e.target.value)} /></label>))}
+                      <label>{t("顺序")}<input type="number" min="1" value={item.order || index + 1} onChange={(e) => updateHomepage(['reviews', index, 'order'], Number(e.target.value))} /></label>
+                      <label>{t("审批")}<select value={item.status || 'draft'} onChange={(e) => updateHomepage(['reviews', index, 'status'], e.target.value)}><option value="draft">{t("草稿")}</option><option value="approved">{t("已审批")}</option></select></label>
+                      <label>{t("上传照片")}<input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadHomepageImage(e.target.files?.[0], ['reviews', index, 'image'])} /></label>
+                      <label><input type="checkbox" checked={!!item.published} onChange={(e) => updateHomepage(['reviews', index, 'published'], e.target.checked)} />{t(" 发布")}</label>
                     </div>
-                    <button type="button" className="btn btn-outline" onClick={() => removeHomepageItem('reviews', index)}>删除</button>
+                    <button type="button" className="btn btn-outline" onClick={() => removeHomepageItem('reviews', index)}>{t("删除")}</button>
                   </div>
-                ))}
-                <button type="button" className="btn btn-outline" onClick={() => addHomepageItem('reviews', { id: crypto.randomUUID(), order: (homepage.reviews?.length || 0) + 1, quote: '', guestDisplayName: '', tripContext: '', image: '', imageAlt: '', imageFocalPoint: '50% 50%', imageConsentRecord: '', reviewConsentRecord: '', reviewSource: '', layoutOnly: false, aiGenerated: false, status: 'draft', published: false })}>新增 Review</button>
+                )))}
+                <button type="button" className="btn btn-outline" onClick={() => addHomepageItem('reviews', { id: crypto.randomUUID(), order: (homepage.reviews?.length || 0) + 1, quote: '', guestDisplayName: '', tripContext: '', image: '', imageAlt: '', imageFocalPoint: '50% 50%', imageConsentRecord: '', reviewConsentRecord: '', reviewSource: '', layoutOnly: false, aiGenerated: false, status: 'draft', published: false })}>{t("新增 Review")}</button>
               </div>
             </div>
-          )}
+          ))}
 
           <div className="admin-modal__actions">
-            {homepageSaved && <span role="status">配置已保存</span>}
+            {t(homepageSaved && <span role="status">{t("配置已保存")}</span>)}
             <button type="button" className="btn btn-gold" disabled={saving} onClick={saveHomepage}>
-              {saving ? '保存中…' : '保存首页配置'}
+              {t(saving ? '保存中…' : '保存首页配置')}
             </button>
           </div>
         </section>
-      )}
+      ))}
 
-      {tab === 'inquiries' && (
+      {t(tab === 'inquiries' && (
         <section className="admin-homepage-editor">
           <div className="admin-toolbar">
-            <div><strong>咨询线索</strong><p className="admin-muted">最近 100 条。通知待发送时可手动重试。</p></div>
-            <button type="button" className="btn btn-outline" onClick={() => loadInquiries().catch((err) => setError(err.message))}>刷新</button>
+            <div><strong>{t("咨询线索")}</strong><p className="admin-muted">{t("最近 100 条。通知待发送时可手动重试。")}</p></div>
+            <button type="button" className="btn btn-outline" onClick={() => loadInquiries().catch((err) => setError(err.message))}>{t("刷新")}</button>
           </div>
           <div className="admin-inquiry-list">
-            {inquiries.map((item) => (
+            {t(inquiries.map((item) => (
               <article className="admin-home-card" key={item.inquiry_id}>
-                <h2>{item.name} <small>{item.created_at}</small></h2>
-                <p>{item.email} · {item.preferred_contact} {item.contact_handle}</p>
-                <p>{item.preferred_service} · {item.travelers} traveler(s) · {item.travel_dates}</p>
-                {item.destinations && <p>Destinations: {item.destinations}</p>}
-                {item.message && <p>{item.message}</p>}
-                <p>Notification: {item.notification_status} · Attempts: {item.notification_attempts}</p>
-                {item.notification_status !== 'sent' && <button type="button" className="btn btn-outline" onClick={async () => {
+                <h2>{t(item.name)} <small>{t(item.created_at)}</small></h2>
+                <p>{t(item.email)} · {t(item.preferred_contact)} {t(item.contact_handle)}</p>
+                <p>{t(item.preferred_service)} · {t(item.travelers)}{t(" traveler(s) · ")}{t(item.travel_dates)}</p>
+                {(typeof item.journey?.name === 'string' || typeof item.journey?.id === 'string') && <p>{t('Journey')}: {[item.journey?.name, item.journey?.id].filter(value => typeof value === 'string' && value.trim()).join(' · ')}</p>}
+                {[item.journey?.source_page, item.source_page].some(value => typeof value === 'string' && value.trim()) && <p>{t('Source page')}: {[item.journey?.source_page, item.source_page].find(value => typeof value === 'string' && value.trim())}</p>}
+                {t(item.destinations && <p>{t("Destinations: ")}{t(item.destinations)}</p>)}
+                {t(item.message && <p>{t(item.message)}</p>)}
+                <p>{t("Notification: ")}{t(item.notification_status)}{t(" · Attempts: ")}{t(item.notification_attempts)}</p>
+                {t(item.notification_status !== 'sent' && <button type="button" className="btn btn-outline" onClick={async () => {
                   try {
                     await api(INQUIRIES_API, { method: 'POST', body: JSON.stringify({ inquiry_id: item.inquiry_id }) })
                     await loadInquiries()
                   } catch (err) { setError(err.message) }
-                }}>重试通知</button>}
+                }}>{t("重试通知")}</button>)}
               </article>
-            ))}
-            {inquiries.length === 0 && <p className="admin-muted">暂无咨询线索</p>}
+            )))}
+            {t(inquiries.length === 0 && <p className="admin-muted">{t("暂无咨询线索")}</p>)}
           </div>
         </section>
-      )}
+      ))}
 
-      {tab === 'products' && (
+      {t(tab === 'products' && (
         <>
           <div className="admin-toolbar">
             <input
               value={productQuery}
               onChange={(e) => setProductQuery(e.target.value)}
-              placeholder="搜索标题 / 价格…"
+              placeholder={t("搜索标题 / 价格…")}
             />
-            <span className="admin-muted">共 {filteredProducts.length} 条</span>
+            <span className="admin-muted">共 {t(filteredProducts.length)} 条</span>
           </div>
 
           <div className="admin-table-wrap">
             <table className="admin-table">
               <thead>
                 <tr>
-                  <th>排序</th>
-                  <th>产品</th>
-                  <th>价格</th>
-                  <th>状态</th>
-                  <th>操作</th>
+                  <th>{t("排序")}</th>
+                  <th>{t("产品")}</th>
+                  <th>{t("价格")}</th>
+                  <th>{t("状态")}</th>
+                  <th>{t("操作")}</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredProducts.map((p) => (
+                {t(filteredProducts.map((p) => (
                   <tr key={p.id}>
-                    <td>{p.sort_order}</td>
+                    <td>{t(p.sort_order)}</td>
                     <td>
                       <div className="admin-product-cell">
-                        {p.image ? <img src={p.image} alt="" /> : <div className="admin-product-cell__ph" />}
+                        {t(p.image ? <img src={p.image} alt={t("")} /> : <div className="admin-product-cell__ph" />)}
                         <div>
-                          <strong>{p.title}</strong>
-                          <div className="admin-muted">{p.duration || '—'}</div>
+                          <strong>{t(p.title)}</strong>
+                          <div className="admin-muted">{t(p.duration || '—')}</div>
                         </div>
                       </div>
                     </td>
-                    <td>{p.price || '—'}</td>
+                    <td>{t(p.price || '—')}</td>
                     <td>
                       <span className={`admin-badge${p.is_published ? ' is-on' : ''}`}>
-                        {p.is_published ? '已上架' : '已下架'}
+                        {t(p.is_published ? '已上架' : '已下架')}
                       </span>
                     </td>
                     <td className="admin-actions">
-                      <button type="button" onClick={() => openEditProduct(p)}>
-                        编辑
-                      </button>
+                      <button type="button" onClick={() => openEditProduct(p)}>{t("编辑")}</button>
                       <button type="button" onClick={() => togglePublish(p)}>
-                        {p.is_published ? '下架' : '上架'}
+                        {t(p.is_published ? '下架' : '上架')}
                       </button>
-                      <button type="button" className="is-danger" onClick={() => removeProduct(p)}>
-                        删除
-                      </button>
+                      <button type="button" className="is-danger" onClick={() => removeProduct(p)}>{t("删除")}</button>
                     </td>
                   </tr>
-                ))}
+                )))}
               </tbody>
             </table>
           </div>
         </>
-      )}
+      ))}
 
-      {tab === 'guides' && (
+      {t(tab === 'guides' && (
         <>
           <div className="admin-subfilters">
-            {[
+            {t([
               ['all', `全部 (${guideCounts.all})`],
               ['pending', `待审核 (${guideCounts.pending})`],
               ['approved', `已通过 (${guideCounts.approved})`],
@@ -1186,89 +1103,81 @@ export default function Admin() {
                 className={guideStatus === key ? 'is-active' : ''}
                 onClick={() => changeGuideFilter(key)}
               >
-                {label}
+                {t(label)}
               </button>
-            ))}
+            )))}
           </div>
 
           <div className="admin-toolbar">
             <input
               value={guideQuery}
               onChange={(e) => setGuideQuery(e.target.value)}
-              placeholder="搜索姓名 / 地点 / 邮箱…"
+              placeholder={t("搜索姓名 / 地点 / 邮箱…")}
             />
-            <span className="admin-muted">共 {filteredGuides.length} 条</span>
+            <span className="admin-muted">共 {t(filteredGuides.length)} 条</span>
           </div>
 
           <div className="admin-table-wrap">
             <table className="admin-table">
               <thead>
                 <tr>
-                  <th>向导</th>
-                  <th>地点</th>
-                  <th>语言</th>
-                  <th>日价</th>
-                  <th>状态</th>
-                  <th>操作</th>
+                  <th>{t("向导")}</th>
+                  <th>{t("地点")}</th>
+                  <th>{t("语言")}</th>
+                  <th>{t("日价")}</th>
+                  <th>{t("状态")}</th>
+                  <th>{t("操作")}</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredGuides.map((g) => (
+                {t(filteredGuides.map((g) => (
                   <tr key={g.id}>
                     <td>
                       <div className="admin-product-cell">
-                        {g.photo_url ? (
-                          <img src={g.photo_url} alt="" />
+                        {t(g.photo_url ? (
+                          <img src={g.photo_url} alt={t("")} />
                         ) : (
                           <div className="admin-product-cell__ph" />
-                        )}
+                        ))}
                         <div>
-                          <strong>{g.full_name}</strong>
-                          <div className="admin-muted">{g.email}</div>
+                          <strong>{t(g.full_name)}</strong>
+                          <div className="admin-muted">{t(g.email)}</div>
                         </div>
                       </div>
                     </td>
-                    <td>{g.location || '—'}</td>
-                    <td className="admin-muted">{(g.languages || []).join(', ') || '—'}</td>
-                    <td>{g.price_per_day != null ? `$${g.price_per_day}` : '—'}</td>
+                    <td>{t(g.location || '—')}</td>
+                    <td className="admin-muted">{t((g.languages || []).join(', ') || '—')}</td>
+                    <td>{t(g.price_per_day != null ? `$${g.price_per_day}` : '—')}</td>
                     <td>
                       <span className={`admin-badge admin-badge--${g.status}`}>
-                        {STATUS_LABEL[g.status] || g.status}
+                        {t(STATUS_LABEL[g.status] || g.status)}
                       </span>
                     </td>
                     <td className="admin-actions">
-                      <button type="button" onClick={() => openEditGuide(g)}>
-                        查看
-                      </button>
-                      {g.status !== 'approved' && (
-                        <button type="button" onClick={() => setGuideStatusQuick(g, 'approved')}>
-                          通过
-                        </button>
-                      )}
-                      {g.status !== 'rejected' && (
-                        <button type="button" onClick={() => setGuideStatusQuick(g, 'rejected')}>
-                          拒绝
-                        </button>
-                      )}
-                      <button type="button" className="is-danger" onClick={() => removeGuide(g)}>
-                        删除
-                      </button>
+                      <button type="button" onClick={() => openEditGuide(g)}>{t("查看")}</button>
+                      {t(g.status !== 'approved' && (
+                        <button type="button" onClick={() => setGuideStatusQuick(g, 'approved')}>{t("通过")}</button>
+                      ))}
+                      {t(g.status !== 'rejected' && (
+                        <button type="button" onClick={() => setGuideStatusQuick(g, 'rejected')}>{t("拒绝")}</button>
+                      ))}
+                      <button type="button" className="is-danger" onClick={() => removeGuide(g)}>{t("删除")}</button>
                     </td>
                   </tr>
-                ))}
+                )))}
               </tbody>
             </table>
           </div>
         </>
-      )}
+      ))}
 
-      {tab === 'leads' && (
+      {t(tab === 'leads' && (
         <>
           <section className="admin-lead-grid">
             <div className="admin-lead-panel">
               <div>
-                <strong>关键词配置</strong>
-                <p className="admin-muted">每行一个关键词。系统生成搜索链接，管理员打开后手动筛选并导入帖子。</p>
+                <strong>{t("关键词配置")}</strong>
+                <p className="admin-muted">{t("每行一个关键词。系统生成搜索链接，管理员打开后手动筛选并导入帖子。")}</p>
               </div>
               <textarea
                 rows={7}
@@ -1277,30 +1186,30 @@ export default function Admin() {
                 spellCheck={false}
               />
               <button type="button" className="btn btn-gold" disabled={saving} onClick={saveLeadKeywords}>
-                {saving ? '保存中…' : '保存关键词'}
+                {t(saving ? '保存中…' : '保存关键词')}
               </button>
             </div>
 
             <div className="admin-lead-panel">
               <div>
-                <strong>发现具体页面</strong>
-                <p className="admin-muted">按关键词查找相关帖子/页面，点击标题可访问原网页，再决定是否导入。</p>
+                <strong>{t("发现具体页面")}</strong>
+                <p className="admin-muted">{t("按关键词查找相关帖子/页面，点击标题可访问原网页，再决定是否导入。")}</p>
               </div>
               <button type="button" className="btn btn-gold" disabled={leadDiscovering} onClick={discoverLeadPages}>
-                {leadDiscovering ? '查找中…' : '查找相关页面'}
+                {t(leadDiscovering ? '查找中…' : '查找相关页面')}
               </button>
-              {leadDiscoverResults.length > 0 && (
+              {t(leadDiscoverResults.length > 0 && (
                 <div className="admin-result-list">
-                  {leadDiscoverResults.map((result) => (
+                  {t(leadDiscoverResults.map((result) => (
                     <div key={result.url} className="admin-result-row">
                       <div>
                         <a href={result.url} target="_blank" rel="noreferrer">
-                          {result.title}
+                          {t(result.title)}
                         </a>
                         <p className="admin-muted">
-                          {result.platform} · {result.keyword}
-                          {result.is_search_page ? ' · 平台搜索入口' : ''}
-                          {result.already_imported ? ' · 已导入' : ''}
+                          {t(result.platform)} · {t(result.keyword)}
+                          {t(result.is_search_page ? ' · 平台搜索入口' : '')}
+                          {t(result.already_imported ? ' · 已导入' : '')}
                         </p>
                       </div>
                       <button
@@ -1315,50 +1224,47 @@ export default function Admin() {
                           })
                         }
                       >
-                        {result.is_search_page ? '手动导入' : '导入'}
+                        {t(result.is_search_page ? '手动导入' : '导入')}
                       </button>
                     </div>
-                  ))}
+                  )))}
                 </div>
-              )}
+              ))}
               <div className="admin-link-list">
-                <p className="admin-muted">备用：直接打开平台搜索页</p>
-                {leadLinks.slice(0, 18).map((link) => (
+                <p className="admin-muted">{t("备用：直接打开平台搜索页")}</p>
+                {t(leadLinks.slice(0, 18).map((link) => (
                   <div key={`${link.platform}-${link.keyword}`} className="admin-link-row">
                     <a href={link.url} target="_blank" rel="noreferrer">
-                      {link.platform} · {link.keyword}
+                      {t(link.platform)} · {t(link.keyword)}
                     </a>
-                    <button type="button" onClick={() => openCreateLead(link)}>
-                      导入
-                    </button>
+                    <button type="button" onClick={() => openCreateLead(link)}>{t("导入")}</button>
                   </div>
-                ))}
+                )))}
               </div>
             </div>
           </section>
 
           <div className="admin-subfilters">
-            {['all', 'new', 'reviewing', 'drafted', 'posted', 'replied', 'ignored'].map((key) => (
+            {t(['all', 'new', 'reviewing', 'drafted', 'posted', 'replied', 'ignored'].map((key) => (
               <button
                 key={key}
                 type="button"
                 className={leadStatus === key ? 'is-active' : ''}
                 onClick={() => setLeadStatus(key)}
               >
-                {key === 'all' ? '全部' : LEAD_STATUS_LABEL[key]}
+                {t(key === 'all' ? '全部' : LEAD_STATUS_LABEL[key])}
               </button>
-            ))}
+            )))}
           </div>
 
           <div className="admin-toolbar">
             <input
               value={leadQuery}
               onChange={(e) => setLeadQuery(e.target.value)}
-              placeholder="搜索平台 / 标题 / 关键词 / 链接…"
+              placeholder={t("搜索平台 / 标题 / 关键词 / 链接…")}
             />
-            <span className="admin-muted">共 {filteredLeads.length} 条</span>
-            <span className={`admin-badge${deepseekConfigured ? ' is-on' : ''}`}>
-              DeepSeek {deepseekConfigured ? '已配置' : '未配置'}
+            <span className="admin-muted">共 {t(filteredLeads.length)} 条</span>
+            <span className={`admin-badge${deepseekConfigured ? ' is-on' : ''}`}>{t("DeepSeek ")}{t(deepseekConfigured ? '已配置' : '未配置')}
             </span>
           </div>
 
@@ -1366,165 +1272,129 @@ export default function Admin() {
             <table className="admin-table admin-table--leads">
               <thead>
                 <tr>
-                  <th>评分</th>
-                  <th>线索</th>
-                  <th>平台</th>
-                  <th>状态</th>
-                  <th>操作</th>
+                  <th>{t("评分")}</th>
+                  <th>{t("线索")}</th>
+                  <th>{t("平台")}</th>
+                  <th>{t("状态")}</th>
+                  <th>{t("操作")}</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredLeads.map((lead) => (
+                {t(filteredLeads.map((lead) => (
                   <tr key={lead.id}>
                     <td>
-                      <strong>{lead.score}</strong>
+                      <strong>{t(lead.score)}</strong>
                     </td>
                     <td>
-                      <strong>{lead.title || '未命名线索'}</strong>
-                      <div className="admin-muted">{lead.keyword || lead.summary || '—'}</div>
+                      <strong>{t(lead.title || '未命名线索')}</strong>
+                      <div className="admin-muted">{t(lead.keyword || lead.summary || '—')}</div>
                     </td>
-                    <td>{lead.platform || 'Manual'}</td>
+                    <td>{t(lead.platform || 'Manual')}</td>
                     <td>
                       <span className={`admin-badge admin-badge--lead-${lead.status}`}>
-                        {LEAD_STATUS_LABEL[lead.status] || lead.status}
+                        {t(LEAD_STATUS_LABEL[lead.status] || lead.status)}
                       </span>
                     </td>
                     <td className="admin-actions">
-                      {lead.url && (
-                        <a href={lead.url} target="_blank" rel="noreferrer">
-                          打开原帖
-                        </a>
-                      )}
-                      <button type="button" onClick={() => openEditLead(lead)}>
-                        编辑
-                      </button>
-                      <button type="button" disabled={saving} onClick={() => generateLeadDraft(lead)}>
-                        AI 草稿
-                      </button>
-                      {lead.status !== 'posted' && (
-                        <button type="button" onClick={() => updateLead(lead, { status: 'posted' })}>
-                          标记已发
-                        </button>
-                      )}
-                      <button type="button" className="is-danger" onClick={() => removeLead(lead)}>
-                        删除
-                      </button>
+                      {t(lead.url && (
+                        <a href={lead.url} target="_blank" rel="noreferrer">{t("打开原帖")}</a>
+                      ))}
+                      <button type="button" onClick={() => openEditLead(lead)}>{t("编辑")}</button>
+                      <button type="button" disabled={saving} onClick={() => generateLeadDraft(lead)}>{t("AI 草稿")}</button>
+                      {t(lead.status !== 'posted' && (
+                        <button type="button" onClick={() => updateLead(lead, { status: 'posted' })}>{t("标记已发")}</button>
+                      ))}
+                      <button type="button" className="is-danger" onClick={() => removeLead(lead)}>{t("删除")}</button>
                     </td>
+                  </tr>
+                )))}
+                {t(filteredLeads.length === 0 && (
+                  <tr>
+                    <td colSpan="5" className="admin-muted">{t("暂无符合条件的线索。先打开搜索链接，找到帖子后手动导入。")}</td>
                   </tr>
                 ))}
-                {filteredLeads.length === 0 && (
-                  <tr>
-                    <td colSpan="5" className="admin-muted">
-                      暂无符合条件的线索。先打开搜索链接，找到帖子后手动导入。
-                    </td>
-                  </tr>
-                )}
               </tbody>
             </table>
           </div>
         </>
-      )}
+      ))}
 
-      {productEditing && (
+      {t(productEditing && (
         <div className="admin-modal">
           <button
             type="button"
             className="admin-modal__backdrop"
-            aria-label="关闭"
+            aria-label={t("关闭")}
             onClick={() => setProductEditing(null)}
           />
           <form className="admin-modal__panel" onSubmit={saveProduct}>
-            <h2 className="font-serif">{productEditing === 'new' ? '新建产品' : '编辑产品'}</h2>
+            <h2 className="font-serif">{t(productEditing === 'new' ? '新建产品' : '编辑产品')}</h2>
             <div className="admin-form-grid">
-              <label className="span-2">
-                标题 *
-                <input
+              <label className="span-2">{t("标题 *")}<input
                   required
                   value={productForm.title}
                   onChange={(e) => setProductForm((f) => ({ ...f, title: e.target.value }))}
                 />
               </label>
-              <label className="span-2">
-                副标题
-                <input
+              <label className="span-2">{t("副标题")}<input
                   value={productForm.subtitle}
                   onChange={(e) => setProductForm((f) => ({ ...f, subtitle: e.target.value }))}
                 />
               </label>
-              <label className="span-2">
-                简介
-                <textarea
+              <label className="span-2">{t("简介")}<textarea
                   rows={3}
                   value={productForm.description}
                   onChange={(e) => setProductForm((f) => ({ ...f, description: e.target.value }))}
                 />
               </label>
-              <label>
-                价格
-                <input
+              <label>{t("价格")}<input
                   value={productForm.price}
                   onChange={(e) => setProductForm((f) => ({ ...f, price: e.target.value }))}
-                  placeholder="$599"
+                  placeholder={t("$599")}
                 />
               </label>
-              <label>
-                天数
-                <input
+              <label>{t("天数")}<input
                   value={productForm.duration}
                   onChange={(e) => setProductForm((f) => ({ ...f, duration: e.target.value }))}
-                  placeholder="5 Days"
+                  placeholder={t("5 Days")}
                 />
               </label>
-              <label>
-                评分
-                <input
+              <label>{t("评分")}<input
                   type="number"
                   step="0.1"
                   value={productForm.rating}
                   onChange={(e) => setProductForm((f) => ({ ...f, rating: e.target.value }))}
                 />
               </label>
-              <label>
-                评价数
-                <input
+              <label>{t("评价数")}<input
                   type="number"
                   value={productForm.review_count}
                   onChange={(e) => setProductForm((f) => ({ ...f, review_count: e.target.value }))}
                 />
               </label>
-              <label>
-                海拔
-                <input
+              <label>{t("海拔")}<input
                   value={productForm.max_altitude}
                   onChange={(e) => setProductForm((f) => ({ ...f, max_altitude: e.target.value }))}
                 />
               </label>
-              <label>
-                团型
-                <input
+              <label>{t("团型")}<input
                   value={productForm.group_size}
                   onChange={(e) => setProductForm((f) => ({ ...f, group_size: e.target.value }))}
                 />
               </label>
-              <label>
-                排序
-                <input
+              <label>{t("排序")}<input
                   type="number"
                   value={productForm.sort_order}
                   onChange={(e) => setProductForm((f) => ({ ...f, sort_order: e.target.value }))}
                 />
               </label>
-              <label>
-                封面图路径
-                <input
+              <label>{t("封面图路径")}<input
                   value={productForm.image}
                   onChange={(e) => setProductForm((f) => ({ ...f, image: e.target.value }))}
-                  placeholder="/itineraries/1-bipeng.jpg"
+                  placeholder={t("/itineraries/1-bipeng.jpg")}
                 />
               </label>
-              <label className="span-2">
-                亮点（每行一个）
-                <textarea
+              <label className="span-2">{t("亮点（每行一个）")}<textarea
                   rows={4}
                   value={productForm.highlights}
                   onChange={(e) => setProductForm((f) => ({ ...f, highlights: e.target.value }))}
@@ -1535,132 +1405,102 @@ export default function Admin() {
                   type="checkbox"
                   checked={!!productForm.is_published}
                   onChange={(e) => setProductForm((f) => ({ ...f, is_published: e.target.checked }))}
-                />
-                上架（前台可见）
-              </label>
+                />{t("上架（前台可见）")}</label>
             </div>
-            {error && <p className="admin-error">{error}</p>}
+            {t(error && <p className="admin-error">{t(error)}</p>)}
             <div className="admin-modal__actions">
-              <button type="button" className="btn btn-outline" onClick={() => setProductEditing(null)}>
-                取消
-              </button>
+              <button type="button" className="btn btn-outline" onClick={() => setProductEditing(null)}>{t("取消")}</button>
               <button type="submit" className="btn btn-gold" disabled={saving}>
-                {saving ? '保存中…' : '保存'}
+                {t(saving ? '保存中…' : '保存')}
               </button>
             </div>
           </form>
         </div>
-      )}
+      ))}
 
-      {guideEditing && (
+      {t(guideEditing && (
         <div className="admin-modal">
           <button
             type="button"
             className="admin-modal__backdrop"
-            aria-label="关闭"
+            aria-label={t("关闭")}
             onClick={() => setGuideEditing(null)}
           />
           <form className="admin-modal__panel" onSubmit={saveGuide}>
-            <h2 className="font-serif">{guideEditing === 'new' ? '新建向导' : '审核 / 编辑向导'}</h2>
+            <h2 className="font-serif">{t(guideEditing === 'new' ? '新建向导' : '审核 / 编辑向导')}</h2>
             <div className="admin-form-grid">
-              <label>
-                姓名 *
-                <input
+              <label>{t("姓名 *")}<input
                   required
                   value={guideForm.full_name}
                   onChange={(e) => setGuideForm((f) => ({ ...f, full_name: e.target.value }))}
                 />
               </label>
-              <label>
-                邮箱 *
-                <input
+              <label>{t("邮箱 *")}<input
                   required
                   type="email"
                   value={guideForm.email}
                   onChange={(e) => setGuideForm((f) => ({ ...f, email: e.target.value }))}
                 />
               </label>
-              <label>
-                电话
-                <input
+              <label>{t("电话")}<input
                   value={guideForm.phone}
                   onChange={(e) => setGuideForm((f) => ({ ...f, phone: e.target.value }))}
                 />
               </label>
-              <label>
-                地点
-                <input
+              <label>{t("地点")}<input
                   value={guideForm.location}
                   onChange={(e) => setGuideForm((f) => ({ ...f, location: e.target.value }))}
                 />
               </label>
-              <label>
-                状态
-                <select
+              <label>{t("状态")}<select
                   value={guideForm.status}
                   onChange={(e) => setGuideForm((f) => ({ ...f, status: e.target.value }))}
                 >
-                  <option value="pending">待审核</option>
-                  <option value="approved">已通过（前台可见）</option>
-                  <option value="rejected">已拒绝</option>
+                  <option value="pending">{t("待审核")}</option>
+                  <option value="approved">{t("已通过（前台可见）")}</option>
+                  <option value="rejected">{t("已拒绝")}</option>
                 </select>
               </label>
-              <label>
-                日价 ($)
-                <input
+              <label>{t("日价 ($)")}<input
                   type="number"
                   value={guideForm.price_per_day}
                   onChange={(e) => setGuideForm((f) => ({ ...f, price_per_day: e.target.value }))}
                 />
               </label>
-              <label>
-                评分
-                <input
+              <label>{t("评分")}<input
                   type="number"
                   step="0.1"
                   value={guideForm.rating}
                   onChange={(e) => setGuideForm((f) => ({ ...f, rating: e.target.value }))}
                 />
               </label>
-              <label>
-                评价数
-                <input
+              <label>{t("评价数")}<input
                   type="number"
                   value={guideForm.reviews_count}
                   onChange={(e) => setGuideForm((f) => ({ ...f, reviews_count: e.target.value }))}
                 />
               </label>
-              <label>
-                经验
-                <input
+              <label>{t("经验")}<input
                   value={guideForm.experience}
                   onChange={(e) => setGuideForm((f) => ({ ...f, experience: e.target.value }))}
                 />
               </label>
-              <label>
-                头像 URL
-                <input
+              <label>{t("头像 URL")}<input
                   value={guideForm.photo_url}
                   onChange={(e) => setGuideForm((f) => ({ ...f, photo_url: e.target.value }))}
                 />
               </label>
-              <label className="span-2">
-                语言（逗号分隔）
-                <input
+              <label className="span-2">{t("语言（逗号分隔）")}<input
                   value={guideForm.languages}
                   onChange={(e) => setGuideForm((f) => ({ ...f, languages: e.target.value }))}
                 />
               </label>
-              <label className="span-2">
-                专长（逗号分隔）
-                <input
+              <label className="span-2">{t("专长（逗号分隔）")}<input
                   value={guideForm.specialties}
                   onChange={(e) => setGuideForm((f) => ({ ...f, specialties: e.target.value }))}
                 />
               </label>
-              <label className="span-2">
-                简介
-                <textarea
+              <label className="span-2">{t("简介")}<textarea
                   rows={4}
                   value={guideForm.bio}
                   onChange={(e) => setGuideForm((f) => ({ ...f, bio: e.target.value }))}
@@ -1671,209 +1511,165 @@ export default function Admin() {
                   type="checkbox"
                   checked={!!guideForm.has_vehicle}
                   onChange={(e) => setGuideForm((f) => ({ ...f, has_vehicle: e.target.checked }))}
-                />
-                有车辆
-              </label>
-              {guideForm.has_vehicle && (
+                />{t("有车辆")}</label>
+              {t(guideForm.has_vehicle && (
                 <>
-                  <label>
-                    车型
-                    <input
+                  <label>{t("车型")}<input
                       value={guideForm.vehicle_type}
                       onChange={(e) => setGuideForm((f) => ({ ...f, vehicle_type: e.target.value }))}
                     />
                   </label>
-                  <label>
-                    车牌
-                    <input
+                  <label>{t("车牌")}<input
                       value={guideForm.vehicle_plate}
                       onChange={(e) => setGuideForm((f) => ({ ...f, vehicle_plate: e.target.value }))}
                     />
                   </label>
                 </>
-              )}
-              <label className="span-2">
-                管理员备注
-                <textarea
+              ))}
+              <label className="span-2">{t("管理员备注")}<textarea
                   rows={2}
                   value={guideForm.admin_notes}
                   onChange={(e) => setGuideForm((f) => ({ ...f, admin_notes: e.target.value }))}
                 />
               </label>
-              {(guideForm.id_document_url ||
+              {t((guideForm.id_document_url ||
                 guideForm.vehicle_photo_url ||
                 guideForm.insurance_document_url ||
                 guideForm.intro_video_url) && (
                 <div className="span-2 admin-file-links">
-                  <p className="admin-muted">申请附件</p>
-                  {guideForm.id_document_url && (
-                    <a href={guideForm.id_document_url} target="_blank" rel="noreferrer">
-                      证件
-                    </a>
-                  )}
-                  {guideForm.vehicle_photo_url && (
-                    <a href={guideForm.vehicle_photo_url} target="_blank" rel="noreferrer">
-                      车辆照
-                    </a>
-                  )}
-                  {guideForm.insurance_document_url && (
-                    <a href={guideForm.insurance_document_url} target="_blank" rel="noreferrer">
-                      保险
-                    </a>
-                  )}
-                  {guideForm.intro_video_url && (
-                    <a href={guideForm.intro_video_url} target="_blank" rel="noreferrer">
-                      介绍视频
-                    </a>
-                  )}
+                  <p className="admin-muted">{t("申请附件")}</p>
+                  {t(guideForm.id_document_url && (
+                    <a href={guideForm.id_document_url} target="_blank" rel="noreferrer">{t("证件")}</a>
+                  ))}
+                  {t(guideForm.vehicle_photo_url && (
+                    <a href={guideForm.vehicle_photo_url} target="_blank" rel="noreferrer">{t("车辆照")}</a>
+                  ))}
+                  {t(guideForm.insurance_document_url && (
+                    <a href={guideForm.insurance_document_url} target="_blank" rel="noreferrer">{t("保险")}</a>
+                  ))}
+                  {t(guideForm.intro_video_url && (
+                    <a href={guideForm.intro_video_url} target="_blank" rel="noreferrer">{t("介绍视频")}</a>
+                  ))}
                 </div>
-              )}
+              ))}
             </div>
-            {error && <p className="admin-error">{error}</p>}
+            {t(error && <p className="admin-error">{t(error)}</p>)}
             <div className="admin-modal__actions">
-              <button type="button" className="btn btn-outline" onClick={() => setGuideEditing(null)}>
-                取消
-              </button>
+              <button type="button" className="btn btn-outline" onClick={() => setGuideEditing(null)}>{t("取消")}</button>
               <button type="submit" className="btn btn-gold" disabled={saving}>
-                {saving ? '保存中…' : '保存'}
+                {t(saving ? '保存中…' : '保存')}
               </button>
             </div>
           </form>
         </div>
-      )}
+      ))}
 
-      {leadEditing && (
+      {t(leadEditing && (
         <div className="admin-modal">
           <button
             type="button"
             className="admin-modal__backdrop"
-            aria-label="关闭"
+            aria-label={t("关闭")}
             onClick={() => setLeadEditing(null)}
           />
           <form className="admin-modal__panel admin-modal__panel--wide" onSubmit={saveLead}>
-            <h2 className="font-serif">{leadEditing === 'new' ? '导入旅游线索' : '编辑旅游线索'}</h2>
+            <h2 className="font-serif">{t(leadEditing === 'new' ? '导入旅游线索' : '编辑旅游线索')}</h2>
             <div className="admin-form-grid">
-              <label>
-                平台
-                <input
+              <label>{t("平台")}<input
                   value={leadForm.platform}
                   onChange={(e) => setLeadForm((f) => ({ ...f, platform: e.target.value }))}
-                  placeholder="Reddit / Tripadvisor / Quora"
+                  placeholder={t("Reddit / Tripadvisor / Quora")}
                 />
               </label>
-              <label>
-                关键词
-                <input
+              <label>{t("关键词")}<input
                   value={leadForm.keyword}
                   onChange={(e) => setLeadForm((f) => ({ ...f, keyword: e.target.value }))}
                 />
               </label>
-              <label className="span-2">
-                标题 *
-                <input
+              <label className="span-2">{t("标题 *")}<input
                   required
                   value={leadForm.title}
                   onChange={(e) => setLeadForm((f) => ({ ...f, title: e.target.value }))}
                 />
               </label>
-              <label className="span-2">
-                原帖 URL
-                <input
+              <label className="span-2">{t("原帖 URL")}<input
                   type="url"
                   value={leadForm.url}
                   onChange={(e) => setLeadForm((f) => ({ ...f, url: e.target.value }))}
-                  placeholder="https://..."
+                  placeholder={t("https://...")}
                 />
               </label>
-              <label>
-                作者 / 用户名
-                <input
+              <label>{t("作者 / 用户名")}<input
                   value={leadForm.author}
                   onChange={(e) => setLeadForm((f) => ({ ...f, author: e.target.value }))}
                 />
               </label>
-              <label>
-                状态
-                <select
+              <label>{t("状态")}<select
                   value={leadForm.status}
                   onChange={(e) => setLeadForm((f) => ({ ...f, status: e.target.value }))}
                 >
-                  {Object.entries(LEAD_STATUS_LABEL).map(([key, label]) => (
+                  {t(Object.entries(LEAD_STATUS_LABEL).map(([key, label]) => (
                     <option key={key} value={key}>
-                      {label}
+                      {t(label)}
                     </option>
-                  ))}
+                  )))}
                 </select>
               </label>
-              <label className="span-2">
-                帖子摘要 / 用户需求
-                <textarea
+              <label className="span-2">{t("帖子摘要 / 用户需求")}<textarea
                   rows={4}
                   value={leadForm.summary}
                   onChange={(e) => setLeadForm((f) => ({ ...f, summary: e.target.value }))}
-                  placeholder="记录对方正在问什么、行程时间、目的地、预算或痛点"
+                  placeholder={t("记录对方正在问什么、行程时间、目的地、预算或痛点")}
                 />
               </label>
-              <label>
-                评分
-                <input
+              <label>{t("评分")}<input
                   type="number"
                   min="0"
                   max="100"
                   value={leadForm.score}
                   onChange={(e) => setLeadForm((f) => ({ ...f, score: e.target.value }))}
-                  placeholder="留空或 0 时自动评分"
+                  placeholder={t("留空或 0 时自动评分")}
                 />
               </label>
-              <label>
-                发布记录
-                <input value={leadForm.posted_at || '未发布'} readOnly />
+              <label>{t("发布记录")}<input value={leadForm.posted_at || '未发布'} readOnly />
               </label>
-              <label className="span-2">
-                管理员备注
-                <textarea
+              <label className="span-2">{t("管理员备注")}<textarea
                   rows={2}
                   value={leadForm.admin_notes}
                   onChange={(e) => setLeadForm((f) => ({ ...f, admin_notes: e.target.value }))}
                 />
               </label>
-              <label className="span-2">
-                DeepSeek 英文回复草稿
-                <textarea
+              <label className="span-2">{t("DeepSeek 英文回复草稿")}<textarea
                   rows={8}
                   value={leadForm.reply_draft}
                   onChange={(e) => setLeadForm((f) => ({ ...f, reply_draft: e.target.value }))}
-                  placeholder="点击 AI 草稿生成后，可在这里人工修改，再去原帖手动发布。"
+                  placeholder={t("点击 AI 草稿生成后，可在这里人工修改，再去原帖手动发布。")}
                 />
               </label>
             </div>
-            {error && <p className="admin-error">{error}</p>}
+            {t(error && <p className="admin-error">{t(error)}</p>)}
             <div className="admin-modal__actions">
-              {leadEditing !== 'new' && (
+              {t(leadEditing !== 'new' && (
                 <button
                   type="button"
                   className="btn btn-outline"
                   disabled={saving}
                   onClick={() => generateLeadDraft(leadForm)}
                 >
-                  {saving ? '生成中…' : '生成 AI 草稿'}
+                  {t(saving ? '生成中…' : '生成 AI 草稿')}
                 </button>
-              )}
-              {leadForm.url && (
-                <a className="btn btn-outline" href={leadForm.url} target="_blank" rel="noreferrer">
-                  打开原帖
-                </a>
-              )}
-              <button type="button" className="btn btn-outline" onClick={() => setLeadEditing(null)}>
-                取消
-              </button>
+              ))}
+              {t(leadForm.url && (
+                <a className="btn btn-outline" href={leadForm.url} target="_blank" rel="noreferrer">{t("打开原帖")}</a>
+              ))}
+              <button type="button" className="btn btn-outline" onClick={() => setLeadEditing(null)}>{t("取消")}</button>
               <button type="submit" className="btn btn-gold" disabled={saving}>
-                {saving ? '保存中…' : '保存'}
+                {t(saving ? '保存中…' : '保存')}
               </button>
             </div>
           </form>
         </div>
-      )}
+      ))}
     </div>
   )
 }

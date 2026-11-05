@@ -68,16 +68,11 @@ $record = [
     'message' => $message,
 ];
 
-$dataDir = __DIR__ . '/data';
-if ($saveToFile) {
-    if (!is_dir($dataDir) && !mkdir($dataDir, 0750, true) && !is_dir($dataDir)) {
-        api_json(500, ['ok' => false, 'error' => 'Cannot create data directory']);
-    }
-    $line = json_encode($record, JSON_UNESCAPED_UNICODE) . "\n";
-    if (file_put_contents($dataDir . '/submissions.jsonl', $line, FILE_APPEND | LOCK_EX) === false) {
-        api_json(500, ['ok' => false, 'error' => 'Failed to save message']);
-    }
-}
+try {
+    $stmt=db()->prepare('INSERT INTO contact_messages(environment,payload) VALUES(?,?)');
+    $stmt->execute([content_scope(),json_encode($record,JSON_UNESCAPED_UNICODE|JSON_THROW_ON_ERROR)]);
+    $saveToFile = true; // Persistence succeeded; legacy response logic uses this flag.
+} catch(Throwable $e) { api_json(503,['ok'=>false,'error'=>'Could not save contact message']); }
 
 $mailOk = true;
 if ($sendMail) {
@@ -123,24 +118,10 @@ function contact_rate_limit_ok(string $ip, int $maxPerHour): bool
     if ($maxPerHour <= 0) {
         return true;
     }
-    $dir = __DIR__ . '/data';
-    if (!is_dir($dir)) {
-        @mkdir($dir, 0750, true);
-    }
-    $file = $dir . '/rate_' . hash('sha256', $ip) . '.json';
-    $now = time();
-    $window = 3600;
-    $hits = [];
-    if (is_file($file)) {
-        $decoded = json_decode((string) file_get_contents($file), true);
-        if (is_array($decoded)) {
-            $hits = array_values(array_filter($decoded, static fn($t) => is_int($t) && $t > $now - $window));
-        }
-    }
-    if (count($hits) >= $maxPerHour) {
-        return false;
-    }
-    $hits[] = $now;
-    file_put_contents($file, json_encode($hits), LOCK_EX);
-    return true;
+    $bucket=hash('sha256',content_scope().'|'.$ip.'|'.gmdate('Y-m-d-H'));
+    $q=db()->prepare('INSERT INTO contact_limits(bucket,hits,expires_at) VALUES(?,1,DATE_ADD(UTC_TIMESTAMP(),INTERVAL 2 HOUR)) ON DUPLICATE KEY UPDATE hits=hits+1');
+    $q->execute([$bucket]);
+    $q=db()->prepare('SELECT hits FROM contact_limits WHERE bucket=?');$q->execute([$bucket]);
+    db()->exec('DELETE FROM contact_limits WHERE expires_at < UTC_TIMESTAMP()');
+    return (int)$q->fetchColumn() <= $maxPerHour;
 }

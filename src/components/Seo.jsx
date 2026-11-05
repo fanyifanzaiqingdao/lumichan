@@ -1,61 +1,12 @@
-import { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { publicContent } from '../lib/publicContent.js'
+import { t } from '../i18n/runtime.js'
+import { useLanguage } from '../i18n/LanguageProvider.jsx'
+import { useEffect, useState } from 'react'
+import { useLocation } from '../i18n/router.jsx'
+import { DEFAULT_SEO as DEFAULT, SEO_ROUTES as ROUTES } from '../i18n/seo.js'
+import { LOCALES, localeFor } from '../i18n/locales.js'
+import { canonicalPath } from '../i18n/routes.js'
 import { SITE } from '../config/site.js'
-
-const DEFAULT = {
-  title: 'Lumichan — Private Journeys in China & Western Sichuan',
-  description:
-    'Lumichan designs private, tailor-made journeys in China. Rooted in Chengdu and Western Sichuan — travel through what you do, not what you see.',
-}
-
-const ROUTES = {
-  '/traveler': DEFAULT,
-  '/traveler/': DEFAULT,
-  '/traveler/services': {
-    title: 'Services — Private Journey Planning in China | Lumichan',
-    description: 'Compare local planning support, private road trips, signature journeys and educational programs in China.',
-  },
-  '/traveler/journeys': {
-    title: 'Popular Journeys in China | Lumichan',
-    description: 'Explore customizable journeys in Chengdu and Western Sichuan with Lumichan.',
-  },
-  '/traveler/about': {
-    title: 'About Lumichan — Go Deeper. Travel Personally.',
-    description:
-      'Learn about Lumichan’s vision and team. Private journeys connecting travelers with a deeper, more human side of China.',
-  },
-  '/traveler/itineraries': {
-    title: 'Itineraries — Private Journeys by Lumichan',
-    description:
-      'Browse Lumichan’s private itineraries across Western Sichuan and beyond. Travel through what you do, not what you see.',
-  },
-  '/traveler/contact': {
-    title: 'Book a Consultation — Lumichan',
-    description:
-      'Contact Lumichan to plan a private, tailor-made journey in China. Email jin.lu@lumichan.com.cn.',
-  },
-  '/traveler/careers': {
-    title: 'Careers — Join Lumichan',
-    description:
-      'Join Lumichan in creating meaningful travel experiences in China. Send your CV to jasonlee@lumichan.com.cn.',
-  },
-  '/traveler/booking-terms': {
-    title: 'Booking Terms and Conditions — Lumichan',
-    description: 'Booking terms and conditions for Lumichan private journeys.',
-  },
-  '/traveler/privacy': {
-    title: 'Privacy Policy — Lumichan',
-    description: 'How Lumichan collects, uses and protects your personal information.',
-  },
-  '/traveler/terms': {
-    title: 'Terms of Use — Lumichan',
-    description: 'Terms of use for the Lumichan website.',
-  },
-  '/guide': {
-    title: 'Become a Guide — Lumichan',
-    description: 'Apply to become a Lumichan local guide and share China’s living cultures with travelers.',
-  },
-}
 
 function setMeta(name, content, attr = 'name') {
   if (!content) return
@@ -66,6 +17,7 @@ function setMeta(name, content, attr = 'name') {
     document.head.appendChild(el)
   }
   el.setAttribute('content', content)
+  document.head.querySelectorAll(`meta[${attr}="${name}"]`).forEach(other => { if (other !== el) other.remove() })
 }
 
 function setCanonical(url) {
@@ -80,23 +32,47 @@ function setCanonical(url) {
 
 export default function Seo() {
   const { pathname } = useLocation()
+  const { language, revision } = useLanguage()
 
+  const [journeysPage, setJourneysPage] = useState(null)
+  const journeyPage = pathname === '/journeys' || pathname.startsWith('/journeys/')
   useEffect(() => {
-    const page = ROUTES[pathname] || (
-      pathname.startsWith('/traveler/journeys/')
+    if (!journeyPage) return
+    const controller = new AbortController()
+    publicContent('/api/journeys.php', {signal:controller.signal}).then(r => r.ok ? r.json() : Promise.reject()).then(data => { if (Array.isArray(data.page?.journeys)) setJourneysPage(data.page) }).catch(() => {})
+    return () => controller.abort()
+  }, [journeyPage])
+  useEffect(() => {
+    const slug = pathname.startsWith('/journeys/') ? pathname.split('/')[2] : null
+    const journey = journeysPage?.journeys.find(item => item.slug === slug)
+    const unavailable = !!(slug && journeysPage && !journey)
+    const page = journey ? {title:journey.seoTitle,description:journey.seoDescription} : ROUTES[pathname] || (
+      pathname.startsWith('/journeys/')
         ? { title: 'Private China Journey | Lumichan', description: 'Discover a customizable private journey in China with Lumichan.' }
         : DEFAULT
     )
-    const url = `${SITE.siteUrl}${pathname === '/' ? '/traveler' : pathname}`
+    const url = `${SITE.siteUrl}${canonicalPath(pathname, language)}`
 
-    document.title = page.title
-    setMeta('description', page.description)
-    setMeta('og:title', page.title, 'property')
-    setMeta('og:description', page.description, 'property')
+    document.title = t(page.title)
+    setMeta('description', t(page.description))
+    setMeta('og:site_name', 'Lumichan', 'property')
+    setMeta('twitter:title', t(page.title))
+    setMeta('twitter:description', t(page.description))
+    setMeta('og:title', t(page.title), 'property')
+    setMeta('og:description', t(page.description), 'property')
     setMeta('og:url', url, 'property')
     setCanonical(url)
-    setMeta('robots', pathname === '/admin' || import.meta.env.MODE !== 'production' ? 'noindex,nofollow' : 'index,follow')
-  }, [pathname])
+    document.head.querySelectorAll('link[data-lumichan-alternate]').forEach(el => el.remove())
+    const publicPage = pathname === '/' || pathname.startsWith('/traveler') || pathname === '/guide' || journeyPage
+    if (publicPage) for (const locale of [...LOCALES,{code:'en',html:'x-default'}]) {
+      const link = document.createElement('link')
+      link.rel = 'alternate'; link.hreflang = locale.html
+      link.href = SITE.siteUrl + canonicalPath(pathname, locale.code)
+      link.dataset.lumichanAlternate = 'true'; document.head.appendChild(link)
+    }
+    setMeta('og:locale', localeFor(language).og, 'property')
+    setMeta('robots', unavailable || pathname.startsWith('/admin') || pathname.startsWith('/support') || import.meta.env.MODE !== 'production' || !['lumichan.com.cn', 'www.lumichan.com.cn'].includes(window.location.hostname) ? 'noindex,nofollow' : 'index,follow')
+  }, [pathname, language, revision, journeysPage, journeyPage])
 
   return null
 }

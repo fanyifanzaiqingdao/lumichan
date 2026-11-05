@@ -1,0 +1,1334 @@
+{
+  "schemaVersion": 1,
+  "landing": {
+    "title": "Find Your Journey",
+    "eyebrow": "",
+    "body": "Three different ways to experience China — through culture, landscape and meaningful local moments.",
+    "hero": [
+      {
+        "assetId": "gateway-hero",
+        "src": "/images/journeys-v7/gateway-hero-hero.webp",
+        "mobileSrc": "",
+        "alt": "Riverside courtyard — AI illustration",
+        "caption": "Riverside courtyard — AI illustration",
+        "focalPoint": "50% 50%",
+        "mobileFocalPoint": "50% 50%",
+        "illustrative": true,
+        "rightsStatus": "illustrative",
+        "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/gateway-hero.png",
+        "realLocation": "",
+        "portraitPermission": "not applicable",
+        "usage": "website illustrative",
+        "replacementStatus": "concept"
+      },
+      {
+        "assetId": "road-hero-illustrative",
+        "src": "/images/journeys-v7/road-hero-illustrative-hero.webp",
+        "mobileSrc": "",
+        "alt": "Western Sichuan Private Road Trip — AI illustration",
+        "caption": "Western Sichuan Private Road Trip — AI illustration",
+        "focalPoint": "50% 50%",
+        "mobileFocalPoint": "50% 50%",
+        "illustrative": true,
+        "rightsStatus": "illustrative",
+        "source": "Supplied brief assets/road-hero-illustrative.png",
+        "realLocation": "",
+        "portraitPermission": "not applicable",
+        "usage": "website illustrative",
+        "replacementStatus": "concept"
+      },
+      {
+        "assetId": "culture-hero",
+        "src": "/images/journeys-v7/culture-hero-hero.webp",
+        "mobileSrc": "",
+        "alt": "Daoist courtyard — AI illustration",
+        "caption": "Daoist courtyard — AI illustration",
+        "focalPoint": "50% 50%",
+        "mobileFocalPoint": "50% 50%",
+        "illustrative": true,
+        "rightsStatus": "illustrative",
+        "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/culture-hero.png",
+        "realLocation": "",
+        "portraitPermission": "not applicable",
+        "usage": "website illustrative",
+        "replacementStatus": "concept"
+      }
+    ],
+    "featured": [
+      {
+        "slug": "cultural-gateway",
+        "order": 1
+      },
+      {
+        "slug": "western-sichuan-private-road-trip",
+        "order": 2
+      },
+      {
+        "slug": "deep-cultural-journey",
+        "order": 3
+      }
+    ],
+    "moods": [
+      {
+        "title": "Culture & City Life",
+        "body": "Explore Sichuan and Chongqing through pandas, tea, hotpot and nearby heritage. Other China journeys can be tailored by request.",
+        "slug": "cultural-gateway",
+        "image": {
+          "assetId": "gateway-hero",
+          "src": "/images/journeys-v7/gateway-hero-hero.webp",
+          "mobileSrc": "",
+          "alt": "Riverside courtyard — AI illustration",
+          "caption": "Riverside courtyard — AI illustration",
+          "focalPoint": "50% 50%",
+          "mobileFocalPoint": "50% 50%",
+          "illustrative": true,
+          "rightsStatus": "illustrative",
+          "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/gateway-hero.png",
+          "realLocation": "",
+          "portraitPermission": "not applicable",
+          "usage": "website illustrative",
+          "replacementStatus": "concept"
+        }
+      },
+      {
+        "title": "Nature & Landscapes",
+        "body": "Explore mountain roads, Jiarong villages and Kham culture around Tagong and Kangding at your own pace.",
+        "slug": "western-sichuan-private-road-trip",
+        "image": {
+          "assetId": "road-hero-illustrative",
+          "src": "/images/journeys-v7/road-hero-illustrative-hero.webp",
+          "mobileSrc": "",
+          "alt": "Western Sichuan Private Road Trip — AI illustration",
+          "caption": "Western Sichuan Private Road Trip — AI illustration",
+          "focalPoint": "50% 50%",
+          "mobileFocalPoint": "50% 50%",
+          "illustrative": true,
+          "rightsStatus": "illustrative",
+          "source": "Supplied brief assets/road-hero-illustrative.png",
+          "realLocation": "",
+          "portraitPermission": "not applicable",
+          "usage": "website illustrative",
+          "replacementStatus": "concept"
+        }
+      },
+      {
+        "title": "People & Meaningful Travel",
+        "body": "Explore Daoist heritage, Tibetan traditions and Shu-Han/Bashu history across Sichuan.",
+        "slug": "deep-cultural-journey",
+        "image": {
+          "assetId": "culture-hero",
+          "src": "/images/journeys-v7/culture-hero-panel.webp",
+          "mobileSrc": "",
+          "alt": "Daoist courtyard — AI illustration",
+          "caption": "Daoist courtyard — AI illustration",
+          "focalPoint": "50% 50%",
+          "mobileFocalPoint": "50% 50%",
+          "illustrative": true,
+          "rightsStatus": "illustrative",
+          "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/culture-hero.png",
+          "realLocation": "",
+          "portraitPermission": "not applicable",
+          "usage": "website illustrative",
+          "replacementStatus": "concept"
+        }
+      }
+    ],
+    "finalTitle": "We’re here to help you find the right journey.",
+    "finalBody": "Tell us what draws you to China. We will help shape a private journey around your interests.",
+    "ctaLabel": "Plan This Journey",
+    "finalImage": {
+      "assetId": "road-footer-illustrative",
+      "src": "/images/journeys-v7/road-footer-illustrative-hero.webp",
+      "mobileSrc": "",
+      "alt": "Mountain landscape — AI illustration",
+      "caption": "Mountain landscape — AI illustration",
+      "focalPoint": "50% 50%",
+      "mobileFocalPoint": "50% 50%",
+      "illustrative": true,
+      "rightsStatus": "illustrative",
+      "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/road-footer-illustrative.png",
+      "realLocation": "",
+      "portraitPermission": "not applicable",
+      "usage": "website illustrative",
+      "replacementStatus": "concept"
+    }
+  },
+  "journeys": [
+    {
+      "slug": "cultural-gateway",
+      "title": "Cultural Gateway",
+      "eyebrow": "SICHUAN · CHONGQING · CULTURAL EXPERIENCES",
+      "subtitle": "",
+      "body": "From Chengdu’s panda encounters and tea houses to Chongqing’s riverside neighborhoods, explore Sichuan and Chongqing through food, performance and nearby heritage at a pace shaped around you.",
+      "seoTitle": "Cultural Gateway",
+      "seoDescription": "From Chengdu’s panda encounters and tea houses to Chongqing’s riverside neighborhoods, explore Sichuan and Chongqing through food, performance and nearby heritage at a pace shaped around you.",
+      "status": "published",
+      "inquiryJourneyId": "cultural-gateway",
+      "hero": {
+        "assetId": "gateway-hero",
+        "src": "/images/journeys-v7/gateway-hero-hero.webp",
+        "mobileSrc": "",
+        "alt": "Riverside courtyard — AI illustration",
+        "caption": "Riverside courtyard — AI illustration",
+        "focalPoint": "50% 50%",
+        "mobileFocalPoint": "50% 50%",
+        "illustrative": true,
+        "rightsStatus": "illustrative",
+        "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/gateway-hero.png",
+        "realLocation": "",
+        "portraitPermission": "not applicable",
+        "usage": "website illustrative",
+        "replacementStatus": "concept"
+      },
+      "intro": {
+        "eyebrow": "",
+        "title": "Sichuan and Chongqing, your way.",
+        "paragraphs": [
+          "Sichuan and Chongqing are our focus, with Chengdu and its surroundings at the heart of many journeys. Other destinations in China, including Shanghai, Xinjiang, Yunnan and Guizhou, may also be tailored on request after local arrangements are checked."
+        ],
+        "regionCues": [
+          "Focus",
+          "Sichuan & Chongqing",
+          "Elsewhere in China",
+          "Custom plans by request"
+        ]
+      },
+      "experience": {
+        "eyebrow": "",
+        "title": "What You’ll Experience",
+        "body": "These are possible moments. Venues, performances and stops depend on your confirmed route and availability.",
+        "items": [
+          {
+            "title": "Chengdu, up close",
+            "body": "See pandas, linger over gaiwan tea, discover Sichuan opera face changing and enjoy the city’s food culture.",
+            "order": 1,
+            "image": {
+              "assetId": "story-vlog-03-01",
+              "src": "/images/journeys-v7/story-vlog-03-01-panel.webp",
+              "mobileSrc": "",
+              "alt": "Watch giant pandas — AI illustration",
+              "caption": "Watch giant pandas — AI illustration",
+              "focalPoint": "50% 50%",
+              "mobileFocalPoint": "50% 50%",
+              "illustrative": true,
+              "rightsStatus": "illustrative",
+              "source": "lumichan-web/public/images/home-v22/story-vlog-03-01.webp",
+              "realLocation": "",
+              "portraitPermission": "not applicable",
+              "usage": "website illustrative",
+              "replacementStatus": "concept"
+            },
+            "slides": [
+              {
+                "assetId": "story-vlog-03-01",
+                "src": "/images/journeys-v7/story-vlog-03-01-panel.webp",
+                "mobileSrc": "",
+                "alt": "Watch giant pandas — AI illustration",
+                "caption": "Watch giant pandas — AI illustration",
+                "focalPoint": "50% 50%",
+                "mobileFocalPoint": "50% 50%",
+                "illustrative": true,
+                "rightsStatus": "illustrative",
+                "source": "lumichan-web/public/images/home-v22/story-vlog-03-01.webp",
+                "realLocation": "",
+                "portraitPermission": "not applicable",
+                "usage": "website illustrative",
+                "replacementStatus": "concept"
+              },
+              {
+                "assetId": "story-vlog-03-02",
+                "src": "/images/journeys-v7/story-vlog-03-02-panel.webp",
+                "mobileSrc": "",
+                "alt": "Share gaiwan tea — AI illustration",
+                "caption": "Share gaiwan tea — AI illustration",
+                "focalPoint": "50% 50%",
+                "mobileFocalPoint": "50% 50%",
+                "illustrative": true,
+                "rightsStatus": "illustrative",
+                "source": "lumichan-web/public/images/home-v22/story-vlog-03-02.webp",
+                "realLocation": "",
+                "portraitPermission": "not applicable",
+                "usage": "website illustrative",
+                "replacementStatus": "concept"
+              },
+              {
+                "assetId": "gateway-opera-illustrative",
+                "src": "/images/journeys-v7/gateway-opera-illustrative-panel.webp",
+                "mobileSrc": "",
+                "alt": "Sichuan opera — AI illustration",
+                "caption": "Sichuan opera — AI illustration",
+                "focalPoint": "50% 50%",
+                "mobileFocalPoint": "50% 50%",
+                "illustrative": true,
+                "rightsStatus": "illustrative",
+                "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/gateway-opera-illustrative.png",
+                "realLocation": "",
+                "portraitPermission": "not applicable",
+                "usage": "website illustrative",
+                "replacementStatus": "concept"
+              },
+              {
+                "assetId": "story-vlog-03-03",
+                "src": "/images/journeys-v7/story-vlog-03-03-panel.webp",
+                "mobileSrc": "",
+                "alt": "Taste local food — AI illustration",
+                "caption": "Taste local food — AI illustration",
+                "focalPoint": "50% 50%",
+                "mobileFocalPoint": "50% 50%",
+                "illustrative": true,
+                "rightsStatus": "illustrative",
+                "source": "lumichan-web/public/images/home-v22/story-vlog-03-03.webp",
+                "realLocation": "",
+                "portraitPermission": "not applicable",
+                "usage": "website illustrative",
+                "replacementStatus": "concept"
+              }
+            ]
+          },
+          {
+            "title": "Chongqing, in layers",
+            "body": "Follow the city’s steep streets and river views, then make time for hotpot and its lively evenings.",
+            "order": 2,
+            "image": {
+              "assetId": "chongqing-concept",
+              "src": "/images/journeys-v7/chongqing-concept-panel.webp",
+              "mobileSrc": "",
+              "alt": "Riverside city — AI illustration",
+              "caption": "Riverside city — AI illustration",
+              "focalPoint": "50% 50%",
+              "mobileFocalPoint": "50% 50%",
+              "illustrative": true,
+              "rightsStatus": "illustrative",
+              "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/chongqing-concept.png",
+              "realLocation": "",
+              "portraitPermission": "not applicable",
+              "usage": "website illustrative",
+              "replacementStatus": "concept"
+            },
+            "slides": [
+              {
+                "assetId": "chongqing-concept",
+                "src": "/images/journeys-v7/chongqing-concept-panel.webp",
+                "mobileSrc": "",
+                "alt": "Riverside city — AI illustration",
+                "caption": "Riverside city — AI illustration",
+                "focalPoint": "50% 50%",
+                "mobileFocalPoint": "50% 50%",
+                "illustrative": true,
+                "rightsStatus": "illustrative",
+                "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/chongqing-concept.png",
+                "realLocation": "",
+                "portraitPermission": "not applicable",
+                "usage": "website illustrative",
+                "replacementStatus": "concept"
+              },
+              {
+                "assetId": "chongqing-concept",
+                "src": "/images/journeys-v7/chongqing-concept-panel.webp",
+                "mobileSrc": "",
+                "alt": "Layered city — AI illustration",
+                "caption": "Layered city — AI illustration",
+                "focalPoint": "50% 50%",
+                "mobileFocalPoint": "50% 50%",
+                "illustrative": true,
+                "rightsStatus": "illustrative",
+                "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/chongqing-concept.png",
+                "realLocation": "",
+                "portraitPermission": "not applicable",
+                "usage": "website illustrative",
+                "replacementStatus": "concept"
+              },
+              {
+                "assetId": "gateway-hotpot-illustrative",
+                "src": "/images/journeys-v7/gateway-hotpot-illustrative-panel.webp",
+                "mobileSrc": "",
+                "alt": "Gather around hotpot — AI illustration",
+                "caption": "Gather around hotpot — AI illustration",
+                "focalPoint": "50% 50%",
+                "mobileFocalPoint": "50% 50%",
+                "illustrative": true,
+                "rightsStatus": "illustrative",
+                "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/gateway-hotpot-illustrative.png",
+                "realLocation": "",
+                "portraitPermission": "not applicable",
+                "usage": "website illustrative",
+                "replacementStatus": "concept"
+              },
+              {
+                "assetId": "story-vlog-03-04",
+                "src": "/images/journeys-v7/story-vlog-03-04-panel.webp",
+                "mobileSrc": "",
+                "alt": "Evening city street — AI illustration",
+                "caption": "Evening city street — AI illustration",
+                "focalPoint": "50% 50%",
+                "mobileFocalPoint": "50% 50%",
+                "illustrative": true,
+                "rightsStatus": "illustrative",
+                "source": "lumichan-web/public/images/home-v22/story-vlog-03-04.webp",
+                "realLocation": "",
+                "portraitPermission": "not applicable",
+                "usage": "website illustrative",
+                "replacementStatus": "concept"
+              }
+            ]
+          },
+          {
+            "title": "Nearby heritage",
+            "body": "Forest temples, historic waterworks and other Bashu sites can extend a city stay when they suit the route.",
+            "order": 3,
+            "image": {
+              "assetId": "qingcheng-daoist-concept-v1",
+              "src": "/images/journeys-v7/qingcheng-daoist-concept-v1.webp",
+              "mobileSrc": "",
+              "alt": "AI concept inspired by Mount Qingcheng Daoist heritage; not a verified site photograph",
+              "caption": "Mount Qingcheng — AI illustration",
+              "focalPoint": "50% 50%",
+              "mobileFocalPoint": "50% 50%",
+              "illustrative": true,
+              "rightsStatus": "illustrative",
+              "source": "Generated using built-in image_gen on 2026-10-30; prompt recorded in docs/JOURNEYS-V7-GENERATED-IMAGES.md",
+              "realLocation": "",
+              "portraitPermission": "not applicable",
+              "usage": "website illustrative",
+              "replacementStatus": "concept"
+            },
+            "slides": [
+              {
+                "assetId": "qingcheng-daoist-concept-v1",
+                "src": "/images/journeys-v7/qingcheng-daoist-concept-v1.webp",
+                "mobileSrc": "",
+                "alt": "AI concept inspired by Mount Qingcheng Daoist heritage; not a verified site photograph",
+                "caption": "Mount Qingcheng — AI illustration",
+                "focalPoint": "50% 50%",
+                "mobileFocalPoint": "50% 50%",
+                "illustrative": true,
+                "rightsStatus": "illustrative",
+                "source": "Generated using built-in image_gen on 2026-10-30; prompt recorded in docs/JOURNEYS-V7-GENERATED-IMAGES.md",
+                "realLocation": "",
+                "portraitPermission": "not applicable",
+                "usage": "website illustrative",
+                "replacementStatus": "concept"
+              },
+              {
+                "assetId": "qingcheng-daoist-concept-v1",
+                "src": "/images/journeys-v7/qingcheng-daoist-concept-v1.webp",
+                "mobileSrc": "",
+                "alt": "AI concept inspired by Mount Qingcheng Daoist heritage; not a verified site photograph",
+                "caption": "Temple paths — AI illustration",
+                "focalPoint": "70% 50%",
+                "mobileFocalPoint": "70% 50%",
+                "illustrative": true,
+                "rightsStatus": "illustrative",
+                "source": "Generated using built-in image_gen on 2026-10-30; prompt recorded in docs/JOURNEYS-V7-GENERATED-IMAGES.md",
+                "realLocation": "",
+                "portraitPermission": "not applicable",
+                "usage": "website illustrative",
+                "replacementStatus": "concept"
+              },
+              {
+                "assetId": "dujiangyan-waterworks-concept-v1",
+                "src": "/images/journeys-v7/dujiangyan-waterworks-concept-v1.webp",
+                "mobileSrc": "",
+                "alt": "AI concept inspired by Dujiangyan ancient waterworks; not a verified site photograph",
+                "caption": "Dujiangyan waterworks — AI illustration",
+                "focalPoint": "50% 50%",
+                "mobileFocalPoint": "50% 50%",
+                "illustrative": true,
+                "rightsStatus": "illustrative",
+                "source": "Generated using built-in image_gen on 2026-10-30; prompt recorded in docs/JOURNEYS-V7-GENERATED-IMAGES.md",
+                "realLocation": "",
+                "portraitPermission": "not applicable",
+                "usage": "website illustrative",
+                "replacementStatus": "concept"
+              },
+              {
+                "assetId": "dujiangyan-waterworks-concept-v1",
+                "src": "/images/journeys-v7/dujiangyan-waterworks-concept-v1.webp",
+                "mobileSrc": "",
+                "alt": "AI concept inspired by Dujiangyan ancient waterworks; not a verified site photograph",
+                "caption": "Bashu heritage — AI illustration",
+                "focalPoint": "35% 50%",
+                "mobileFocalPoint": "35% 50%",
+                "illustrative": true,
+                "rightsStatus": "illustrative",
+                "source": "Generated using built-in image_gen on 2026-10-30; prompt recorded in docs/JOURNEYS-V7-GENERATED-IMAGES.md",
+                "realLocation": "",
+                "portraitPermission": "not applicable",
+                "usage": "website illustrative",
+                "replacementStatus": "concept"
+              }
+            ]
+          }
+        ]
+      },
+      "gallery": {
+        "eyebrow": "",
+        "title": "Moments From the Journey",
+        "body": "Image concepts show possible experiences, not a fixed route. All visuals are illustrative.",
+        "items": [
+          {
+            "assetId": "story-vlog-03-01",
+            "src": "/images/journeys-v7/story-vlog-03-01-panel.webp",
+            "mobileSrc": "",
+            "alt": "Panda viewing — AI illustration",
+            "caption": "Panda viewing — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "lumichan-web/public/images/home-v22/story-vlog-03-01.webp",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          },
+          {
+            "assetId": "chongqing-concept",
+            "src": "/images/journeys-v7/chongqing-concept-panel.webp",
+            "mobileSrc": "",
+            "alt": "City landscape — AI illustration",
+            "caption": "City landscape — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/chongqing-concept.png",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          },
+          {
+            "assetId": "gateway-opera-illustrative",
+            "src": "/images/journeys-v7/gateway-opera-illustrative-panel.webp",
+            "mobileSrc": "",
+            "alt": "Sichuan opera — AI illustration",
+            "caption": "Sichuan opera — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/gateway-opera-illustrative.png",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          },
+          {
+            "assetId": "gateway-hotpot-illustrative",
+            "src": "/images/journeys-v7/gateway-hotpot-illustrative-panel.webp",
+            "mobileSrc": "",
+            "alt": "Hotpot moment — AI illustration",
+            "caption": "Hotpot moment — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/gateway-hotpot-illustrative.png",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          },
+          {
+            "assetId": "qingcheng-daoist-concept-v1",
+            "src": "/images/journeys-v7/qingcheng-daoist-concept-v1.webp",
+            "mobileSrc": "",
+            "alt": "AI concept inspired by Mount Qingcheng Daoist heritage; not a verified site photograph",
+            "caption": "Mount Qingcheng — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "Generated using built-in image_gen on 2026-10-30; prompt recorded in docs/JOURNEYS-V7-GENERATED-IMAGES.md",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          }
+        ]
+      },
+      "story": {
+        "eyebrow": "",
+        "title": "Local Culture & Moments",
+        "paragraphs": [
+          "Culture lives in the way people gather and share food as much as in landmark sites. Tell us what draws you to Sichuan and Chongqing. If your plans extend elsewhere in China, we can discuss a custom route after checking local arrangements."
+        ],
+        "image": {
+          "assetId": "gateway-hotpot-illustrative",
+          "src": "/images/journeys-v7/gateway-hotpot-illustrative-panel.webp",
+          "mobileSrc": "",
+          "alt": "Hotpot moment — AI illustration",
+          "caption": "Hotpot moment — AI illustration",
+          "focalPoint": "50% 50%",
+          "mobileFocalPoint": "50% 50%",
+          "illustrative": true,
+          "rightsStatus": "illustrative",
+          "source": "Supplied brief assets/gateway-hotpot-illustrative.png",
+          "realLocation": "",
+          "portraitPermission": "not applicable",
+          "usage": "website illustrative",
+          "replacementStatus": "concept"
+        }
+      },
+      "goodToKnow": [
+        {
+          "title": "Best Time to Go",
+          "body": "Spring (Mar–May) and autumn (Sep–Nov) are popular.",
+          "icon": "sun"
+        },
+        {
+          "title": "Trip Duration",
+          "body": "Flexible and shaped around your plans.",
+          "icon": "clock"
+        },
+        {
+          "title": "Starting Point",
+          "body": "Chengdu (also available from Chongqing).",
+          "icon": "map-pin"
+        },
+        {
+          "title": "Inclusions",
+          "body": "Private transport, local guides and selected experiences, as agreed in your proposal.",
+          "icon": "check"
+        },
+        {
+          "title": "Can Be Customized",
+          "body": "Yes — tell us your interests and we’ll tailor the journey.",
+          "icon": "adjustments"
+        }
+      ],
+      "cta": {
+        "title": "Plan Your Cultural Gateway",
+        "paragraphs": [
+          "Tell us which places and experiences interest you. We will propose a private journey around your plans."
+        ],
+        "primaryLabel": "Plan This Journey",
+        "secondaryLabel": "Ask for a Quote",
+        "note": "",
+        "image": {
+          "assetId": "chongqing-concept",
+          "src": "/images/journeys-v7/chongqing-concept-hero.webp",
+          "mobileSrc": "",
+          "alt": "Riverside city — AI illustration",
+          "caption": "Riverside city — AI illustration",
+          "focalPoint": "50% 50%",
+          "mobileFocalPoint": "50% 50%",
+          "illustrative": true,
+          "rightsStatus": "illustrative",
+          "source": "Supplied brief assets/chongqing-concept.png",
+          "realLocation": "",
+          "portraitPermission": "not applicable",
+          "usage": "website illustrative",
+          "replacementStatus": "concept"
+        }
+      },
+      "goodToKnowTitle": "Good to Know",
+      "featuredBody": "Explore Sichuan and Chongqing through pandas, tea, hotpot and nearby heritage. Other China journeys can be tailored by request."
+    },
+    {
+      "slug": "western-sichuan-private-road-trip",
+      "title": "Western Sichuan Private Road Trip",
+      "eyebrow": "A JOURNEY INTO WESTERN SICHUAN",
+      "subtitle": "Where the Road Meets Tibetan Culture.",
+      "body": "Follow the road west from Chengdu into the highlands of western Sichuan. Cross dramatic mountain valleys, open grasslands and Jiarong Tibetan villages, then discover Kham Tibetan traditions around Tagong and Kangding.",
+      "seoTitle": "Western Sichuan Private Road Trip",
+      "seoDescription": "Follow the road west from Chengdu into the highlands of western Sichuan. Cross dramatic mountain valleys, open grasslands and Jiarong Tibetan villages, then discover Kham Tibetan traditions around Tagong and Kangding.",
+      "status": "published",
+      "inquiryJourneyId": "western-sichuan-private-road-trip",
+      "hero": {
+        "assetId": "road-hero-illustrative",
+        "src": "/images/journeys-v7/road-hero-illustrative-hero.webp",
+        "mobileSrc": "",
+        "alt": "Western Sichuan Private Road Trip — AI illustration",
+        "caption": "Western Sichuan Private Road Trip — AI illustration",
+        "focalPoint": "50% 50%",
+        "mobileFocalPoint": "50% 50%",
+        "illustrative": true,
+        "rightsStatus": "illustrative",
+        "source": "Supplied brief assets/road-hero-illustrative.png",
+        "realLocation": "",
+        "portraitPermission": "not applicable",
+        "usage": "website illustrative",
+        "replacementStatus": "concept"
+      },
+      "intro": {
+        "eyebrow": "THE JOURNEY",
+        "title": "The Road Is Part of the Discovery.",
+        "paragraphs": [
+          "Leave the city behind and follow the road into a different world. From the mountain valleys around Siguniang to the stone-built Jiarong Tibetan villages of Zhonglu and the open grasslands of Tagong, every stretch reveals a new landscape and a different side of local life.",
+          "A possible route can connect Wolong, Shuangqiao Valley, Zhonglu, Tagong and Kangding — bringing spectacular scenery together with meaningful cultural encounters.",
+          "This is just one way to explore Western Sichuan. With its many valleys, grasslands and cultural regions, the journey can be shaped around your interests, travel time and preferred pace."
+        ],
+        "regionCues": [
+          "Western Sichuan · Jiarong and Kham Tibetan cultural areas"
+        ]
+      },
+      "experience": {
+        "eyebrow": "WHAT YOU’LL EXPERIENCE",
+        "title": "A Journey Through Mountains, Culture and Freedom.",
+        "body": "The best part of a road trip is not simply where you arrive, but everything you discover along the way.",
+        "items": [
+          {
+            "title": "Mountain Roads & Alpine Valleys",
+            "body": "Follow winding mountain roads through dramatic valleys, snow-covered peaks and forests. Watch the landscape change with every turn.",
+            "order": 1,
+            "image": {
+              "assetId": "road-hero-illustrative",
+              "src": "/images/journeys-v7/road-hero-illustrative-panel.webp",
+              "mobileSrc": "",
+              "alt": "Mountain Roads & Alpine Valleys — AI illustration",
+              "caption": "Mountain Roads & Alpine Valleys — AI illustration",
+              "focalPoint": "50% 50%",
+              "mobileFocalPoint": "50% 50%",
+              "illustrative": true,
+              "rightsStatus": "illustrative",
+              "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/road-hero-illustrative.png",
+              "realLocation": "",
+              "portraitPermission": "not applicable",
+              "usage": "website illustrative",
+              "replacementStatus": "concept"
+            }
+          },
+          {
+            "title": "Shuangqiao Valley & Siguniang Mountain",
+            "body": "Discover one of Western Sichuan’s most beautiful alpine landscapes, with towering peaks, clear streams, forests and remarkable mountain scenery.",
+            "order": 2,
+            "image": {
+              "assetId": "road-v2-shuangqiao-illustrative",
+              "src": "/images/journeys-v7/road-v2-shuangqiao-illustrative-panel.webp",
+              "mobileSrc": "",
+              "alt": "Shuangqiao Valley & Siguniang Mountain — AI illustration",
+              "caption": "Shuangqiao Valley & Siguniang Mountain — AI illustration",
+              "focalPoint": "50% 50%",
+              "mobileFocalPoint": "50% 50%",
+              "illustrative": true,
+              "rightsStatus": "illustrative",
+              "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/road-v2-shuangqiao-illustrative.png",
+              "realLocation": "",
+              "portraitPermission": "not applicable",
+              "usage": "website illustrative",
+              "replacementStatus": "concept"
+            }
+          },
+          {
+            "title": "Tibetan Villages & Local Architecture",
+            "body": "Explore Jiarong Tibetan settlements such as Zhonglu, where stone houses and ancient watchtowers reflect the region’s distinctive architectural heritage and local way of life.",
+            "order": 3,
+            "image": {
+              "assetId": "road-v2-zhonglu-illustrative",
+              "src": "/images/journeys-v7/road-v2-zhonglu-illustrative-panel.webp",
+              "mobileSrc": "",
+              "alt": "Tibetan Villages & Local Architecture — AI illustration",
+              "caption": "Tibetan Villages & Local Architecture — AI illustration",
+              "focalPoint": "50% 50%",
+              "mobileFocalPoint": "50% 50%",
+              "illustrative": true,
+              "rightsStatus": "illustrative",
+              "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/road-v2-zhonglu-illustrative.png",
+              "realLocation": "",
+              "portraitPermission": "not applicable",
+              "usage": "website illustrative",
+              "replacementStatus": "concept"
+            }
+          },
+          {
+            "title": "Tagong Grasslands & Monasteries",
+            "body": "Enter the wide-open grasslands of Tagong, surrounded by distant mountains, prayer flags and Tibetan Buddhist monasteries. Discover the Kham traditions that shape this highland region.",
+            "order": 4,
+            "image": {
+              "assetId": "road-v2-tagong-grassland-illustrative",
+              "src": "/images/journeys-v7/road-v2-tagong-grassland-illustrative-panel.webp",
+              "mobileSrc": "",
+              "alt": "Tagong Grasslands & Monasteries — AI illustration",
+              "caption": "Tagong Grasslands & Monasteries — AI illustration",
+              "focalPoint": "50% 50%",
+              "mobileFocalPoint": "50% 50%",
+              "illustrative": true,
+              "rightsStatus": "illustrative",
+              "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/road-v2-tagong-grassland-illustrative.png",
+              "realLocation": "",
+              "portraitPermission": "not applicable",
+              "usage": "website illustrative",
+              "replacementStatus": "concept"
+            }
+          },
+          {
+            "title": "Nomadic Life & Local Hospitality",
+            "body": "Go beyond the scenery and discover everyday life on the plateau. Where local hosts and arrangements allow, learn about nomadic traditions and foods such as tsampa and butter tea.",
+            "order": 5,
+            "image": {
+              "assetId": "road-v2-butter-tea-illustrative",
+              "src": "/images/journeys-v7/road-v2-butter-tea-illustrative-panel.webp",
+              "mobileSrc": "",
+              "alt": "Nomadic Life & Local Hospitality — AI illustration",
+              "caption": "Nomadic Life & Local Hospitality — AI illustration",
+              "focalPoint": "50% 50%",
+              "mobileFocalPoint": "50% 50%",
+              "illustrative": true,
+              "rightsStatus": "illustrative",
+              "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/road-v2-butter-tea-illustrative.png",
+              "realLocation": "",
+              "portraitPermission": "not applicable",
+              "usage": "website illustrative",
+              "replacementStatus": "concept"
+            }
+          },
+          {
+            "title": "Kangding — Where Cultures Meet",
+            "body": "Discover Kangding, a historic mountain town shaped by centuries of cultural exchange between Han and Tibetan communities. Explore its streets, local traditions and mountain-town atmosphere.",
+            "order": 6,
+            "image": {
+              "assetId": "road-v2-kangding-illustrative",
+              "src": "/images/journeys-v7/road-v2-kangding-illustrative-panel.webp",
+              "mobileSrc": "",
+              "alt": "Kangding — AI illustration",
+              "caption": "Kangding — AI illustration",
+              "focalPoint": "50% 50%",
+              "mobileFocalPoint": "50% 50%",
+              "illustrative": true,
+              "rightsStatus": "illustrative",
+              "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/road-v2-kangding-illustrative.png",
+              "realLocation": "",
+              "portraitPermission": "not applicable",
+              "usage": "website illustrative",
+              "replacementStatus": "concept"
+            }
+          }
+        ]
+      },
+      "gallery": {
+        "eyebrow": "LANDSCAPES ALONG THE WAY",
+        "title": "Every Turn Reveals a New Landscape.",
+        "body": "From alpine valleys and snow-covered mountains to vast grasslands and traditional Tibetan settlements, Western Sichuan offers an ever-changing journey through some of China’s most remarkable mountain scenery.",
+        "items": [
+          {
+            "assetId": "road-v2-shuangqiao-illustrative",
+            "src": "/images/journeys-v7/road-v2-shuangqiao-illustrative-panel.webp",
+            "mobileSrc": "",
+            "alt": "Shuangqiao Valley — AI illustration",
+            "caption": "Shuangqiao Valley — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/road-v2-shuangqiao-illustrative.png",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          },
+          {
+            "assetId": "road-v2-siguniang-peaks-illustrative",
+            "src": "/images/journeys-v7/road-v2-siguniang-peaks-illustrative-panel.webp",
+            "mobileSrc": "",
+            "alt": "Siguniang Mountain — AI illustration",
+            "caption": "Siguniang Mountain — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/road-v2-siguniang-peaks-illustrative.png",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          },
+          {
+            "assetId": "road-v2-tagong-grassland-illustrative",
+            "src": "/images/journeys-v7/road-v2-tagong-grassland-illustrative-panel.webp",
+            "mobileSrc": "",
+            "alt": "Tagong Grassland — AI illustration",
+            "caption": "Tagong Grassland — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/road-v2-tagong-grassland-illustrative.png",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          },
+          {
+            "assetId": "road-v2-zhonglu-illustrative",
+            "src": "/images/journeys-v7/road-v2-zhonglu-illustrative-panel.webp",
+            "mobileSrc": "",
+            "alt": "Zhonglu — AI illustration",
+            "caption": "Zhonglu — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/road-v2-zhonglu-illustrative.png",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          },
+          {
+            "assetId": "road-v2-tagong-monastery-illustrative",
+            "src": "/images/journeys-v7/road-v2-tagong-monastery-illustrative-panel.webp",
+            "mobileSrc": "",
+            "alt": "Tagong Monastery — AI illustration",
+            "caption": "Tagong Monastery — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/road-v2-tagong-monastery-illustrative.png",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          },
+          {
+            "assetId": "road-hero-illustrative",
+            "src": "/images/journeys-v7/road-hero-illustrative-panel.webp",
+            "mobileSrc": "",
+            "alt": "Mountain Roads — AI illustration",
+            "caption": "Mountain Roads — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/road-hero-illustrative.png",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          }
+        ]
+      },
+      "story": {
+        "eyebrow": "BEYOND THE VIEW",
+        "title": "More Than Just a Road Trip.",
+        "paragraphs": [
+          "A road trip is about having the freedom to experience a place, not simply passing through it.",
+          "Pause when a valley opens up. Spend more time in a traditional village. Take in the changing light across the grasslands, or discover a place you never expected to find.",
+          "With a private vehicle and a thoughtfully planned route, you can travel at your own pace, explore beyond the usual stops and experience the landscapes and cultures of Western Sichuan more closely.",
+          "Because sometimes, the most memorable moments happen between destinations."
+        ],
+        "image": {
+          "assetId": "road-grassland-illustrative",
+          "src": "/images/journeys-v7/road-grassland-illustrative-panel.webp",
+          "mobileSrc": "",
+          "alt": "Highland grasslands — AI illustration",
+          "caption": "Highland grasslands — AI illustration",
+          "focalPoint": "50% 50%",
+          "mobileFocalPoint": "50% 50%",
+          "illustrative": true,
+          "rightsStatus": "illustrative",
+          "source": "Supplied brief assets/road-grassland-illustrative.png",
+          "realLocation": "",
+          "portraitPermission": "not applicable",
+          "usage": "website illustrative",
+          "replacementStatus": "concept"
+        }
+      },
+      "goodToKnow": [
+        {
+          "title": "Best Season",
+          "body": "Weather and scenery change throughout the year. We’ll help you choose suitable travel dates and plan your route around seasonal conditions.",
+          "icon": "sun"
+        },
+        {
+          "title": "Altitude",
+          "body": "Some destinations are at high elevation. We plan a sensible travel pace and allow time for adjustment. Let us know about any altitude concerns before your journey.",
+          "icon": "mountain"
+        },
+        {
+          "title": "Accommodation",
+          "body": "Overnight stays are arranged along the route, with accommodation options selected according to location, availability and your preferred comfort level.",
+          "icon": "home"
+        },
+        {
+          "title": "Tailor-Made",
+          "body": "This suggested route is a starting point, not a fixed formula. Destinations, stops and travel pace can be adjusted around your interests, schedule and road conditions.",
+          "icon": "adjustments"
+        }
+      ],
+      "cta": {
+        "title": "Let the Road Take You Further.",
+        "paragraphs": [
+          "From spectacular mountain scenery to meaningful cultural encounters, your Western Sichuan journey starts with the road you choose.",
+          "Tell us what you want to discover. We’ll design a private journey around your interests, travel dates and preferred pace."
+        ],
+        "primaryLabel": "Plan This Journey",
+        "secondaryLabel": "Ask for a Quote",
+        "note": "All itineraries are subject to weather, road conditions, seasonal access and local arrangements.",
+        "image": {
+          "assetId": "road-footer-illustrative",
+          "src": "/images/journeys-v7/road-footer-illustrative-hero.webp",
+          "mobileSrc": "",
+          "alt": "Mountain landscape — AI illustration",
+          "caption": "Mountain landscape — AI illustration",
+          "focalPoint": "50% 50%",
+          "mobileFocalPoint": "50% 50%",
+          "illustrative": true,
+          "rightsStatus": "illustrative",
+          "source": "Supplied brief assets/road-footer-illustrative.png",
+          "realLocation": "",
+          "portraitPermission": "not applicable",
+          "usage": "website illustrative",
+          "replacementStatus": "concept"
+        }
+      },
+      "goodToKnowTitle": "Travel With Confidence.",
+      "featuredBody": "Explore mountain roads, Jiarong villages and Kham culture around Tagong and Kangding at your own pace.",
+      "travelInformation": [
+        "Private Road Journey",
+        "Flexible Route",
+        "Customizable Duration"
+      ]
+    },
+    {
+      "slug": "deep-cultural-journey",
+      "title": "Deep Cultural Journey",
+      "eyebrow": "A DEEPER WAY TO DISCOVER CHINESE CULTURE",
+      "subtitle": "Discover China's Cultural Depth Through Sichuan.",
+      "body": "From the ancient Shu civilization and the legacy of Shu-Han to Daoist philosophy, Buddhist heritage and the living traditions of western Sichuan, explore the many cultural layers that make this region a remarkable window into China.",
+      "seoTitle": "Deep Cultural Journey",
+      "seoDescription": "From the ancient Shu civilization and the legacy of Shu-Han to Daoist philosophy, Buddhist heritage and the living traditions of western Sichuan, explore the many cultural layers that make this region a remarkable window into China.",
+      "status": "published",
+      "inquiryJourneyId": "deep-cultural-journey",
+      "hero": {
+        "assetId": "deep-v2-ancient-shu-bronze-illustrative",
+        "src": "/images/journeys-v7/deep-v2-ancient-shu-bronze-illustrative-hero.webp",
+        "mobileSrc": "",
+        "alt": "Deep Cultural Journey — AI illustration",
+        "caption": "Deep Cultural Journey — AI illustration",
+        "focalPoint": "50% 50%",
+        "mobileFocalPoint": "50% 50%",
+        "illustrative": true,
+        "rightsStatus": "illustrative",
+        "source": "Supplied brief assets/deep-v2-ancient-shu-bronze-illustrative.png",
+        "realLocation": "",
+        "portraitPermission": "not applicable",
+        "usage": "website illustrative",
+        "replacementStatus": "concept"
+      },
+      "intro": {
+        "eyebrow": "THE CULTURAL LANDSCAPE",
+        "title": "One Region. Many Cultural Worlds.",
+        "paragraphs": [
+          "Sichuan is more than a destination. It is a meeting ground of histories, beliefs and living traditions.",
+          "The Chengdu Plain preserves the legacy of ancient Shu and Shu-Han, while Mount Qingcheng, Mount Emei and Leshan reveal the region’s profound Daoist and Buddhist heritage.",
+          "Beyond the basin, Tibetan and Qiang communities bring other cultural landscapes into view.",
+          "Together, these traditions offer a deeper way to understand southwest China — not through landmarks alone, but through the stories, ideas and practices that give them meaning."
+        ],
+        "regionCues": []
+      },
+      "experience": {
+        "eyebrow": "WHAT YOU’LL EXPERIENCE",
+        "title": "Explore the Cultural Layers of Sichuan",
+        "body": "Discover the civilizations, philosophies and traditions that have shaped this remarkable region.",
+        "items": [
+          {
+            "title": "Ancient Shu Civilization",
+            "body": "Explore Sanxingdui and the archaeological story of Jinsha. Bronze masks, ritual objects and other treasures reveal a distinctive civilization that flourished in the Sichuan Basin thousands of years ago.",
+            "order": 1,
+            "image": {
+              "assetId": "deep-v2-ancient-shu-bronze-illustrative",
+              "src": "/images/journeys-v7/deep-v2-ancient-shu-bronze-illustrative-panel.webp",
+              "mobileSrc": "",
+              "alt": "Ancient Shu Civilization — AI illustration",
+              "caption": "Ancient Shu Civilization — AI illustration",
+              "focalPoint": "50% 50%",
+              "mobileFocalPoint": "50% 50%",
+              "illustrative": true,
+              "rightsStatus": "illustrative",
+              "source": "Supplied brief assets/deep-v2-ancient-shu-bronze-illustrative.png",
+              "realLocation": "",
+              "portraitPermission": "not applicable",
+              "usage": "website illustrative",
+              "replacementStatus": "concept"
+            }
+          },
+          {
+            "title": "Shu-Han & Three Kingdoms Legacy",
+            "body": "Explore Chengdu’s Wuhou Shrine and the stories of Liu Bei and Zhuge Liang. Discover the history of Shu-Han and its lasting place in China’s Three Kingdoms heritage.",
+            "order": 2,
+            "image": {
+              "assetId": "deep-v2-wuhou-inspired-illustrative",
+              "src": "/images/journeys-v7/deep-v2-wuhou-inspired-illustrative-panel.webp",
+              "mobileSrc": "",
+              "alt": "Shu-Han & Three Kingdoms Legacy — AI illustration",
+              "caption": "Shu-Han & Three Kingdoms Legacy — AI illustration",
+              "focalPoint": "50% 50%",
+              "mobileFocalPoint": "50% 50%",
+              "illustrative": true,
+              "rightsStatus": "illustrative",
+              "source": "Supplied brief assets/deep-v2-wuhou-inspired-illustrative.png",
+              "realLocation": "",
+              "portraitPermission": "not applicable",
+              "usage": "website illustrative",
+              "replacementStatus": "concept"
+            }
+          },
+          {
+            "title": "Daoist Philosophy & Qingcheng Mountain",
+            "body": "Walk through forested mountain paths and ancient temples at Mount Qingcheng, closely connected to the origins of Daoism. Explore a tradition shaped by reflection, cultivation and the relationship between humanity and nature.",
+            "order": 3,
+            "image": {
+              "assetId": "qingcheng-daoist-concept-v1",
+              "src": "/images/journeys-v7/qingcheng-daoist-concept-v1.webp",
+              "mobileSrc": "",
+              "alt": "AI concept inspired by Mount Qingcheng Daoist heritage; not a verified site photograph",
+              "caption": "Mount Qingcheng — AI illustration",
+              "focalPoint": "50% 50%",
+              "mobileFocalPoint": "50% 50%",
+              "illustrative": true,
+              "rightsStatus": "illustrative",
+              "source": "Generated using built-in image_gen on 2026-10-30; prompt recorded in docs/JOURNEYS-V7-GENERATED-IMAGES.md",
+              "realLocation": "",
+              "portraitPermission": "not applicable",
+              "usage": "website illustrative",
+              "replacementStatus": "concept"
+            }
+          },
+          {
+            "title": "Buddhist Heritage & Sacred Landscapes",
+            "body": "Discover the Buddhist heritage of Mount Emei and the monumental Leshan Giant Buddha. Explore the relationship between spiritual traditions, ancient architecture, sculpture and the natural landscape.",
+            "order": 4,
+            "image": {
+              "assetId": "deep-v2-emei-illustrative",
+              "src": "/images/journeys-v7/deep-v2-emei-illustrative-panel.webp",
+              "mobileSrc": "",
+              "alt": "Mount Emei Buddhist heritage theme — AI illustration",
+              "caption": "Mount Emei Buddhist heritage theme — AI illustration",
+              "focalPoint": "50% 50%",
+              "mobileFocalPoint": "50% 50%",
+              "illustrative": true,
+              "rightsStatus": "illustrative",
+              "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/deep-v2-emei-illustrative.png",
+              "realLocation": "",
+              "portraitPermission": "not applicable",
+              "usage": "website illustrative",
+              "replacementStatus": "concept"
+            }
+          },
+          {
+            "title": "Tibetan & Qiang Cultural Traditions",
+            "body": "Explore selected cultural landscapes of western and northern Sichuan, where Tibetan and Qiang traditions are expressed through architecture, craftsmanship, festivals and everyday life.",
+            "order": 5,
+            "image": {
+              "assetId": "deep-v2-qiang-village-illustrative",
+              "src": "/images/journeys-v7/deep-v2-qiang-village-illustrative-panel.webp",
+              "mobileSrc": "",
+              "alt": "Tibetan & Qiang Cultural Traditions — AI illustration",
+              "caption": "Tibetan & Qiang Cultural Traditions — AI illustration",
+              "focalPoint": "50% 50%",
+              "mobileFocalPoint": "50% 50%",
+              "illustrative": true,
+              "rightsStatus": "illustrative",
+              "source": "Supplied brief assets/deep-v2-qiang-village-illustrative.png",
+              "realLocation": "",
+              "portraitPermission": "not applicable",
+              "usage": "website illustrative",
+              "replacementStatus": "concept"
+            }
+          },
+          {
+            "title": "Living Bashu Culture",
+            "body": "Experience culture beyond historical sites. Share tea in traditional Chengdu teahouses, discover local food traditions and encounter the folk arts and craftsmanship that remain part of everyday life.",
+            "order": 6,
+            "image": {
+              "assetId": "story-vlog-03-02",
+              "src": "/images/journeys-v7/story-vlog-03-02-panel.webp",
+              "mobileSrc": "",
+              "alt": "Living tea culture — AI illustration",
+              "caption": "Living tea culture — AI illustration",
+              "focalPoint": "50% 50%",
+              "mobileFocalPoint": "50% 50%",
+              "illustrative": true,
+              "rightsStatus": "illustrative",
+              "source": "lumichan-web/public/images/home-v22/story-vlog-03-02.webp",
+              "realLocation": "",
+              "portraitPermission": "not applicable",
+              "usage": "website illustrative",
+              "replacementStatus": "concept"
+            }
+          }
+        ]
+      },
+      "gallery": {
+        "eyebrow": "PLACES, PRACTICES & LIVING TRADITIONS",
+        "title": "Places That Carry Stories.",
+        "body": "From ancient archaeological treasures and historic shrines to sacred mountains, highland communities and traditional teahouses, discover how culture is reflected in the landscapes and everyday life of Sichuan.",
+        "items": [
+          {
+            "assetId": "deep-v2-ancient-shu-bronze-illustrative",
+            "src": "/images/journeys-v7/deep-v2-ancient-shu-bronze-illustrative-panel.webp",
+            "mobileSrc": "",
+            "alt": "Ancient Shu — AI illustration",
+            "caption": "Ancient Shu — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/deep-v2-ancient-shu-bronze-illustrative.png",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          },
+          {
+            "assetId": "deep-v2-wuhou-inspired-illustrative",
+            "src": "/images/journeys-v7/deep-v2-wuhou-inspired-illustrative-panel.webp",
+            "mobileSrc": "",
+            "alt": "Wuhou-inspired heritage — AI illustration",
+            "caption": "Wuhou-inspired heritage — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/deep-v2-wuhou-inspired-illustrative.png",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          },
+          {
+            "assetId": "qingcheng-daoist-concept-v1",
+            "src": "/images/journeys-v7/qingcheng-daoist-concept-v1.webp",
+            "mobileSrc": "",
+            "alt": "AI concept inspired by Mount Qingcheng Daoist heritage; not a verified site photograph",
+            "caption": "Mount Qingcheng — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "Generated using built-in image_gen on 2026-10-30; prompt recorded in docs/JOURNEYS-V7-GENERATED-IMAGES.md",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          },
+          {
+            "assetId": "deep-v2-emei-illustrative",
+            "src": "/images/journeys-v7/deep-v2-emei-illustrative-panel.webp",
+            "mobileSrc": "",
+            "alt": "Mount Emei theme — AI illustration",
+            "caption": "Mount Emei theme — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/deep-v2-emei-illustrative.png",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          },
+          {
+            "assetId": "deep-v2-leshan-illustrative",
+            "src": "/images/journeys-v7/deep-v2-leshan-illustrative-panel.webp",
+            "mobileSrc": "",
+            "alt": "Leshan theme — AI illustration",
+            "caption": "Leshan theme — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/deep-v2-leshan-illustrative.png",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          },
+          {
+            "assetId": "story-vlog-03-02",
+            "src": "/images/journeys-v7/story-vlog-03-02-panel.webp",
+            "mobileSrc": "",
+            "alt": "Chengdu teahouse theme — AI illustration",
+            "caption": "Chengdu teahouse theme — AI illustration",
+            "focalPoint": "50% 50%",
+            "mobileFocalPoint": "50% 50%",
+            "illustrative": true,
+            "rightsStatus": "illustrative",
+            "source": "lumichan-web/public/images/home-v22/story-vlog-03-02.webp",
+            "realLocation": "",
+            "portraitPermission": "not applicable",
+            "usage": "website illustrative",
+            "replacementStatus": "concept"
+          }
+        ]
+      },
+      "story": {
+        "eyebrow": "BEYOND THE LANDMARKS",
+        "title": "Understand the Culture, Not Just the Place.",
+        "paragraphs": [
+          "Visiting a temple or historic site is only the beginning.",
+          "With thoughtful interpretation and local knowledge, these places become more than beautiful backdrops. They reveal the ideas, beliefs, craftsmanship and everyday lives that have shaped the region.",
+          "We create room for meaningful cultural encounters, helping you connect the past with the present and discover the stories behind what you see."
+        ],
+        "image": {
+          "assetId": "culture-hero",
+          "src": "/images/journeys-v7/culture-hero-panel.webp",
+          "mobileSrc": "",
+          "alt": "Daoist courtyard — AI illustration",
+          "caption": "Daoist courtyard — AI illustration",
+          "focalPoint": "50% 50%",
+          "mobileFocalPoint": "50% 50%",
+          "illustrative": true,
+          "rightsStatus": "illustrative",
+          "source": "Journey 的二级&三级页面/Journey 的二级&三级页面/assets/culture-hero.png",
+          "realLocation": "",
+          "portraitPermission": "not applicable",
+          "usage": "website illustrative",
+          "replacementStatus": "concept"
+        }
+      },
+      "goodToKnow": [
+        {
+          "title": "Best Time to Travel",
+          "body": "We recommend the best timing based on the regions, cultural sites and experiences you want to explore. Seasonal conditions and local schedules may influence the final itinerary.",
+          "icon": "sun"
+        },
+        {
+          "title": "Travel Between Regions",
+          "body": "Cultural highlights are spread across the Sichuan Basin and surrounding highlands. We carefully plan routes and travel times to connect different destinations without making the journey feel rushed.",
+          "icon": "mountain"
+        },
+        {
+          "title": "Access & Activities",
+          "body": "Site access, cultural visits and hands-on activities depend on local opening hours, availability and permission. We coordinate arrangements in advance and respect local customs and traditions.",
+          "icon": "home"
+        },
+        {
+          "title": "Tailor-Made",
+          "body": "Your journey is shaped around your interests, travel dates and preferred pace. From cultural themes to destinations and experiences, we work with you to create a journey that feels personal and meaningful.",
+          "icon": "adjustments"
+        }
+      ],
+      "cta": {
+        "title": "Plan Your Deep Cultural Journey",
+        "paragraphs": [
+          "Tell us which cultural layers interest you. We will shape a practical journey around the places, stories and experiences that matter to you."
+        ],
+        "primaryLabel": "PLAN THIS JOURNEY",
+        "secondaryLabel": "ASK FOR A QUOTE",
+        "note": "",
+        "image": {
+          "assetId": "deep-v2-emei-illustrative",
+          "src": "/images/journeys-v7/deep-v2-emei-illustrative-hero.webp",
+          "mobileSrc": "",
+          "alt": "Cultural landscape — AI illustration",
+          "caption": "Cultural landscape — AI illustration",
+          "focalPoint": "50% 50%",
+          "mobileFocalPoint": "50% 50%",
+          "illustrative": true,
+          "rightsStatus": "illustrative",
+          "source": "Supplied brief assets/deep-v2-emei-illustrative.png",
+          "realLocation": "",
+          "portraitPermission": "not applicable",
+          "usage": "website illustrative",
+          "replacementStatus": "concept"
+        }
+      },
+      "goodToKnowTitle": "A Thoughtful Journey, Planned Around You.",
+      "featuredBody": "Explore Daoist heritage, Tibetan traditions and Shu-Han/Bashu history across Sichuan."
+    }
+  ]
+}

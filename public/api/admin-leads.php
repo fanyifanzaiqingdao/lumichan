@@ -32,14 +32,7 @@ function leads_default_data(): array
 
 function leads_load_store(): array
 {
-    $file = leads_data_file();
-    if (!is_file($file)) {
-        return leads_default_data();
-    }
-    $decoded = json_decode((string) file_get_contents($file), true);
-    if (!is_array($decoded)) {
-        return leads_default_data();
-    }
+    $decoded=content_load('travel-leads',[__DIR__.'/data/travel_leads.json'],leads_default_data());
     $decoded['keywords'] = array_values(array_filter(array_map('strval', $decoded['keywords'] ?? [])));
     $decoded['leads'] = is_array($decoded['leads'] ?? null) ? array_values($decoded['leads']) : [];
     $decoded['updated_at'] = (string) ($decoded['updated_at'] ?? gmdate('c'));
@@ -49,11 +42,7 @@ function leads_load_store(): array
 function leads_save_store(array $store): void
 {
     $store['updated_at'] = gmdate('c');
-    $json = json_encode($store, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-    if ($json === false) {
-        api_json(500, ['ok' => false, 'error' => 'Unable to encode lead data']);
-    }
-    file_put_contents(leads_data_file(), $json . "\n", LOCK_EX);
+    content_save('travel-leads',$store);
 }
 
 function lead_url_key(string $url): string

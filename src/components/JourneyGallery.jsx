@@ -1,3 +1,4 @@
+import { t } from '../i18n/runtime.js'
 import { useEffect, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react'
 import SoftImage from './SoftImage.jsx'
@@ -29,20 +30,20 @@ export default function JourneyGallery({ images = [], intervalMs = 5000, label =
   }, [rotating, images.length, intervalMs])
   const current = index % Math.max(images.length, 1)
   const move = (offset) => { setPaused(true); setIndex((current + offset + images.length) % images.length) }
-  return <div ref={root} className="journey-gallery" role="region" aria-roledescription="carousel" aria-label={label}
+  return <div ref={root} className="journey-gallery" role="region" aria-roledescription="carousel" aria-label={t(label)}
     onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
     onFocusCapture={() => setFocused(true)} onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false) }}>
     <div className="journey-gallery__slides" aria-live={rotating ? 'off' : 'polite'}>
-      {images.map((image, position) => <div key={image.src + position} hidden={position !== current} role="group" aria-roledescription="slide" aria-label={`${position + 1} of ${images.length}`}>
-        <SoftImage src={image.src} alt={image.alt} width={1536} height={1024} />
-        {image.aiGenerated && <span className="ai-image-label">AI-generated illustration</span>}
+      {images.map((image, position) => <div key={image.src + position} hidden={position !== current} role="group" aria-roledescription="slide" aria-label={t(`${position + 1} of ${images.length}`)}>
+        {position === current && <SoftImage src={image.src} alt={t(image.alt)} width={1536} height={1024} />}
+        {image.aiGenerated && <span className="ai-image-label">{t("AI-generated illustration")}</span>}
       </div>)}
     </div>
     {images.length > 1 && <div className="journey-gallery__controls">
-      <button type="button" title="Previous image" aria-label="Previous image" onClick={() => move(-1)}><ChevronLeft size={20} /></button>
-      <div className="journey-gallery__dots">{images.map((image, position) => <button key={position} type="button" title={image.alt} aria-label={`Show image ${position + 1}`} aria-current={position === current ? 'true' : undefined} onClick={() => { setPaused(true); setIndex(position) }}><span /></button>)}</div>
-      {!reducedMotion && <button type="button" title={paused ? 'Play slideshow' : 'Pause slideshow'} aria-label={paused ? 'Play slideshow' : 'Pause slideshow'} onClick={() => setPaused((value) => !value)}>{paused ? <Play size={18} /> : <Pause size={18} />}</button>}
-      <button type="button" title="Next image" aria-label="Next image" onClick={() => move(1)}><ChevronRight size={20} /></button>
+      <button type="button" title={t("Previous image")} aria-label={t("Previous image")} onClick={() => move(-1)}><ChevronLeft size={20} /></button>
+      <div className="journey-gallery__dots">{images.map((image, position) => <button key={position} type="button" title={t(image.alt)} aria-label={t(`Show image ${position + 1}`)} aria-current={position === current ? 'true' : undefined} onClick={() => { setPaused(true); setIndex(position) }}><span /></button>)}</div>
+      {!reducedMotion && <button type="button" title={t(paused ? 'Play slideshow' : 'Pause slideshow')} aria-label={t(paused ? 'Play slideshow' : 'Pause slideshow')} onClick={() => setPaused((value) => !value)}>{paused ? <Play size={18} /> : <Pause size={18} />}</button>}
+      <button type="button" title={t("Next image")} aria-label={t("Next image")} onClick={() => move(1)}><ChevronRight size={20} /></button>
     </div>}
   </div>
 }

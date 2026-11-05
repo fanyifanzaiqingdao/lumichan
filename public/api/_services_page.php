@@ -3,11 +3,7 @@ declare(strict_types=1);
 
 function services_page_load(): array
 {
-    $file = __DIR__ . '/data/services-page.live.json';
-    if (!is_file($file)) $file = __DIR__ . '/data/services-page.json';
-    $page = json_decode((string) file_get_contents($file), true);
-    if (!is_array($page)) throw new RuntimeException('Invalid services page configuration');
-    return $page;
+    return content_load('services-page',[__DIR__.'/data/services-page.live.json',__DIR__.'/data/services-page.json']);
 }
 function services_page_media_error(mixed $media): ?string
 {

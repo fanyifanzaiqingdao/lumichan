@@ -89,40 +89,6 @@ export const ABOUT_EXPERTISE = [
   ['Guest support', 'Preparation before departure, communication during travel and feedback after the journey.'],
 ]
 
-export const ABOUT_DESTINATIONS = [
-  ['Chengdu & Beyond', 'Explore Taoist heritage, Sanxingdui, the Leshan Giant Buddha, and the living traditions of Bashu.'],
-  ['Western Sichuan Road Trip', 'Discover Tibetan culture and dramatic mountain scenery at your own pace.'],
-  ['Chengdu & Chongqing', 'Experience pandas, local cuisine, historic streets, gongfu tea, and traditional ear cleaning.'],
-]
-
-// Company profile, pages 5 and 9: cultural experiences and tailored travel examples.
-export const ABOUT_CULTURAL_EXPERIENCES = [
-  ['Local Food Culture', 'Tea, Sichuan cooking and the rhythms of daily life.'],
-  ['Community Encounters', 'Thoughtful visits shaped around local hosts and customs.'],
-  ['Arts & Traditions', 'Activities that offer context beyond major landmarks.'],
-]
-
-export const ABOUT_TRAVEL_STYLES = [
-  { title: 'For families', interests: ['Pandas', 'Easy pacing', 'Hands-on local experiences'] },
-  { title: 'For culture lovers', interests: ['Tea houses', 'Local traditions', 'Deeper cultural context'] },
-  { title: 'For food travelers', interests: ['Sichuan flavors', 'Markets', 'Neighborhood dining'] },
-]
-
-export const ABOUT_PARTNERSHIPS = [
-  ['Net-rate purchasing', 'Purchase agreed customized travel services and build your own retail offer for your clients.'],
-  ['Local ground handling', 'Selected China arrangements within your itinerary and an agreed scope of responsibility.'],
-  ['Joint product design', 'Combine our destination knowledge with your market insight to shape private travel programs.'],
-]
-
-export const PARTNER_STEPS = [
-  ['Inquiry', 'Traveler needs and dates'],
-  ['Design', 'Route and services'],
-  ['Quotation', 'Scope and net rate'],
-  ['Agreement', 'Responsibilities and booking'],
-  ['Delivery', 'Local coordination'],
-  ['Feedback', 'Review and improve'],
-]
-
 export const WHY_CHOOSE = {
   eyebrow: 'Why choose Lumichan',
   title: 'Travel deeper. Connect with culture.',

@@ -212,3 +212,5 @@ a.contact-info-card:hover {
     padding-top: 6.5rem;
   }
 }
+
+.contact-preferences{border-block:1px solid #ffffff26;min-width:0}.contact-preferences>summary{cursor:pointer;min-height:48px;padding:13px 0;color:#f5f1e8;font-weight:600}.contact-preferences>summary span{color:#b3b9c1;font-weight:400}.contact-preferences__fields{display:grid;gap:18px;padding:8px 0 22px}.contact-preferences>summary:focus-visible{outline:3px solid #e0c15a;outline-offset:4px}

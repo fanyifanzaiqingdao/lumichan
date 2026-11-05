@@ -1,0 +1,19 @@
+Journey CMS database migration
+
+1. Back up the database and server api/data/journeys.live.json before deploying.
+2. Import api/journeys-schema.sql into the database configured in api/config.php.
+3. Add content_environment to the array returned by api/config.php:
+   Test site: 'content_environment' => 'staging',
+   Production: 'content_environment' => 'production',
+   Local: 'content_environment' => 'local',
+4. Deploy the frontend and PHP together. Preserve config.php, uploads, and existing live JSON.
+5. On first successful read, the selected environment is initialized from the existing
+   journeys.live.json (or bundled journeys.json if no live file exists).
+   After initialization MySQL is authoritative; changes to the JSON are ignored.
+6. Verify editor load/save and public Journey pages. Reload stale editor tabs.
+   A conflicting save returns 409 instead of overwriting another editor's changes.
+
+Only Journeys configuration is migrated by this change. Images remain files;
+image paths and metadata are included in the database payload.
+A missing table, missing environment setting, or database outage is an error;
+there is no silent file-write fallback. Keep the original JSON backup.

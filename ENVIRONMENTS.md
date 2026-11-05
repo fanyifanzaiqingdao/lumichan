@@ -16,7 +16,7 @@ npm run preview:dev
 ```
 
 测试构建使用 Vite `staging` 模式，输出 `dist-dev/`，不会覆盖 `dist/`。
-测试包的 HTML 和 React 页面均设置 `noindex,nofollow`；robots.txt 禁止抓取，并移除 sitemap.xml。
+测试包的 HTML 和 React 页面均设置 `noindex,nofollow`；robots.txt 允许爬虫读取页面上的 noindex，并移除 sitemap.xml。正式构建若部署在 test 等非正式域名，HTML 和 React 也会设置 noindex。
 `preview:dev` 只预览静态前端，不执行 PHP；完整接口测试使用单独的 PHP 服务或宝塔测试站点。
 
 `npm run build` 始终打包当前分支，不会自动打包 `main`。
@@ -49,3 +49,20 @@ npm run preview:dev
 当前本机的 `public/api/config.php` 是被忽略的运行配置，不随 Git 分支切换。
 切分支不会自动切换数据库；不在这个目录同时运行两套连接不同数据库的 PHP 服务。
 需要同时运行两个版本时使用独立检出目录，并分别配置端口、数据库与密钥。
+
+## 品牌 SEO 与测试站收录（2026-10-30）
+
+首页原始 HTML 包含 Lumichan 的 WebSite / Organization JSON-LD，官网统一指向 https://lumichan.com.cn/。首页标题及分享信息统一品牌名称。
+只有 lumichan.com.cn 和 www.lumichan.com.cn 的 production 构建允许公开页面索引；其他域名（含 test）、本地和 staging 构建均设置 noindex,nofollow。后台和客服管理路由始终 noindex。
+
+测试站宝塔 Nginx 的 server 块建议增加以下响应头，使未运行 JavaScript 的爬虫也能读取：
+
+```nginx
+add_header X-Robots-Tag "noindex, nofollow" always;
+```
+
+只添加到测试站，不能添加到正式站。若测试站当前 robots.txt 为 Disallow: /，请上传最新测试包的 robots.txt，允许爬虫读取 noindex；noindex 不会即时删除已有索引。生产模式误传测试站时的域名判断是 JavaScript 兜底，不能替代此服务端响应头。
+
+## 双语发布补充
+
+中英文网址、双语文案后台与 SEO 入口见 `docs/I18N.md`。构建包含 `zh/` 与各页面静态 HTML 入口，部署时需要一并上传。保留服务器 `api/data/translations.live.json`，它不会进入构建包。无需导入新的 SQL。

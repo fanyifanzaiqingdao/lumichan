@@ -17,7 +17,7 @@ async function inspect(directory) {
 }
 
 await inspect(root)
-for (const privatePath of ['api/config.php', 'api/config.example copy.php', 'api/data/guides.json', 'api/data/homepage.live.json', 'api/data/services-page.live.json', 'uploads']) {
+for (const privatePath of ['api/config.php', 'api/config.example copy.php', 'api/data/guides.json', 'api/data/homepage.live.json', 'api/data/services-page.live.json', 'api/data/translations.live.json', 'api/data/journeys.live.json', 'uploads']) {
   if (await access(join(root, privatePath)).then(() => true).catch(() => false)) failures.push(privatePath)
 }
 if (failures.length) {

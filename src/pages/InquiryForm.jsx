@@ -1,11 +1,18 @@
+import { getLanguage, t } from '../i18n/runtime.js'
 import { useEffect, useRef, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation } from '../i18n/router.jsx'
 
 const INTERESTS = ['Flexibility', 'Comfort', 'Culture', 'Nature', 'Budget clarity', 'Easy planning']
+const JOURNEYS = {
+  'cultural-gateway': 'Cultural Gateway',
+  'western-sichuan-private-road-trip': 'Western Sichuan Private Road Trip',
+  'deep-cultural-journey': 'Deep Cultural Journey',
+}
+const journeySource = (value) => value === '/journeys' || /^\/journeys\/(cultural-gateway|western-sichuan-private-road-trip|deep-cultural-journey)$/.test(value || '') ? value : '/traveler'
 const CONTACTS = ['Email', 'Ins', 'WeChat']
 
 function ErrorText({ message, field }) {
-  return message ? <span className="inquiry-error" id={`error-${field}`}>{message}</span> : null
+  return message ? <span className="inquiry-error" id={`error-${field}`}>{t(message)}</span> : null
 }
 
 export default function InquiryForm({ services, track, config }) {
@@ -13,6 +20,9 @@ export default function InquiryForm({ services, track, config }) {
   const preferencesRef = useRef(null)
   const requestId = useRef(null)
   const started = useRef(false)
+  const [journey, setJourney] = useState('')
+  const [journeyName, setJourneyName] = useState('')
+  const [sourcePage, setSourcePage] = useState('/traveler')
   const [contact, setContact] = useState('Email')
   const [service, setService] = useState('')
   const [children, setChildren] = useState(false)
@@ -20,6 +30,15 @@ export default function InquiryForm({ services, track, config }) {
   const [errors, setErrors] = useState({})
   const [serverError, setServerError] = useState('')
   const location = useLocation()
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const id = params.get('journey') || ''
+    const valid = Object.hasOwn(JOURNEYS, id)
+    const display = (params.get('journey_name') || '').trim()
+    setJourney(valid ? id : '')
+    setJourneyName(valid ? (display && display.length <= 100 && !/[\x00-\x1f\x7f]/.test(display) ? display : JOURNEYS[id]) : '')
+    setSourcePage(journeySource(params.get('sourcePage')))
+  }, [location.search])
   useEffect(() => {
     const selected = services.find((item) => item.id === new URLSearchParams(location.search).get('service'))
     if (!selected) return
@@ -89,9 +108,11 @@ export default function InquiryForm({ services, track, config }) {
       message: String(values.get('message') || '').trim(),
       privacy_consent: true,
       consent_version: config.consentVersion,
-      source_page: '/traveler',
+      journey_id: journey,
+      journey_name: journeyName,
+      source_page: sourcePage,
       utm: Object.fromEntries(['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].filter((key) => params.has(key)).map((key) => [key, params.get(key)])),
-      language: 'en',
+      language: getLanguage(),
       website: String(values.get('website') || ''),
     }
     setStatus('sending')
@@ -109,6 +130,8 @@ export default function InquiryForm({ services, track, config }) {
       requestId.current = null
       form.reset()
       setContact('Email')
+      setJourney('')
+      setJourneyName('')
       setService('')
       setChildren(false)
       preferencesRef.current.open = false
@@ -122,31 +145,33 @@ export default function InquiryForm({ services, track, config }) {
 
   return (
     <form className="inquiry-form" ref={formRef} onSubmit={submit} onChange={markStarted} noValidate>
-      {status === 'success' && <div className="inquiry-success" role="status"><h3>{config.successTitle}</h3><p>{config.successBody}</p></div>}
-      <label>Full name *<input required name="name" autoComplete="name" maxLength={100} aria-invalid={!!errors.name} aria-describedby={errors.name ? 'error-name' : undefined} /><ErrorText field="name" message={errors.name} /></label>
-      <label>Email *<input required name="email" type="email" autoComplete="email" maxLength={200} aria-invalid={!!errors.email} aria-describedby={errors.email ? 'error-email' : undefined} /><ErrorText field="email" message={errors.email} /></label>
-      <label>Number of travelers *<input required name="travelers" type="number" min="1" step="1" inputMode="numeric" aria-invalid={!!errors.travelers} aria-describedby={errors.travelers ? 'error-travelers' : undefined} /><ErrorText field="travelers" message={errors.travelers} /></label>
-      <label>Travel dates or month *<input required name="travel_dates" placeholder="Exact dates or approximate month" maxLength={100} aria-invalid={!!errors.travel_dates} aria-describedby={errors.travel_dates ? 'error-travel_dates' : undefined} /><ErrorText field="travel_dates" message={errors.travel_dates} /></label>
+      {t(status === 'success' && <div className="inquiry-success" role="status"><h3>{t(config.successTitle)}</h3><p>{t(config.successBody)}</p></div>)}
+      <label>{t("Full name *")}<input required name="name" autoComplete="name" maxLength={100} aria-invalid={!!errors.name} aria-describedby={errors.name ? 'error-name' : undefined} /><ErrorText field="name" message={errors.name} /></label>
+      <label>{t("Email *")}<input required name="email" type="email" autoComplete="email" maxLength={200} aria-invalid={!!errors.email} aria-describedby={errors.email ? 'error-email' : undefined} /><ErrorText field="email" message={errors.email} /></label>
+      <label>{t("Number of travelers *")}<input required name="travelers" type="number" min="1" step="1" inputMode="numeric" aria-invalid={!!errors.travelers} aria-describedby={errors.travelers ? 'error-travelers' : undefined} /><ErrorText field="travelers" message={errors.travelers} /></label>
+      <label>{t("Travel dates or month *")}<input required name="travel_dates" placeholder={t("Exact dates or approximate month")} maxLength={100} aria-invalid={!!errors.travel_dates} aria-describedby={errors.travel_dates ? 'error-travel_dates' : undefined} /><ErrorText field="travel_dates" message={errors.travel_dates} /></label>
+      <label>{t("Journey (optional)")}<select name="journey_id" value={journey} onChange={(event) => { setJourney(event.target.value); setJourneyName(JOURNEYS[event.target.value] || '') }}><option value="">{t("No journey / Not sure yet")}</option>{Object.entries(JOURNEYS).map(([id, title]) => <option key={id} value={id}>{t(title)}</option>)}</select></label>
+      {journey && <label>{t("Journey name")}<input name="journey_name" value={journeyName} onChange={(event) => setJourneyName(event.target.value)} maxLength={100} /></label>}
       <details className="inquiry-preferences inquiry-form__wide" ref={preferencesRef}>
-        <summary>More travel preferences <span>(optional)</span></summary>
+        <summary>{t("More travel preferences ")}<span>{t("(optional)")}</span></summary>
         <div className="inquiry-preferences__fields">
-      <label>Preferred contact<select name="preferred_contact" value={contact} onChange={(event) => setContact(event.target.value)}>{CONTACTS.map((option) => <option key={option}>{option}</option>)}</select></label>
-      <label>Country / region<input name="country" autoComplete="country-name" maxLength={100} /></label>
-      {contact !== 'Email' && <label>{contact} account *<input required name="contact_handle" autoComplete="off" maxLength={80} aria-invalid={!!errors.contact_handle} aria-describedby={errors.contact_handle ? 'error-contact_handle' : undefined} /><ErrorText field="contact_handle" message={errors.contact_handle} /></label>}
-      <label>Destinations<input name="destinations" placeholder="Not sure yet" maxLength={200} /></label>
-      <label>Preferred service<select name="preferred_service" value={service} onChange={(event) => setService(event.target.value)}><option value="">Not sure yet</option>{services.map((item) => <option key={item.id}>{item.title}</option>)}</select></label>
-      <label>Traveling with children<select name="traveling_with_children" value={children ? 'yes' : 'no'} onChange={(event) => setChildren(event.target.value === 'yes')}><option value="no">No</option><option value="yes">Yes</option></select></label>
-      {children && <label>Children's age range (optional)<select name="child_age_band"><option value="">Prefer not to say</option><option>0-5</option><option>6-12</option><option>13-17</option></select></label>}
-      <label>English-speaking guide<select name="english_guide"><option>Not sure</option><option>Yes</option><option>No</option></select></label>
-      <fieldset className="inquiry-form__wide"><legend>What matters most</legend><div className="inquiry-interests">{INTERESTS.map((interest) => <label key={interest}><input type="checkbox" name="interests" value={interest} />{interest}</label>)}</div></fieldset>
-      <label className="inquiry-form__wide">What would you love to experience in China?<textarea name="message" rows={5} maxLength={1000} /></label>
+      <label>{t("Preferred contact")}<select name="preferred_contact" value={contact} onChange={(event) => setContact(event.target.value)}>{t(CONTACTS.map((option) => <option key={option} value={option}>{t(option)}</option>))}</select></label>
+      <label>{t("Country / region")}<input name="country" autoComplete="country-name" maxLength={100} /></label>
+      {t(contact !== 'Email' && <label>{t(contact)}{t(" account *")}<input required name="contact_handle" autoComplete="off" maxLength={80} aria-invalid={!!errors.contact_handle} aria-describedby={errors.contact_handle ? 'error-contact_handle' : undefined} /><ErrorText field="contact_handle" message={errors.contact_handle} /></label>)}
+      <label>{t("Destinations")}<input name="destinations" placeholder={t("Not sure yet")} maxLength={200} /></label>
+      <label>{t("Preferred service")}<select name="preferred_service" value={service} onChange={(event) => setService(event.target.value)}><option value="">{t("Not sure yet")}</option>{t(services.map((item) => <option key={item.id} value={item.title}>{t(item.title)}</option>))}</select></label>
+      <label>{t("Traveling with children")}<select name="traveling_with_children" value={children ? 'yes' : 'no'} onChange={(event) => setChildren(event.target.value === 'yes')}><option value="no">{t("No")}</option><option value="yes">{t("Yes")}</option></select></label>
+      {t(children && <label>{t("Children's age range (optional)")}<select name="child_age_band"><option value="">{t("Prefer not to say")}</option><option value={"0-5"}>0-5</option><option value={"6-12"}>6-12</option><option value={"13-17"}>13-17</option></select></label>)}
+      <label>{t("English-speaking guide")}<select name="english_guide"><option value={"Not sure"}>{t("Not sure")}</option><option value={"Yes"}>{t("Yes")}</option><option value={"No"}>{t("No")}</option></select></label>
+      <fieldset className="inquiry-form__wide"><legend>{t("What matters most")}</legend><div className="inquiry-interests">{t(INTERESTS.map((interest) => <label key={interest}><input type="checkbox" name="interests" value={interest} />{t(interest)}</label>))}</div></fieldset>
+      <label className="inquiry-form__wide">{t("What would you love to experience in China?")}<textarea name="message" rows={5} maxLength={1000} /></label>
         </div>
       </details>
-      <label className="inquiry-form__consent inquiry-form__wide"><input type="checkbox" name="privacy_consent" aria-invalid={!!errors.privacy_consent} aria-describedby={errors.privacy_consent ? 'error-privacy_consent' : undefined} /><span>I agree that Lumichan may use my information to respond to this inquiry. Read the <Link to="/traveler/privacy">Privacy Policy</Link>.<ErrorText field="privacy_consent" message={errors.privacy_consent} /></span></label>
+      <label className="inquiry-form__consent inquiry-form__wide"><input type="checkbox" name="privacy_consent" aria-invalid={!!errors.privacy_consent} aria-describedby={errors.privacy_consent ? 'error-privacy_consent' : undefined} /><span>{t("I agree that Lumichan may use my information to respond to this inquiry. Read the ")}<Link to="/traveler/privacy">{t("Privacy Policy")}</Link>.<ErrorText field="privacy_consent" message={errors.privacy_consent} /></span></label>
       <input className="inquiry-honeypot" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" />
-      {serverError && <p className="inquiry-server-error inquiry-form__wide" role="alert">{serverError}</p>}
-      <button type="submit" className="btn btn-gold inquiry-form__submit" disabled={status === 'sending'}>{status === 'sending' ? 'Sending...' : config.submitLabel}</button>
-      <p className="inquiry-form__note inquiry-form__wide">Enquiry only · No payment required to submit</p>
+      {t(serverError && <p className="inquiry-server-error inquiry-form__wide" role="alert">{t(serverError)}</p>)}
+      <button type="submit" className="btn btn-gold inquiry-form__submit" disabled={status === 'sending'}>{t(status === 'sending' ? 'Sending...' : config.submitLabel)}</button>
+      <p className="inquiry-form__note inquiry-form__wide">{t("Enquiry only · No payment required to submit")}</p>
     </form>
   )
 }

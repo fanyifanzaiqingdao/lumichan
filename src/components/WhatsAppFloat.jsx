@@ -1,5 +1,6 @@
+import { t } from '../i18n/runtime.js'
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from '../i18n/router.jsx'
 import { whatsappUrl } from '../config/site.js'
 import './WhatsAppFloat.css'
 
@@ -36,8 +37,8 @@ export default function WhatsAppFloat() {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Chat on WhatsApp"
-      title="WhatsApp"
+      aria-label={t("Chat on WhatsApp")}
+      title={t("WhatsApp")}
     >
       <svg viewBox="0 0 32 32" aria-hidden="true">
         <path

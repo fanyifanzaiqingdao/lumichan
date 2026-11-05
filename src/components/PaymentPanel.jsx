@@ -1,3 +1,5 @@
+import { apiErrorMessage } from '../i18n/errors.js'
+import { t } from '../i18n/runtime.js'
 import { useEffect, useState } from 'react'
 import './PaymentPanel.css'
 
@@ -65,10 +67,10 @@ export default function PaymentPanel({ product }) {
         }),
       })
       const json = await res.json().catch(() => ({}))
-      if (!res.ok || !json.url) throw new Error(json.error || 'Checkout failed')
+      if (!res.ok || !json.url) throw new Error(apiErrorMessage(json.error,res.status))
       window.location.href = json.url
     } catch (err) {
-      setError(err.message || 'Payment failed')
+      setError(apiErrorMessage(err.message))
       setStripeBusy('')
     }
   }
@@ -81,60 +83,53 @@ export default function PaymentPanel({ product }) {
 
   return (
     <div className="pay-panel">
-      <p className="pay-panel__hint">
-        Pay your trip <strong>deposit</strong> to reserve this journey. Balance is due before travel.
-        {parsed.currency !== 'CNY' ? (
+      <p className="pay-panel__hint">{t("Pay your trip ")}<strong>{t("deposit")}</strong>{t(" to reserve this journey. Balance is due before travel.")}{parsed.currency !== 'CNY' ? (
           <>
-            {' '}
-            Listed price: <strong>{formatMoney(parsed.amount, parsed.currency)}</strong>
-            {pctShow ? <> (typical deposit about {pctShow}%)</> : null}.
+            {t(' ')}{t("Listed price: ")}<strong>{t(formatMoney(parsed.amount, parsed.currency))}</strong>
+            {pctShow ? <>{t(" (typical deposit about ")}{t(pctShow)}%)</> : null}.
           </>
         ) : null}
       </p>
 
-      {error && <p className="pay-panel__err">{error}</p>}
+      {error && <p className="pay-panel__err">{t(error)}</p>}
 
       {showPaypal && (
         <div className="pay-panel__block">
-          <div className="pay-panel__label">1. PayPal — Deposit</div>
+          <div className="pay-panel__label">{t("1. PayPal — Deposit")}</div>
           <a
             className="btn btn-gold pay-panel__paypal-link"
             href={paypalLink}
             target="_blank"
             rel="noopener noreferrer"
-          >
-            Pay deposit with PayPal
-          </a>
-          <p className="pay-panel__muted">
-            Opens PayPal to pay the deposit. After payment, we will contact you to finalize the trip.
-          </p>
+          >{t("Pay deposit with PayPal")}</a>
+          <p className="pay-panel__muted">{t("Opens PayPal to pay the deposit. After payment, we will contact you to finalize the trip.")}</p>
         </div>
       )}
 
       {showCard && (
         <div className="pay-panel__block">
-          <div className="pay-panel__label">2. Credit / Debit Card (Stripe)</div>
+          <div className="pay-panel__label">{t("2. Credit / Debit Card (Stripe)")}</div>
           <button
             type="button"
             className="btn btn-outline pay-panel__stripe"
             onClick={() => payWithStripe('card')}
             disabled={!!stripeBusy}
           >
-            {stripeBusy === 'card' ? 'Redirecting…' : 'Pay with Card'}
+            {t(stripeBusy === 'card' ? 'Redirecting…' : 'Pay with Card')}
           </button>
         </div>
       )}
 
       {showAlipay && (
         <div className="pay-panel__block">
-          <div className="pay-panel__label">3. Alipay International (via Stripe)</div>
+          <div className="pay-panel__label">{t("3. Alipay International (via Stripe)")}</div>
           <button
             type="button"
             className="btn btn-outline pay-panel__alipay"
             onClick={() => payWithStripe('alipay')}
             disabled={!!stripeBusy}
           >
-            {stripeBusy === 'alipay' ? 'Redirecting…' : 'Pay with Alipay'}
+            {t(stripeBusy === 'alipay' ? 'Redirecting…' : 'Pay with Alipay')}
           </button>
         </div>
       )}

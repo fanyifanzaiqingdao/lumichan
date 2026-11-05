@@ -1,3 +1,4 @@
+import { writeSeoPages } from './scripts/seo-build.mjs'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { readdir, rm, writeFile } from 'node:fs/promises'
@@ -26,8 +27,9 @@ function stripPrivateFiles(staging) {
           await rm(resolve(data, file), { force: true })
         }
       }
+      await writeSeoPages(root, staging)
       if (staging) {
-        await writeFile(resolve(root, 'robots.txt'), 'User-agent: *\nDisallow: /\n')
+        await writeFile(resolve(root, 'robots.txt'), 'User-agent: *\nAllow: /\n# Pages carry noindex; allow crawlers to read that directive.\n')
         await rm(resolve(root, 'sitemap.xml'), { force: true })
       } else {
         await rm(resolve(root, 'images/guest-photo-placeholder.svg'), { force: true })

@@ -1,0 +1,20 @@
+All operational persistence now uses MySQL. Image binaries remain uploaded files.
+
+Deployment order:
+1. Back up MySQL and api/data plus uploads. Preserve api/config.php.
+2. Import api/content-schema.sql and api/journeys-schema.sql into the configured database.
+3. Set content_environment in each site's config.php: staging / production / local.
+4. Deploy frontend and PHP together, retaining existing *.live.json and travel_leads.json.
+5. Open each admin editor. First read imports existing server JSON once into that
+   environment's site_content row (Journeys uses journey_content).
+6. Verify save and public rendering. Subsequent file edits do not affect DB content.
+
+site_content holds homepage, services-page, translations, travel-leads JSON payloads
+inside MySQL. Existing products/guides/inquiries/support tables remain unchanged.
+Contact form submissions now go to contact_messages; payment events to operation_events.
+Old submissions.jsonl/payments.jsonl remain archival files: they are NOT automatically
+imported or deleted. Back them up separately before cleaning old deployment files.
+Rate limiting now uses contact_limits. Missing schema is an explicit failure.
+
+Only new content tables are environment-isolated. Existing business tables retain
+existing shared-database behavior. This change does not isolate past chat/customer data.

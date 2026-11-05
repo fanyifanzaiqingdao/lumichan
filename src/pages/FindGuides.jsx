@@ -1,5 +1,6 @@
+import { t } from '../i18n/runtime.js'
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '../i18n/router.jsx'
 import { GUIDES as FALLBACK_GUIDES, GUIDE_FILTERS } from '../data/guides.js'
 import './FindGuides.css'
 
@@ -68,10 +69,9 @@ export default function FindGuides() {
     <div className="guides-page">
       <section className="guides-hero">
         <div className="section">
-          <h1 className="font-serif">
-            Find Your <span className="text-gold">Local Guide</span>
+          <h1 className="font-serif">{t("Find Your ")}<span className="text-gold">{t("Local Guide")}</span>
           </h1>
-          <p>Connect with verified local guides and drivers who know every hidden gem</p>
+          <p>{t("Connect with verified local guides and drivers who know every hidden gem")}</p>
 
           <div className="guides-search">
             <div className="guides-search__field">
@@ -84,17 +84,15 @@ export default function FindGuides() {
                   setQuery(e.target.value)
                   setVisible(PAGE_SIZE)
                 }}
-                placeholder="Search by name or location..."
-                aria-label="Search guides"
+                placeholder={t("Search by name or location...")}
+                aria-label={t("Search guides")}
               />
             </div>
             <button
               type="button"
               className={`btn btn-outline guides-search__filters${filtersOpen ? ' is-active' : ''}`}
               onClick={() => setFiltersOpen((v) => !v)}
-            >
-              Filters
-            </button>
+            >{t("Filters")}</button>
           </div>
 
           {filtersOpen && (
@@ -109,7 +107,7 @@ export default function FindGuides() {
                     setVisible(PAGE_SIZE)
                   }}
                 >
-                  {item}
+                  {t(item)}
                 </button>
               ))}
             </div>
@@ -120,13 +118,13 @@ export default function FindGuides() {
       <section className="guides-results">
         <div className="section">
           <p className="guides-count">
-            {loading
+            {t(loading
               ? 'Loading guides…'
-              : `Showing ${shown.length} of ${filtered.length} guides`}
+              : `Showing ${shown.length} of ${filtered.length} guides`)}
           </p>
 
           {!loading && filtered.length === 0 ? (
-            <p className="guides-empty">No guides found matching your criteria</p>
+            <p className="guides-empty">{t("No guides found matching your criteria")}</p>
           ) : (
             <div className="guides-grid">
               {shown.map((guide) => (
@@ -135,17 +133,17 @@ export default function FindGuides() {
                     {guide.photo_url ? (
                       <img
                         src={guide.photo_url}
-                        alt={guide.full_name}
+                        alt={t(guide.full_name)}
                         className="guide-card__avatar"
                         loading="lazy"
                         decoding="async"
                       />
                     ) : (
                       <div className="guide-card__avatar guide-card__avatar--fallback">
-                        {initials(guide.full_name)}
+                        {t(initials(guide.full_name))}
                       </div>
                     )}
-                    <span className="guide-card__verified" title="Verified">
+                    <span className="guide-card__verified" title={t("Verified")}>
                       ✓
                     </span>
                   </div>
@@ -153,37 +151,36 @@ export default function FindGuides() {
                   <div className="guide-card__body">
                     <div className="guide-card__top">
                       <div>
-                        <h3 className="font-serif">{guide.full_name}</h3>
-                        <p className="guide-card__location">📍 {guide.location}</p>
+                        <h3 className="font-serif">{t(guide.full_name)}</h3>
+                        <p className="guide-card__location">📍 {t(guide.location)}</p>
                       </div>
                       {guide.price_per_day != null && (
                         <div className="guide-card__price">
-                          ${guide.price_per_day}
-                          <span>/day</span>
+                          ${t(guide.price_per_day)}
+                          <span>{t("/day")}</span>
                         </div>
                       )}
                     </div>
 
                     <div className="guide-card__meta">
                       <span>
-                        ★ {Number(guide.rating || 0).toFixed(1)} ({guide.reviews_count || 0} reviews)
-                      </span>
-                      {guide.experience && <span>{guide.experience} exp.</span>}
+                        ★ {t(Number(guide.rating || 0).toFixed(1))} ({t(guide.reviews_count || 0)}{t(" reviews)")}</span>
+                      {guide.experience && <span>{t(guide.experience)}{t(" exp.")}</span>}
                     </div>
 
                     {guide.languages?.length > 0 && (
-                      <p className="guide-card__langs">🗣 {guide.languages.join(', ')}</p>
+                      <p className="guide-card__langs">🗣 {t(guide.languages.join(', '))}</p>
                     )}
 
                     {guide.has_vehicle && guide.vehicle_type && (
-                      <p className="guide-card__vehicle">🚗 {guide.vehicle_type}</p>
+                      <p className="guide-card__vehicle">🚗 {t(guide.vehicle_type)}</p>
                     )}
 
-                    {guide.bio && <p className="guide-card__bio">{guide.bio}</p>}
+                    {guide.bio && <p className="guide-card__bio">{t(guide.bio)}</p>}
 
                     <div className="guide-card__tags">
                       {(guide.specialties || []).map((tag) => (
-                        <span key={tag}>{tag}</span>
+                        <span key={tag}>{t(tag)}</span>
                       ))}
                     </div>
 
@@ -191,9 +188,7 @@ export default function FindGuides() {
                       to="/traveler/contact"
                       className="btn btn-gold guide-card__cta"
                       state={{ guide: guide.full_name }}
-                    >
-                      Contact Guide
-                    </Link>
+                    >{t("Contact Guide")}</Link>
                   </div>
                 </article>
               ))}
@@ -202,17 +197,13 @@ export default function FindGuides() {
 
           {hasMore && (
             <div className="guides-more">
-              <button type="button" className="btn btn-outline" onClick={() => setVisible((n) => n + PAGE_SIZE)}>
-                Load More Guides
-              </button>
+              <button type="button" className="btn btn-outline" onClick={() => setVisible((n) => n + PAGE_SIZE)}>{t("Load More Guides")}</button>
             </div>
           )}
 
           <div className="guides-become">
-            <p>Want to offer tours yourself?</p>
-            <Link to="/guide" className="btn btn-outline">
-              Become a Guide
-            </Link>
+            <p>{t("Want to offer tours yourself?")}</p>
+            <Link to="/guide" className="btn btn-outline">{t("Become a Guide")}</Link>
           </div>
         </div>
       </section>

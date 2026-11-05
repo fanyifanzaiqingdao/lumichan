@@ -1,3 +1,4 @@
+import { t } from '../i18n/runtime.js'
 /** Prefer WebP when available; lazy-load by default. */
 export default function SoftImage({
   src,
@@ -17,13 +18,13 @@ export default function SoftImage({
   const img = (
     <img
       src={src}
-      alt={alt}
+      alt={t(alt)}
       className={className}
       loading={loading}
       decoding={decoding}
       width={width}
       height={height}
-      fetchPriority={fetchPriority}
+      fetchpriority={fetchPriority}
       style={style}
     />
   )
@@ -33,7 +34,7 @@ export default function SoftImage({
   return (
     <picture className={className ? `${className}-picture` : undefined} style={style}>
       <source srcSet={webpSrc} type="image/webp" />
-      {img}
+      {t(img)}
     </picture>
   )
 }

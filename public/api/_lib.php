@@ -4,6 +4,7 @@
  */
 
 declare(strict_types=1);
+require_once __DIR__.'/_content_store.php';
 
 function api_config(): array
 {
@@ -881,16 +882,9 @@ function deposit_amount_for_product(array $product): ?array
 
 function payment_log(array $record): void
 {
-    $dir = __DIR__ . '/data';
-    if (!is_dir($dir)) {
-        @mkdir($dir, 0750, true);
-    }
     $record['time'] = $record['time'] ?? gmdate('c');
-    file_put_contents(
-        $dir . '/payments.jsonl',
-        json_encode($record, JSON_UNESCAPED_UNICODE) . "\n",
-        FILE_APPEND | LOCK_EX
-    );
+    $q=db()->prepare('INSERT INTO operation_events(environment,event_type,payload) VALUES(?,?,?)');
+    $q->execute([content_scope(),'payment',json_encode($record,JSON_UNESCAPED_UNICODE|JSON_THROW_ON_ERROR)]);
 }
 
 function payment_notify_admin(string $title, string $body): void

@@ -1,5 +1,7 @@
+import { apiErrorMessage } from '../i18n/errors.js'
+import { getLanguage, t } from '../i18n/runtime.js'
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from '../i18n/router.jsx'
 import { SITE, whatsappUrl } from '../config/site.js'
 import defaultHomepage from '../data/homepage.js'
 import { canonicalServiceId } from '../lib/servicesPage.js'
@@ -64,12 +66,12 @@ export default function Contact() {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, language: getLanguage(), subject: form.subject.trim() || 'Travel consultation inquiry' }),
       })
       const json = await res.json().catch(() => ({}))
 
       if (!res.ok || !json.ok) {
-        throw new Error(json.error || '发送失败，请稍后重试。')
+        throw new Error(apiErrorMessage(json.error,res.status))
       }
 
       setForm({
@@ -84,7 +86,7 @@ export default function Contact() {
       setStatus('success')
     } catch (err) {
       setStatus('error')
-      setErrorMsg(err.message || '发送失败，请稍后重试。')
+      setErrorMsg(apiErrorMessage(err.message))
     }
   }
 
@@ -92,25 +94,24 @@ export default function Contact() {
     <div className="contact-page">
       <section className="contact-hero">
         <div className="section">
-          <h1 className="font-serif">
-            Book A <span className="text-gold">Consultation</span>
+          <h1 className="font-serif">{t("Book A ")}<span className="text-gold">{t("Consultation")}</span>
           </h1>
-          <p>Tell us about your trip — we&apos;ll help you plan a private journey that fits your pace.</p>
+          <p>{t("Tell us about your trip — we'll help you plan a private journey that fits your pace.")}</p>
         </div>
       </section>
 
       <section className="contact-body section">
         <div className="contact-layout">
           <aside className="contact-aside">
-            <h2 className="font-serif">Contact Information</h2>
+            <h2 className="font-serif">{t("Contact Information")}</h2>
             <div className="contact-info-list">
               <a className="contact-info-card" href={`mailto:${INFO.email}`}>
                 <div className="contact-info-card__icon" aria-hidden>
                   ✉
                 </div>
                 <div>
-                  <div className="contact-info-card__label">Email</div>
-                  <div className="contact-info-card__value">{INFO.email}</div>
+                  <div className="contact-info-card__label">{t("Email")}</div>
+                  <div className="contact-info-card__value">{t(INFO.email)}</div>
                 </div>
               </a>
               <a
@@ -121,26 +122,26 @@ export default function Contact() {
                   ☎
                 </div>
                 <div>
-                  <div className="contact-info-card__label">{waHref ? 'Phone / WhatsApp' : 'Phone'}</div>
-                  <div className="contact-info-card__value">{INFO.phone}</div>
+                  <div className="contact-info-card__label">{t(waHref ? 'Phone / WhatsApp' : 'Phone')}</div>
+                  <div className="contact-info-card__value">{t(INFO.phone)}</div>
                 </div>
               </a>
-              {INFO.address ? (
+              {t(INFO.address ? (
                 <div className="contact-info-card">
                   <div className="contact-info-card__icon" aria-hidden>
                     ⌖
                   </div>
                   <div>
-                    <div className="contact-info-card__label">Office</div>
-                    <div className="contact-info-card__value">{INFO.address}</div>
+                    <div className="contact-info-card__label">{t("Office")}</div>
+                    <div className="contact-info-card__value">{t(INFO.address)}</div>
                   </div>
                 </div>
-              ) : null}
+              ) : null)}
             </div>
 
-            <h3 className="font-serif contact-aside__sub">Follow Us</h3>
+            <h3 className="font-serif contact-aside__sub">{t("Follow Us")}</h3>
             <div className="contact-socials">
-              {SOCIALS.map((item) => {
+              {t(SOCIALS.map((item) => {
                 const SocialItem = item.url ? 'a' : 'div'
                 return <SocialItem
                   key={item.label}
@@ -149,45 +150,39 @@ export default function Contact() {
                   rel={item.url?.startsWith('http') ? 'noopener noreferrer' : undefined}
                   className="contact-social"
                 >
-                  <div className="contact-social__label">{item.label}</div>
-                  <div className="contact-social__handle">{item.handle}</div>
+                  <div className="contact-social__label">{t(item.label)}</div>
+                  <div className="contact-social__handle">{t(item.handle)}</div>
                 </SocialItem>
-              })}
+              }))}
             </div>
           </aside>
 
           <div className="contact-form-panel">
-            {status === 'success' ? (
+            {t(status === 'success' ? (
               <div className="contact-success" role="status">
-                <h2 className="font-serif">Message Sent</h2>
-                <p>Thanks! Your message has been sent. We will get back to you soon.</p>
-                <button type="button" className="btn btn-gold" onClick={() => setStatus('idle')}>
-                  Send another message
-                </button>
+                <h2 className="font-serif">{t("Message Sent")}</h2>
+                <p>{t("Thanks! Your message has been sent. We will get back to you soon.")}</p>
+                <button type="button" className="btn btn-gold" onClick={() => setStatus('idle')}>{t("Send another message")}</button>
               </div>
             ) : (
               <form className="contact-form-rich" onSubmit={handleSubmit}>
-                <h2 className="font-serif">Send us a Message</h2>
+                <h2 className="font-serif">{t("Send us a Message")}</h2>
 
                 <div className="contact-form-rich__row">
-                  <label>
-                    Name *
-                    <input
+                  <label>{t("Name *")}<input
                       name="name"
                       required
-                      placeholder="Your name"
+                      placeholder={t("Your name")}
                       autoComplete="name"
                       value={form.name}
                       onChange={(e) => update('name', e.target.value)}
                     />
                   </label>
-                  <label>
-                    Email *
-                    <input
+                  <label>{t("Email *")}<input
                       type="email"
                       name="email"
                       required
-                      placeholder="your@email.com"
+                      placeholder={t("your@email.com")}
                       autoComplete="email"
                       value={form.email}
                       onChange={(e) => update('email', e.target.value)}
@@ -195,56 +190,51 @@ export default function Contact() {
                   </label>
                 </div>
 
-                <label>
-                  Phone (Optional)
-                  <input
+                <label>{t("Message *")}<textarea
+                    name="message"
+                    rows={3}
+                    required
+                    placeholder={t("Tell us about your travel plans or questions...")}
+                    value={form.message}
+                    onChange={(e) => update('message', e.target.value)}
+                  />
+                </label>
+
+                <details className="contact-preferences">
+                  <summary>{t("More details ")}<span>{t("(optional)")}</span></summary>
+                  <div className="contact-preferences__fields">
+                <label>{t("Phone (Optional)")}<input
                     type="tel"
                     name="phone"
-                    placeholder="+1 234 567 890"
+                    placeholder={t("+1 234 567 890")}
                     autoComplete="tel"
                     value={form.phone}
                     onChange={(e) => update('phone', e.target.value)}
                   />
                 </label>
 
-                <label>
-                  Preferred service (Optional)
-                  <select name="preferred_service" value={form.preferred_service} onChange={(event) => {
+                <label>{t("Preferred service (Optional)")}<select name="preferred_service" value={form.preferred_service} onChange={(event) => {
                     const id = event.target.value
                     const selected = defaultHomepage.services.find((item) => item.id === id)
                     setForm((previous) => ({ ...previous, preferred_service: id, subject: !previous.subject || previous.subject.startsWith('Service inquiry:') ? (selected ? `Service inquiry: ${selected.title}` : '') : previous.subject }))
                   }}>
-                    <option value="">Not sure yet</option>
-                    {defaultHomepage.services.map((service) => <option key={service.id} value={service.id}>{service.title}</option>)}
+                    <option value="">{t("Not sure yet")}</option>
+                    {t(defaultHomepage.services.map((service) => <option key={service.id} value={service.id}>{t(service.title)}</option>))}
                   </select>
                 </label>
 
-                <label>
-                  Subject *
-                  <input
+                <label>{t("Subject (Optional)")}<input
                     name="subject"
-                    required
-                    placeholder="How can we help?"
+                    placeholder={t("How can we help?")}
                     value={form.subject}
                     onChange={(e) => update('subject', e.target.value)}
                   />
                 </label>
 
-                <label>
-                  Message *
-                  <textarea
-                    name="message"
-                    rows={5}
-                    required
-                    placeholder="Tell us about your travel plans or questions..."
-                    value={form.message}
-                    onChange={(e) => update('message', e.target.value)}
-                  />
-                </label>
+                  </div>
+                </details>
 
-                <label className="hp-field" aria-hidden="true">
-                  Website
-                  <input
+                <label className="hp-field" aria-hidden="true">{t("Website")}<input
                     name="website"
                     tabIndex={-1}
                     autoComplete="off"
@@ -253,17 +243,17 @@ export default function Contact() {
                   />
                 </label>
 
-                {status === 'error' && (
+                {t(status === 'error' && (
                   <p className="contact-form-error" role="alert">
-                    {errorMsg}
+                    {t(errorMsg)}
                   </p>
-                )}
+                ))}
 
                 <button type="submit" className="btn btn-gold contact-form-rich__submit" disabled={status === 'sending'}>
-                  {status === 'sending' ? 'Sending…' : 'Send Message'}
+                  {t(status === 'sending' ? 'Sending…' : 'Send Message')}
                 </button>
               </form>
-            )}
+            ))}
           </div>
         </div>
       </section>

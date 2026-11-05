@@ -1,3 +1,5 @@
+import { publicContent } from '../lib/publicContent.js'
+import { t } from '../i18n/runtime.js'
 import { useEffect, useState } from 'react'
 import defaultHomepage from '../data/homepage.js'
 import { normalizeHomepage } from '../lib/homepageContent.js'
@@ -7,7 +9,7 @@ export default function ServicePolicies() {
   const [homepage, setHomepage] = useState(defaultHomepage)
   useEffect(() => {
     const controller = new AbortController()
-    fetch('/api/homepage.php', { signal: controller.signal })
+    publicContent('/api/homepage.php', { signal: controller.signal })
       .then((response) => response.ok ? response.json() : Promise.reject())
       .then((data) => { if (data.homepage) setHomepage(normalizeHomepage(data.homepage)) })
       .catch(() => {})
@@ -15,7 +17,7 @@ export default function ServicePolicies() {
   }, [])
   return <div id="service-policies">
     {homepage.services.map((service) => <section key={service.id} id={service.id + '-policy'}>
-      <h3>{service.title}</h3><BookingPolicy service={service} version={homepage.bookingPolicyVersion} plain />
+      <h3>{t(service.title)}</h3><BookingPolicy service={service} version={homepage.bookingPolicyVersion} plain />
     </section>)}
   </div>
 }

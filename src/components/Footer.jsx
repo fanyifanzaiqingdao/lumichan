@@ -1,5 +1,7 @@
+import { publicContent } from '../lib/publicContent.js'
+import { t } from '../i18n/runtime.js'
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '../i18n/router.jsx'
 import { SITE } from '../config/site.js'
 import SoftImage from './SoftImage.jsx'
 import './Footer.css'
@@ -41,7 +43,7 @@ export default function Footer({ dark = false }) {
   const [contact,setContact] = useState({ contactAddress: SITE.address, email: SITE.contactEmail })
   useEffect(() => {
     const controller = new AbortController()
-    fetch('/api/homepage.php', { signal: controller.signal }).then((response) => response.ok ? response.json() : Promise.reject()).then((data) => { if (data.homepage?.footer) setContact(data.homepage.footer) }).catch(() => {})
+    publicContent('/api/homepage.php', { signal: controller.signal }).then((response) => response.ok ? response.json() : Promise.reject()).then((data) => { if (data.homepage?.footer) setContact(data.homepage.footer) }).catch(() => {})
     return () => controller.abort()
   }, [])
   return (
@@ -49,8 +51,8 @@ export default function Footer({ dark = false }) {
       <div className="section site-footer__grid">
         <div>
           <div className="brand footer-brand">
-            <SoftImage src="/lumichan-logo.png" alt="" className="brand__mark" loading="lazy" width={40} height={40} />
-            <span className="brand__name text-gold">Lumichan</span>
+            <SoftImage src="/lumichan-logo.png" alt={t("")} className="brand__mark" loading="lazy" width={40} height={40} />
+            <span className="brand__name text-gold">{t("Lumichan")}</span>
           </div>
           <div className="footer-socials">
             {SOCIALS.map(({ label, url, Icon }) => (
@@ -60,48 +62,47 @@ export default function Footer({ dark = false }) {
                 className="footer-social"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={label}
+                aria-label={t(label)}
               >
                 <Icon />
               </a>
             ))}
           </div>
           <p className="footer-contact">
-            <a href={`mailto:${contact.email}`}>{contact.email}</a>
+            <a href={`mailto:${contact.email}`}>{t(contact.email)}</a>
             {contact.contactAddress ? (
               <>
                 <br />
-                <span>{contact.contactAddress}</span>
+                <span>{t(contact.contactAddress)}</span>
               </>
             ) : null}
           </p>
         </div>
 
         <div>
-          <h3>Company</h3>
-          <Link to="/traveler/about">About Us</Link>
-          <Link to="/traveler/about#partnerships">Travel Partnerships</Link>
-          <Link to="/traveler/contact">Contact Us</Link>
-          <Link to="/traveler/careers">Careers</Link>
+          <h3>{t("Company")}</h3>
+          <Link to="/traveler/about">{t("About Us")}</Link>
+          <Link to="/traveler/contact">{t("Contact Us")}</Link>
+          <Link to="/traveler/careers">{t("Careers")}</Link>
         </div>
 
         <div>
-          <h3>Support</h3>
-          <Link to="/traveler/booking-terms">Booking Terms and Conditions</Link>
-          <Link to="/traveler/privacy">Privacy Policy</Link>
-          <Link to="/traveler/terms">Terms of Use</Link>
+          <h3>{t("Support")}</h3>
+          <Link to="/traveler/booking-terms">{t("Booking Terms and Conditions")}</Link>
+          <Link to="/traveler/privacy">{t("Privacy Policy")}</Link>
+          <Link to="/traveler/terms">{t("Terms of Use")}</Link>
         </div>
 
         <div>
-          <h3>Explore</h3>
-          <Link to="/traveler#how">How it works</Link>
-          <Link to="/traveler/itineraries">Itineraries</Link>
-          <Link to="/guide">Become a Guide</Link>
+          <h3>{t("Explore")}</h3>
+          <Link to="/traveler#how">{t("How it works")}</Link>
+          <Link to="/traveler/itineraries">{t("Itineraries")}</Link>
+          <Link to="/guide">{t("Become a Guide")}</Link>
         </div>
       </div>
       <div className="section site-footer__bottom">
-        <p>© {new Date().getFullYear()} Lumichan. All rights reserved.</p>
-        <p>Crafted with care for adventurous souls worldwide</p>
+        <p>© {t(new Date().getFullYear())}{t(" Lumichan. All rights reserved.")}</p>
+        <p>{t("Crafted with care for adventurous souls worldwide")}</p>
       </div>
     </footer>
   )

@@ -1,8 +1,13 @@
 import { Suspense, lazy } from 'react'
-import { Navigate, Route, Routes, useParams } from 'react-router-dom'
+import { Outlet, useLocation, useParams } from 'react-router-dom'
+import { Navigate, Route, Routes } from './i18n/router.jsx'
 import Layout from './components/Layout.jsx'
 import SupportChat from './components/SupportChat.jsx'
 import Seo from './components/Seo.jsx'
+import { LANGUAGE_PREFIXES } from './i18n/locales.js'
+import { t } from './i18n/runtime.js'
+import { journeyPath } from './lib/journeys.js'
+import { useLanguage } from './i18n/LanguageProvider.jsx'
 import Home from './pages/Home.jsx'
 
 const AiPlanner = lazy(() => import('./pages/AiPlanner.jsx'))
@@ -85,37 +90,51 @@ const Terms = lazy(async () => {
 function PageFallback() {
   return (
     <div className="route-fallback" role="status" aria-live="polite">
-      Loading…
+      {t('Loading…')}
     </div>
   )
 }
 
 function JourneyRedirect() {
   const { slug } = useParams()
-  return <Navigate to={`/traveler/journeys/${slug}`} replace />
+  const location = useLocation()
+  return <Navigate to={journeyPath(slug) + location.search + location.hash} replace />
+}
+
+function PublicLocaleGuard() {
+  const { locale } = useParams()
+  return locale && !LANGUAGE_PREFIXES.includes(locale) ? <Navigate to="/" replace /> : <Outlet />
+}
+function HomeRedirect() {
+  const { search, hash } = useLocation()
+  return <Navigate to={'/' + search + hash} replace />
 }
 
 export default function App() {
+  useLanguage() // Re-render display text without remounting routes or losing form drafts.
   return (
     <>
       <Seo />
       <Suspense fallback={<PageFallback />}>
         <Routes>
-          <Route path="/" element={<Navigate to="/traveler" replace />} />
-          <Route path="/services" element={<Navigate to="/traveler/services" replace />} />
-          <Route path="/journeys" element={<Navigate to="/traveler/journeys" replace />} />
-          <Route path="/journeys/:slug" element={<JourneyRedirect />} />
-          <Route path="/privacy" element={<Navigate to="/traveler/privacy" replace />} />
-          <Route path="/booking-terms" element={<Navigate to="/traveler/booking-terms" replace />} />
-          <Route path="/terms" element={<Navigate to="/traveler/terms" replace />} />
-          <Route path="/traveler" element={<Layout />}>
-            <Route index element={<Home />} />
+          <Route path="/:locale?" element={<PublicLocaleGuard />}>
+          <Route element={<Layout />}><Route index element={<Home />} /></Route>
+          <Route path="services" element={<Navigate to="/traveler/services" replace />} />
+          <Route element={<Layout />}>
+            <Route path="journeys" element={<Journeys />} />
+            <Route path="journeys/:slug" element={<Journeys />} />
+          </Route>
+          <Route path="privacy" element={<Navigate to="/traveler/privacy" replace />} />
+          <Route path="booking-terms" element={<Navigate to="/traveler/booking-terms" replace />} />
+          <Route path="terms" element={<Navigate to="/traveler/terms" replace />} />
+          <Route path="traveler" element={<Layout />}>
+            <Route index element={<HomeRedirect />} />
             <Route path="ai-planner" element={<AiPlanner />} />
             <Route path="guides" element={<FindGuides />} />
             <Route path="itineraries" element={<Itineraries />} />
             <Route path="services" element={<Services />} />
-            <Route path="journeys" element={<Journeys />} />
-            <Route path="journeys/:slug" element={<Journeys />} />
+            <Route path="journeys" element={<JourneyRedirect />} />
+            <Route path="journeys/:slug" element={<JourneyRedirect />} />
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
             <Route path="careers" element={<Careers />} />
@@ -123,7 +142,8 @@ export default function App() {
             <Route path="privacy" element={<Privacy />} />
             <Route path="terms" element={<Terms />} />
           </Route>
-          <Route path="/guide" element={<BecomeGuide />} />
+          <Route path="guide" element={<BecomeGuide />} />
+          </Route>
           <Route path="/admin" element={<Admin />} />
           <Route path="/support" element={<SupportCenter />} />
           <Route path="*" element={<Navigate to="/traveler" replace />} />

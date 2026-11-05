@@ -18,3 +18,8 @@ public/api/data/homepage.live.json
 public/uploads/
 
 public/api/data/services-page.live.json
+
+public/api/data/translations.live.json
+
+# Runtime Journey CMS content
+public/api/data/journeys.live.json

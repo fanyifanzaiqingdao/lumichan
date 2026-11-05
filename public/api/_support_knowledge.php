@@ -2,9 +2,7 @@
 declare(strict_types=1);
 
 function support_knowledge(): array {
-    $file = __DIR__.'/data/homepage.live.json';
-    $home = json_decode((string)file_get_contents(is_file($file)?$file:__DIR__.'/data/homepage.json'),true);
-    if (!is_array($home)) throw new RuntimeException('Homepage unavailable');
+    $home = content_homepage();
     $home = homepage_public($home);
     $entries = [];
     $add = static function($id,$title,$en,$zh,$source='/traveler/services') use (&$entries) {

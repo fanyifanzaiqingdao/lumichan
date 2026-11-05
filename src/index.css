@@ -1,3 +1,8 @@
+@font-face { font-family: "DM Sans"; src: url("/fonts/journeys/dm400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "DM Sans"; src: url("/fonts/journeys/dm600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Playfair Display"; src: url("/fonts/journeys/playfair400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Playfair Display"; src: url("/fonts/journeys/playfair600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Manrope"; src: url("/fonts/journeys/manrope700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
 :root {
   --gold: #c9a227;
   --gold-soft: #e0c15a;

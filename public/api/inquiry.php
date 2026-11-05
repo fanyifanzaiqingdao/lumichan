@@ -11,9 +11,7 @@ try {
 } catch (InvalidArgumentException $e) {
     api_json(400, ['ok' => false, 'error' => $e->getMessage()]);
 }
-$live = __DIR__ . '/data/homepage.live.json';
-$homepageFile = is_file($live) ? $live : __DIR__ . '/data/homepage.json';
-$homepage = json_decode((string) file_get_contents($homepageFile), true);
+$homepage = content_homepage();
 $currentConsent = (string) ($homepage['formConfig']['consentVersion'] ?? 'homepage-v1.1-2026-10-10');
 if ($record['consent_version'] !== $currentConsent) api_json(409, ['ok' => false, 'error' => 'Consent notice has changed. Please refresh the page.']);
 

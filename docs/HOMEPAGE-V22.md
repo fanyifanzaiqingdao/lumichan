@@ -30,3 +30,7 @@ Footer contact address remains No. 140, Annex of Tianfu Avenue. The different re
 - Dev/staging and production builds; production review examples and draft legal display checked separately.
 
 No deployment or Git push is part of this change.
+
+## 2026-10-29 update
+
+At the user’s request, the homepage now renders the three labeled AI/fictional layout cards whenever no verified reviews are available, in every build mode. These stay separate from real review records. Existing supplied AI imagery is reused. The footer Travel Partnerships link is hidden.

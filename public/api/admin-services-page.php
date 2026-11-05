@@ -14,14 +14,5 @@ $page = $body['page'] ?? null;
 if (!is_array($page)) api_json(400, ['ok' => false, 'error' => 'Invalid page']);
 $error = services_page_validate($page);
 if ($error !== null) api_json(400, ['ok' => false, 'error' => $error]);
-$file = __DIR__ . '/data/services-page.live.json';
-$temp = tempnam(dirname($file), 'service-');
-try {
-    $encoded = json_encode($page, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
-    if ($temp === false || file_put_contents($temp, $encoded . "\n", LOCK_EX) === false || !rename($temp, $file)) throw new RuntimeException('Write failed');
-    chmod($file, 0640);
-} catch (Throwable $e) {
-    if ($temp && is_file($temp)) unlink($temp);
-    api_json(500, ['ok' => false, 'error' => 'Could not save services page']);
-}
+content_save('services-page', $page);
 api_json(200, ['ok' => true, 'page' => $page]);

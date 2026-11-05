@@ -14,5 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     api_json(200, ['ok' => true, 'mail' => inquiry_notify($pdo, $id)]);
 }
 
-$rows = $pdo->query('SELECT inquiry_id, created_at, name, email, preferred_contact, contact_handle, travelers, travel_dates, destinations, preferred_service, message, notification_status, notification_attempts FROM inquiries ORDER BY created_at DESC LIMIT 100')->fetchAll();
+$rows = $pdo->query('SELECT inquiry_id, created_at, name, email, preferred_contact, contact_handle, travelers, travel_dates, destinations, preferred_service, message, source_page, utm_json, notification_status, notification_attempts FROM inquiries ORDER BY created_at DESC LIMIT 100')->fetchAll();
+foreach ($rows as &$row) {
+    $row['journey'] = inquiry_journey_metadata($row);
+}
+unset($row);
 api_json(200, ['ok' => true, 'inquiries' => $rows]);

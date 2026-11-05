@@ -1,6 +1,9 @@
+import { apiErrorMessage } from '../i18n/errors.js'
+import { t } from '../i18n/runtime.js'
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '../i18n/router.jsx'
 import './BecomeGuide.css'
+import LanguageSwitcher from '../components/LanguageSwitcher.jsx'
 
 const LANGUAGES = [
   'English',
@@ -58,13 +61,13 @@ function UploadField({ label, description, accept, file, onChange, icon }) {
 
   return (
     <div className="bg-upload">
-      <div className="bg-upload__label">{label}</div>
+      <div className="bg-upload__label">{t(label)}</div>
       <label htmlFor={id} className={`bg-upload__box${file ? ' has-file' : ''}`}>
         <span className="bg-upload__icon" aria-hidden>
-          {icon}
+          {t(icon)}
         </span>
-        <span className="bg-upload__title">{file ? file.name : 'Click to upload'}</span>
-        <span className="bg-upload__desc">{description}</span>
+        <span className="bg-upload__title">{t(file ? file.name : 'Click to upload')}</span>
+        <span className="bg-upload__desc">{t(description)}</span>
         <input
           id={id}
           type="file"
@@ -172,7 +175,7 @@ export default function BecomeGuide() {
           setStep(4)
           return
         }
-        throw new Error(json.error || 'Submit failed. Please try again.')
+        throw new Error(apiErrorMessage(json.error,res.status))
       }
       setStep(4)
     } catch (err) {
@@ -192,32 +195,30 @@ export default function BecomeGuide() {
       <header className="bg-topbar">
         <div className="bg-topbar__inner">
           <Link to="/traveler" className="bg-brand">
-            <img src="/lumichan-logo.png" alt="" loading="lazy" decoding="async" width={40} height={40} />
-            <span className="text-gold font-serif">Lumichan</span>
+            <img src="/lumichan-logo.png" alt={t("")} loading="lazy" decoding="async" width={40} height={40} />
+            <span className="text-gold font-serif">{t("Lumichan")}</span>
           </Link>
-          <Link to="/traveler" className="bg-back">
-            ← Back to Home
-          </Link>
+          <LanguageSwitcher />
+          <Link to="/traveler" className="bg-back">{t("← Back to Home")}</Link>
         </div>
       </header>
 
       <main className="bg-main">
         <div className="bg-intro">
-          <h1 className="font-serif">
-            Become a <span className="text-gold">Guide</span>
+          <h1 className="font-serif">{t("Become a ")}<span className="text-gold">{t("Guide")}</span>
           </h1>
-          <p>Join our network of verified local guides and connect with travelers from around the world.</p>
+          <p>{t("Join our network of verified local guides and connect with travelers from around the world.")}</p>
         </div>
 
         {step < 4 && (
-          <div className="bg-steps" aria-label="Application steps">
+          <div className="bg-steps" aria-label={t("Application steps")}>
             {STEPS.map((item, index) => (
               <div key={item.num} className="bg-steps__item">
                 <div className="bg-steps__node">
                   <div className={`bg-steps__circle${step >= item.num ? ' is-active' : ''}`}>
-                    {step > item.num ? '✓' : item.num}
+                    {t(step > item.num ? '✓' : item.num)}
                   </div>
-                  <span>{item.label}</span>
+                  <span>{t(item.label)}</span>
                 </div>
                 {index < STEPS.length - 1 && (
                   <div className={`bg-steps__line${step > item.num ? ' is-active' : ''}`} />
@@ -234,42 +235,34 @@ export default function BecomeGuide() {
                 <div className="bg-card__icon" aria-hidden>
                   👤
                 </div>
-                <h2 className="font-serif">Personal Information</h2>
+                <h2 className="font-serif">{t("Personal Information")}</h2>
               </div>
 
               <div className="bg-grid">
-                <label>
-                  Full Name *
-                  <input
+                <label>{t("Full Name *")}<input
                     value={form.fullName}
                     onChange={(e) => update({ fullName: e.target.value })}
-                    placeholder="Your full legal name"
+                    placeholder={t("Your full legal name")}
                   />
                 </label>
-                <label>
-                  Email *
-                  <input
+                <label>{t("Email *")}<input
                     type="email"
                     value={form.email}
                     onChange={(e) => update({ email: e.target.value })}
-                    placeholder="your@email.com"
+                    placeholder={t("your@email.com")}
                   />
                 </label>
-                <label>
-                  Phone *
-                  <input
+                <label>{t("Phone *")}<input
                     type="tel"
                     value={form.phone}
                     onChange={(e) => update({ phone: e.target.value })}
-                    placeholder="+86 123 4567 8900"
+                    placeholder={t("+86 123 4567 8900")}
                   />
                 </label>
-                <label>
-                  Location *
-                  <input
+                <label>{t("Location *")}<input
                     value={form.location}
                     onChange={(e) => update({ location: e.target.value })}
-                    placeholder="City, Province"
+                    placeholder={t("City, Province")}
                   />
                 </label>
               </div>
@@ -299,46 +292,38 @@ export default function BecomeGuide() {
                 <div className="bg-card__icon" aria-hidden>
                   🚗
                 </div>
-                <h2 className="font-serif">Vehicle Information</h2>
+                <h2 className="font-serif">{t("Vehicle Information")}</h2>
               </div>
 
               <div className="bg-field">
-                <div className="bg-field__label">Do you have a vehicle?</div>
+                <div className="bg-field__label">{t("Do you have a vehicle?")}</div>
                 <div className="bg-choice">
                   <button
                     type="button"
                     className={form.hasVehicle ? 'is-active' : ''}
                     onClick={() => update({ hasVehicle: true })}
-                  >
-                    Yes, I have a vehicle
-                  </button>
+                  >{t("Yes, I have a vehicle")}</button>
                   <button
                     type="button"
                     className={!form.hasVehicle ? 'is-active' : ''}
                     onClick={() => update({ hasVehicle: false })}
-                  >
-                    No vehicle
-                  </button>
+                  >{t("No vehicle")}</button>
                 </div>
               </div>
 
               {form.hasVehicle && (
                 <>
                   <div className="bg-grid">
-                    <label>
-                      Vehicle Type *
-                      <input
+                    <label>{t("Vehicle Type *")}<input
                         value={form.vehicleType}
                         onChange={(e) => update({ vehicleType: e.target.value })}
-                        placeholder="e.g., Toyota Land Cruiser"
+                        placeholder={t("e.g., Toyota Land Cruiser")}
                       />
                     </label>
-                    <label>
-                      License Plate *
-                      <input
+                    <label>{t("License Plate *")}<input
                         value={form.vehiclePlate}
                         onChange={(e) => update({ vehiclePlate: e.target.value })}
-                        placeholder="Vehicle plate number"
+                        placeholder={t("Vehicle plate number")}
                       />
                     </label>
                   </div>
@@ -369,11 +354,11 @@ export default function BecomeGuide() {
                 <div className="bg-card__icon" aria-hidden>
                   ✨
                 </div>
-                <h2 className="font-serif">Your Profile</h2>
+                <h2 className="font-serif">{t("Your Profile")}</h2>
               </div>
 
               <div className="bg-field">
-                <div className="bg-field__label">Languages You Speak *</div>
+                <div className="bg-field__label">{t("Languages You Speak *")}</div>
                 <div className="bg-chips">
                   {LANGUAGES.map((item) => (
                     <button
@@ -382,14 +367,14 @@ export default function BecomeGuide() {
                       className={form.languages.includes(item) ? 'is-active' : ''}
                       onClick={() => toggleList('languages', item)}
                     >
-                      {item}
+                      {t(item)}
                     </button>
                   ))}
                 </div>
               </div>
 
               <div className="bg-field">
-                <div className="bg-field__label">Your Specialties *</div>
+                <div className="bg-field__label">{t("Your Specialties *")}</div>
                 <div className="bg-chips">
                   {SPECIALTIES.map((item) => (
                     <button
@@ -398,28 +383,24 @@ export default function BecomeGuide() {
                       className={form.specialties.includes(item) ? 'is-active' : ''}
                       onClick={() => toggleList('specialties', item)}
                     >
-                      {item}
+                      {t(item)}
                     </button>
                   ))}
                 </div>
               </div>
 
-              <label>
-                Years of Experience
-                <input
+              <label>{t("Years of Experience")}<input
                   value={form.experience}
                   onChange={(e) => update({ experience: e.target.value })}
-                  placeholder="e.g., 5 years"
+                  placeholder={t("e.g., 5 years")}
                 />
               </label>
 
-              <label>
-                About You *
-                <textarea
+              <label>{t("About You *")}<textarea
                   rows={6}
                   value={form.bio}
                   onChange={(e) => update({ bio: e.target.value })}
-                  placeholder="Tell travelers about yourself, your experience, what makes your tours special..."
+                  placeholder={t("Tell travelers about yourself, your experience, what makes your tours special...")}
                 />
               </label>
 
@@ -439,18 +420,13 @@ export default function BecomeGuide() {
               <div className="bg-success-icon" aria-hidden>
                 ✓
               </div>
-              <h2 className="font-serif">Application Submitted!</h2>
-              <p>
-                Thank you for applying. Our team will review your application and reach out within 2-3
-                business days.
-              </p>
-              <Link to="/traveler" className="btn btn-gold">
-                Back to Home
-              </Link>
+              <h2 className="font-serif">{t("Application Submitted!")}</h2>
+              <p>{t("Thank you for applying. Our team will review your application and reach out within 2-3 business days.")}</p>
+              <Link to="/traveler" className="btn btn-gold">{t("Back to Home")}</Link>
             </section>
           )}
 
-          {error && <p className="bg-error">{error}</p>}
+          {error && <p className="bg-error">{t(error)}</p>}
 
           {step < 4 && (
             <div className="bg-nav">
@@ -459,16 +435,12 @@ export default function BecomeGuide() {
                 className="btn btn-outline"
                 onClick={() => setStep((s) => Math.max(1, s - 1))}
                 disabled={step === 1 || submitting}
-              >
-                Previous
-              </button>
+              >{t("Previous")}</button>
               {step < 3 ? (
-                <button type="button" className="btn btn-gold" onClick={goNext}>
-                  Next Step
-                </button>
+                <button type="button" className="btn btn-gold" onClick={goNext}>{t("Next Step")}</button>
               ) : (
                 <button type="button" className="btn btn-gold" onClick={submit} disabled={submitting}>
-                  {submitting ? 'Submitting…' : 'Submit Application'}
+                  {t(submitting ? 'Submitting…' : 'Submit Application')}
                 </button>
               )}
             </div>

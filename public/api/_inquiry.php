@@ -57,6 +57,15 @@ function inquiry_validate(array $input): array
     $ageBand = inquiry_text($input, 'child_age_band', 20);
     if ($ageBand !== '' && !in_array($ageBand, ['0-5', '6-12', '13-17'], true)) throw new InvalidArgumentException('Invalid child_age_band');
 
+    $journeys = ['cultural-gateway' => 'Cultural Gateway', 'western-sichuan-private-road-trip' => 'Western Sichuan Private Road Trip', 'deep-cultural-journey' => 'Deep Cultural Journey'];
+    $journeyId = inquiry_text($input, 'journey_id', 64);
+    if ($journeyId !== '' && !isset($journeys[$journeyId])) throw new InvalidArgumentException('Invalid journey_id');
+    $journeyName = inquiry_text($input, 'journey_name', 100);
+    $sourcePage = inquiry_text($input, 'source_page', 255, true);
+    if (!in_array($sourcePage, ['/', '/traveler', '/journeys'], true) && !in_array($sourcePage, array_map(fn($slug) => '/journeys/' . $slug, array_keys($journeys)), true)) throw new InvalidArgumentException('Invalid source_page');
+    // Preserve attribution in existing JSON storage without changing the insert schema.
+    $cleanUtm['journey'] = ['id' => $journeyId, 'name' => $journeyId === '' ? '' : ($journeyName ?: $journeys[$journeyId]), 'source_page' => $sourcePage];
+
     return [
         'request_id' => $requestId,
         'name' => $name,
@@ -74,10 +83,32 @@ function inquiry_validate(array $input): array
         'interests_json' => json_encode(array_values($interests), JSON_UNESCAPED_UNICODE),
         'message' => inquiry_text($input, 'message', 1000),
         'consent_version' => $consentVersion,
-        'source_page' => inquiry_text($input, 'source_page', 255, true),
+        'source_page' => $sourcePage,
         'utm_json' => json_encode($cleanUtm, JSON_UNESCAPED_UNICODE),
         'language' => inquiry_text($input, 'language', 10, true),
     ];
+}
+
+/** Project only bounded, validated attribution from stored records (including legacy rows). */
+function inquiry_journey_metadata(array $row): array
+{
+    $result = ['id' => '', 'name' => '', 'source_page' => ''];
+    $decoded = json_decode(is_string($row['utm_json'] ?? null) ? $row['utm_json'] : '', true);
+    $stored = is_array($decoded) && is_array($decoded['journey'] ?? null) ? $decoded['journey'] : [];
+    $allowed = ['cultural-gateway', 'western-sichuan-private-road-trip', 'deep-cultural-journey'];
+    try {
+        $source = inquiry_text(['source_page' => $row['source_page'] ?? $stored['source_page'] ?? ''], 'source_page', 255);
+        if (in_array($source, ['/', '/traveler', '/journeys'], true) || in_array($source, array_map(fn($id) => '/journeys/' . $id, $allowed), true)) $result['source_page'] = $source;
+    } catch (InvalidArgumentException $e) { /* Ignore malformed historical metadata. */ }
+    try {
+        $id = inquiry_text($stored, 'id', 64);
+        $name = inquiry_text($stored, 'name', 100);
+        if (in_array($id, $allowed, true) && !preg_match('/[\x00-\x1f\x7f]/', $name)) {
+            $result['id'] = $id;
+            $result['name'] = $name;
+        }
+    } catch (InvalidArgumentException $e) { /* Ignore malformed historical metadata. */ }
+    return $result;
 }
 
 function inquiry_notify(PDO $pdo, string $inquiryId): bool
@@ -92,6 +123,8 @@ function inquiry_notify(PDO $pdo, string $inquiryId): bool
     $config = api_config();
     $to = (string) ($config['to_email'] ?? '');
     $body = "Inquiry ID: {$row['inquiry_id']}\nName: {$row['name']}\nEmail: {$row['email']}\nPreferred contact: {$row['preferred_contact']} {$row['contact_handle']}\nCountry: {$row['country']}\nTravelers: {$row['travelers']}\nTravel dates: {$row['travel_dates']}\nDestinations: {$row['destinations']}\nService: {$row['preferred_service']}\nChildren: " . ($row['traveling_with_children'] ? 'Yes' : 'No') . "\nGuide: {$row['english_guide']}\nInterests: {$row['interests_json']}\n\nMessage:\n{$row['message']}\n";
+    $journey = inquiry_journey_metadata($row);
+    $body .= "\nJourney ID: {$journey['id']}\nJourney name: {$journey['name']}\nSource page: {$journey['source_page']}\n";
     try {
         $sent = filter_var($to, FILTER_VALIDATE_EMAIL) && api_send_mail($to, '[Lumichan] New journey inquiry ' . $inquiryId, $body, $row['email']);
     } catch (Throwable $e) {

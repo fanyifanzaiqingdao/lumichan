@@ -1,3 +1,4 @@
+import { apiErrorMessage } from '../i18n/errors.js'
 export async function supportApi(file, { body, token, csrf, signal } = {}) {
   const controller = new AbortController()
   const abort = () => controller.abort()
@@ -12,7 +13,7 @@ export async function supportApi(file, { body, token, csrf, signal } = {}) {
     })
     const data = await response.json().catch(() => ({}))
     if (!response.ok || !data.ok) {
-      const error = new Error(data.error || 'Service unavailable. Please try again later.')
+      const error = new Error(apiErrorMessage(data.error, response.status))
       error.status = response.status
       throw error
     }

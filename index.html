@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lumichan — Private Journeys in China &amp; Western Sichuan</title>
+    <title>Lumichan | Private China Tours &amp; Cultural Journeys</title>
     <meta
       name="description"
       content="Lumichan designs private, tailor-made journeys in China. Rooted in Chengdu and Western Sichuan — travel through what you do, not what you see."
@@ -13,28 +13,53 @@
       name="keywords"
       content="Lumichan, private China tours, Western Sichuan travel, Chengdu tours, tailor-made China journey"
     />
-    <link rel="canonical" href="https://lumichan.com.cn/traveler" />
+    <link rel="canonical" href="https://lumichan.com.cn/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Lumichan" />
-    <meta property="og:title" content="Lumichan — Private Journeys in China &amp; Western Sichuan" />
+    <meta property="og:title" content="Lumichan | Private China Tours &amp; Cultural Journeys" />
     <meta
       property="og:description"
       content="Private, tailor-made journeys connecting travelers with China’s people, landscapes, and living cultures."
     />
-    <meta property="og:url" content="https://lumichan.com.cn/traveler" />
+    <meta property="og:url" content="https://lumichan.com.cn/" />
     <meta property="og:image" content="https://lumichan.com.cn/lumichan-logo.png" />
+    <script>
+      // Keep preview hosts out of search even if a production build is uploaded.
+      if (!['lumichan.com.cn', 'www.lumichan.com.cn'].includes(location.hostname)) {
+        const robots = document.createElement('meta')
+        robots.name = 'robots'
+        robots.content = 'noindex,nofollow'
+        document.head.appendChild(robots)
+      }
+    </script>
+    <script type="application/ld+json" id="lumichan-brand">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://lumichan.com.cn/#website",
+            "url": "https://lumichan.com.cn/",
+            "name": "Lumichan",
+            "publisher": { "@id": "https://lumichan.com.cn/#organization" }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://lumichan.com.cn/#organization",
+            "name": "Lumichan",
+            "url": "https://lumichan.com.cn/",
+            "logo": "https://lumichan.com.cn/lumichan-logo.png"
+          }
+        ]
+      }
+    </script>
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Lumichan — Private Journeys in China" />
     <meta
       name="twitter:description"
       content="Private, tailor-made journeys in China and Western Sichuan."
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Manrope:wght@700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
-      rel="stylesheet"
-    />
+
   </head>
   <body>
     <div id="root"></div>

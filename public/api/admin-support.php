@@ -15,7 +15,7 @@ try {
         $sql='SELECT id,state,assignee,email,language,created_at,updated_at,expires_at,notification_status FROM support_conversations WHERE expires_at>UTC_TIMESTAMP()';
         if (in_array($state,['ai','waiting','human','closed'],true)) { $sql.=' AND state=?'; $args[]=$state; }
         $search=support_text($_GET['search'] ?? '',200);
-        if ($search!=='') { $sql.=' AND (email LIKE ? OR id LIKE ?)'; $args[]='%'.$search.'%'; $args[]='%'.$search.'%'; }
+        if ($search!=='') { $sql.=' AND (email LIKE ? OR id LIKE ? OR EXISTS (SELECT 1 FROM support_messages sm WHERE sm.conversation_id=support_conversations.id AND sm.body LIKE ?))'; $args[]='%'.$search.'%'; $args[]='%'.$search.'%'; $args[]='%'.$search.'%'; }
         $page=max(0,min(10000,(int)($_GET['page'] ?? 0)));
         $sql.=' ORDER BY updated_at DESC,id DESC LIMIT 101 OFFSET '.($page*100);
         $rows=support_query($sql,$args)->fetchAll(); $more=count($rows)>100;
@@ -39,7 +39,7 @@ try {
         if ($row['assignee']!=='' && $row['assignee']!==$staff['email']) throw new InvalidArgumentException('会话已由其他员工接待');
         if ($row['state']==='human' && $row['assignee']===$staff['email']) { db()->commit(); api_json(200,['ok'=>true,'conversation'=>support_snapshot($row,true)]); }
         support_query("UPDATE support_conversations SET state='human',assignee=?,updated_at=UTC_TIMESTAMP() WHERE id=?",[$staff['email'],$id]);
-        support_message($id,'system',$row['language']==='zh'?'Lumichan 团队已接管此会话，AI 自动回复已暂停。':'The Lumichan team has taken over. Automated replies are paused.');
+        support_message($id,'system',support_content_language($row['language'])==='zh'?'Lumichan 团队已接管此会话，AI 自动回复已暂停。':'The Lumichan team has taken over. Automated replies are paused.');
     } elseif ($action==='reply') {
         if ($row['state']!=='human' || $row['assignee']!==$staff['email']) throw new InvalidArgumentException('请先接管会话');
         $text=support_text($b['text'] ?? '',4000,true); $request=support_text($b['request_id'] ?? '',64,true);
@@ -51,7 +51,7 @@ try {
     } elseif ($action==='resume') {
         if ($row['assignee']!==$staff['email'] || $row['state']!=='human') throw new InvalidArgumentException('仅当前接待人可恢复 AI');
         support_query("UPDATE support_conversations SET state='ai',assignee='',updated_at=UTC_TIMESTAMP() WHERE id=?",[$id]);
-        support_message($id,'system',$row['language']==='zh'?'会话已返回自动咨询模式。':'This conversation has returned to automated support.');
+        support_message($id,'system',support_content_language($row['language'])==='zh'?'会话已返回自动咨询模式。':'This conversation has returned to automated support.');
     } elseif ($action==='notify') {
         support_query("UPDATE support_conversations SET notification_status='pending',notification_attempts=0,notification_due=UTC_TIMESTAMP() WHERE id=?",[$id]);
     } elseif ($action==='delete') {
