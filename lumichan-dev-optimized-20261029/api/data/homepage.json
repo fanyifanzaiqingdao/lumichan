@@ -1,0 +1,664 @@
+{
+  "seo": {
+    "title": "Lumichan — Private Journeys in China & Western Sichuan",
+    "description": "Plan private journeys in China and Western Sichuan with local knowledge, clear planning and support tailored to your way of traveling."
+  },
+  "copy": {
+    "services": {
+      "eyebrow": "Our Services",
+      "title": "Travel Your Way.",
+      "intro": "Choose the level of help that fits you, from an independent plan to a private journey with every detail coordinated.",
+      "reassurance": "Flexible plans. Clear costs. Fewer worries.",
+      "disclaimer": "Booking and cancellation terms vary by service. View the applicable terms before booking."
+    },
+    "journeys": {
+      "eyebrow": "Discover China",
+      "title": "Popular Journeys.",
+      "intro": "These starting points show what a private journey can feel like. Each route can be tailored to your dates and interests."
+    },
+    "why": {
+      "eyebrow": "Why Lumichan",
+      "title": "Local Insight.\nRoom to Explore.",
+      "intro": "From our Chengdu base, we bring destination knowledge and attentive coordination to the way you want to travel."
+    },
+    "process": {
+      "eyebrow": "How it works",
+      "title": "Your Journey With Lumichan.",
+      "intro": "A clear path from the first idea to the last day of travel."
+    },
+    "faq": {
+      "eyebrow": "GOOD TO KNOW",
+      "title": "A Few Things\nWorth Knowing.",
+      "intro": "Clear answers help you choose a journey with confidence."
+    },
+    "inquiry": {
+      "eyebrow": "Let's Plan Together",
+      "title": "Your Journey Starts Here.",
+      "intro": "Tell us a little about your travel plans. We'll help you find the right way to experience China.",
+      "reassurance": "Not sure yet? That is completely fine. We can help you shape the trip from there."
+    },
+    "reviews": {
+      "eyebrow": "Guest Stories",
+      "title": "The Moments That\nStay With You.",
+      "intro": "Every journey leaves room for discovery, connection and moments that stay with you."
+    },
+    "stories": {
+      "eyebrow": "Journey Stories",
+      "title": "Three moments from the road",
+      "intro": ""
+    }
+  },
+  "formConfig": {
+    "consentVersion": "homepage-v1.1-2026-10-10",
+    "submitLabel": "Start planning my journey →",
+    "successTitle": "Thank you - your journey starts here.",
+    "successBody": "We have received your inquiry and will reply using your preferred contact method.",
+    "errorMessage": "We could not send your inquiry. Please try again, or email us at jin.lu@lumichan.com.cn."
+  },
+  "hero": {
+    "eyebrow": "Private cultural journeys in China",
+    "title": "Explore China More Deeply.\nTravel With Confidence.",
+    "subtitle": "Private, tailor-made journeys designed around your interests, with local knowledge, thoughtful planning and support that fits your way of traveling.",
+    "image": "/home/hero-sichuan.jpg",
+    "primaryCta": {
+      "label": "Plan my journey",
+      "href": "#inquiry"
+    },
+    "secondaryCta": {
+      "label": "Explore services",
+      "href": "/traveler/services"
+    },
+    "trustPoints": [
+      "Flexible booking",
+      "Clear Pricing",
+      "Tailor-made private journeys",
+      "Local Support"
+    ],
+    "imageFocalPoint": "50% 50%",
+    "mobileImage": ""
+  },
+  "services": [
+    {
+      "id": "planning",
+      "number": "01",
+      "title": "Journey Planning & Local Support",
+      "summary": "A practical itinerary, pre-trip guidance and a local contact when you need help on the road.",
+      "image": "/images/home-v22/ai_teahouse_planning.webp",
+      "imageAlt": "AI illustration of a traveler discussing plans in a teahouse",
+      "price": "From USD 99",
+      "booking": "One free date change before your trip starts.",
+      "href": "/traveler/services#planning-support",
+      "unit": "/ trip",
+      "priceNote": "1–5 days: USD 99 · 6–10 days: USD 199",
+      "imageCaption": "I plan. You support.",
+      "includedHighlights": [
+        "Personalized itinerary",
+        "Pre-trip preparation",
+        "Online local support"
+      ],
+      "imageFocalPoint": "50% 50%",
+      "media": {
+        "source": "Supplied homepage V2.2 prototype assets",
+        "consentOrLicenseRecord": "",
+        "published": true,
+        "aiGenerated": true
+      },
+      "bookingApproved": true,
+      "bookingPolicy": {
+        "status": "approved",
+        "version": "lumichan-services-type-e7b49a41",
+        "refundSteps": [
+          {
+            "when": "Within 24 hours*",
+            "refund": "100%"
+          },
+          {
+            "when": "Once planning begins",
+            "refund": "Partial refund"
+          },
+          {
+            "when": "After your trip starts",
+            "refund": "Non-refundable"
+          }
+        ],
+        "homepageRefundSummary": {
+          "stepIndex": 0
+        },
+        "dateChange": "One free date change before your trip starts.",
+        "footnotes": [
+          "*Before itinerary planning has started. Separately purchased third-party services follow the terms disclosed before purchase."
+        ],
+        "termsHref": "/traveler/booking-terms",
+        "confirmedBy": "Lumichan Developer Revision Brief, 2026-10-12",
+        "confirmedOn": "2026-10-12",
+        "sourceSha256": "4ee026d58e55091d5d6ecd7a3826c845a36e7e7c7e443639a17dbf1f4777a5f0",
+        "sourceDocument": "Lumichan_Developer_Revision_Brief.docx, sections 5–8; cites Lumichan_Travel_Services_type.pdf pages 2–5"
+      },
+      "detailPageUrl": "/traveler/services#planning-support",
+      "titleLinkEnabled": true,
+      "imageLinkEnabled": true
+    },
+    {
+      "id": "road-trip",
+      "number": "02",
+      "title": "Private Road Trip",
+      "summary": "Your own car. Your own pace. We plan the route, arrange private transport and coordinate the local details so you can focus on the journey.",
+      "image": "/images/home-v22/ai_private_road_trip_offroad_v2.webp",
+      "imageAlt": "AI illustration of an off-road SUV on a winding road in Western Sichuan",
+      "price": "From USD 299",
+      "booking": "One free date change with 7+ days’ notice.",
+      "href": "/traveler/services#private-road-trip",
+      "unit": "Starting reference",
+      "priceNote": "Final pricing basis confirmed in your written quote",
+      "imageCaption": "Give me the car.",
+      "includedHighlights": [
+        "Private vehicle",
+        "English-speaking driver",
+        "Pre-trip & road support"
+      ],
+      "imageFocalPoint": "50% 50%",
+      "media": {
+        "source": "Supplied homepage V2.2 prototype assets",
+        "consentOrLicenseRecord": "Generated for Lumichan on 2026-10-23; docs/HOMEPAGE-REVISION-2.md",
+        "published": true,
+        "aiGenerated": true
+      },
+      "bookingApproved": true,
+      "bookingPolicy": {
+        "status": "approved",
+        "version": "lumichan-services-type-e7b49a41",
+        "refundSteps": [
+          {
+            "when": "7+ days",
+            "refund": "100%"
+          },
+          {
+            "when": "4–6 days",
+            "refund": "80%"
+          },
+          {
+            "when": "1–3 days",
+            "refund": "60%"
+          },
+          {
+            "when": "Departure day",
+            "refund": "40%"
+          }
+        ],
+        "homepageRefundSummary": {
+          "stepIndex": 0
+        },
+        "dateChange": "One free date change with 7+ days’ notice.",
+        "footnotes": [
+          "Any non-refundable third-party cost is disclosed before booking."
+        ],
+        "termsHref": "/traveler/booking-terms",
+        "confirmedBy": "Lumichan Developer Revision Brief, 2026-10-12",
+        "confirmedOn": "2026-10-12",
+        "sourceSha256": "4ee026d58e55091d5d6ecd7a3826c845a36e7e7c7e443639a17dbf1f4777a5f0",
+        "sourceDocument": "Lumichan_Developer_Revision_Brief.docx, sections 5–8; cites Lumichan_Travel_Services_type.pdf pages 2–5"
+      },
+      "unitApproved": false,
+      "detailPageUrl": "/traveler/services#private-road-trip",
+      "titleLinkEnabled": true,
+      "imageLinkEnabled": true
+    },
+    {
+      "id": "signature",
+      "number": "03",
+      "title": "Signature Private Journey",
+      "summary": "A personal itinerary, private arrangements and cultural experiences shaped around what matters to you.",
+      "image": "/images/home-v22/ai_signature_welcome_concept.webp",
+      "imageAlt": "AI illustration of travelers welcomed beside a private vehicle",
+      "price": "From USD 699",
+      "booking": "One free date change with 14+ days’ notice.",
+      "href": "/traveler/services#signature-private-journey",
+      "unit": "Starting reference",
+      "priceNote": "Final pricing basis confirmed in your written quote",
+      "imageCaption": "Design it all.",
+      "includedHighlights": [
+        "One-to-one planning",
+        "Private vehicle",
+        "Personal cultural experiences"
+      ],
+      "imageFocalPoint": "50% 50%",
+      "media": {
+        "source": "Supplied homepage V2.2 prototype assets",
+        "consentOrLicenseRecord": "Generated for Lumichan on 2026-10-23; docs/HOMEPAGE-REVISION-2.md",
+        "published": true,
+        "aiGenerated": true
+      },
+      "bookingApproved": true,
+      "bookingPolicy": {
+        "status": "approved",
+        "version": "lumichan-services-type-e7b49a41",
+        "refundSteps": [
+          {
+            "when": "7+ days",
+            "refund": "100%*"
+          },
+          {
+            "when": "4–6 days",
+            "refund": "80%*"
+          },
+          {
+            "when": "1–3 days",
+            "refund": "60%*"
+          },
+          {
+            "when": "Departure day",
+            "refund": "40%*"
+          }
+        ],
+        "homepageRefundSummary": {
+          "stepIndex": 0
+        },
+        "dateChange": "One free date change with 14+ days’ notice.",
+        "footnotes": [
+          "*Pre-approved non-refundable third-party costs may be deducted."
+        ],
+        "termsHref": "/traveler/booking-terms",
+        "confirmedBy": "Lumichan Developer Revision Brief, 2026-10-12",
+        "confirmedOn": "2026-10-12",
+        "sourceSha256": "4ee026d58e55091d5d6ecd7a3826c845a36e7e7c7e443639a17dbf1f4777a5f0",
+        "sourceDocument": "Lumichan_Developer_Revision_Brief.docx, sections 5–8; cites Lumichan_Travel_Services_type.pdf pages 2–5"
+      },
+      "unitApproved": false,
+      "detailPageUrl": "/traveler/services#signature-private-journey",
+      "titleLinkEnabled": true,
+      "imageLinkEnabled": true
+    },
+    {
+      "id": "education",
+      "number": "04",
+      "title": "Educational & Cultural Journeys",
+      "summary": "Tailored learning, cultural exchange and meaningful encounters in China. Minimum 6 travelers; program pricing by quotation.",
+      "image": "/images/home-revision2/education.jpg",
+      "imageAlt": "AI-generated illustration of European students learning Chinese calligraphy",
+      "price": "Custom pricing",
+      "booking": "One free date change with 30+ days’ notice.",
+      "href": "/traveler/services#educational-cultural-journeys",
+      "limitedBadge": true,
+      "unit": "Minimum 6 travelers",
+      "priceNote": "Programs for universities, schools and organizations",
+      "imageCaption": "We come to learn.",
+      "includedHighlights": [
+        "Custom study curriculum",
+        "Cultural exchange",
+        "Dedicated coordination"
+      ],
+      "imageFocalPoint": "50% 60%",
+      "media": {
+        "source": "AI-generated concept photography; homepage revision 2.0",
+        "consentOrLicenseRecord": "Generated for Lumichan on 2026-10-23; docs/HOMEPAGE-REVISION-2.md",
+        "published": true,
+        "aiGenerated": true
+      },
+      "bookingApproved": true,
+      "bookingPolicy": {
+        "status": "approved",
+        "version": "lumichan-services-type-e7b49a41",
+        "refundSteps": [
+          {
+            "when": "30+ days",
+            "refund": "100%*"
+          },
+          {
+            "when": "15–29 days",
+            "refund": "80%*"
+          },
+          {
+            "when": "7–14 days",
+            "refund": "60%*"
+          },
+          {
+            "when": "1–6 days",
+            "refund": "40%*"
+          },
+          {
+            "when": "Departure day",
+            "refund": "No refund*"
+          }
+        ],
+        "homepageRefundSummary": {
+          "stepIndex": 0
+        },
+        "dateChange": "One free date change with 30+ days’ notice.",
+        "footnotes": [
+          "*Pre-approved institutional or third-party costs may be deducted."
+        ],
+        "termsHref": "/traveler/booking-terms",
+        "confirmedBy": "Lumichan Developer Revision Brief, 2026-10-12",
+        "confirmedOn": "2026-10-12",
+        "sourceSha256": "4ee026d58e55091d5d6ecd7a3826c845a36e7e7c7e443639a17dbf1f4777a5f0",
+        "sourceDocument": "Lumichan_Developer_Revision_Brief.docx, sections 5–8; cites Lumichan_Travel_Services_type.pdf pages 2–5"
+      },
+      "detailPageUrl": "/traveler/services#educational-cultural-journeys",
+      "titleLinkEnabled": false,
+      "imageLinkEnabled": false
+    }
+  ],
+  "journeys": [
+    {
+      "slug": "chengdu-cultural-gateway",
+      "title": "Cultural gateway",
+      "priceBadge": "From USD 299",
+      "priceBadgeApproved": true,
+      "duration": "1 day",
+      "summary": "Experience pandas, local cuisine, historic streets, gongfu tea, and traditional ear cleaning",
+      "tags": [
+        "City Exploration",
+        "Food",
+        "Local Life"
+      ],
+      "image": "/images/experiences/chengdu-teahouse-card.jpg",
+      "imageAlt": "Guests at a Chengdu tea house",
+      "price": null,
+      "groupBasis": null,
+      "showHomepagePrice": false
+    },
+    {
+      "slug": "western-sichuan-private-road-trip",
+      "title": "Western Sichuan Private Road Trip",
+      "priceBadge": "From USD 899",
+      "priceBadgeApproved": true,
+      "duration": "5 days",
+      "summary": "Discover Tibetan culture and dramatic mountain scenery at your own pace.",
+      "tags": [
+        "Nature",
+        "Road Trip",
+        "Tibetan Culture"
+      ],
+      "image": "/images/journeys/western-sichuan-card.jpg",
+      "imageAlt": "Mountain valley in Western Sichuan",
+      "price": null,
+      "groupBasis": null,
+      "showHomepagePrice": false
+    },
+    {
+      "slug": "deep-cultural-journey",
+      "title": "Deep Cultural Journey",
+      "priceBadge": "",
+      "priceBadgeApproved": false,
+      "duration": "7-10 days",
+      "summary": "Explore Taoist heritage, Sanxingdui, the Leshan Giant Buddha, and the living traditions of Bashu",
+      "tags": [
+        "Living Culture",
+        "Cultural Exploration",
+        "Deep Connection"
+      ],
+      "image": "/culture/tibetan-monastery.jpg",
+      "imageAlt": "Monastery in a mountain landscape",
+      "price": null,
+      "groupBasis": null,
+      "showHomepagePrice": false
+    }
+  ],
+  "whyItems": [
+    [
+      "Designed around you",
+      "We shape the route around your interests, pace and practical needs."
+    ],
+    [
+      "Clear scope from the start",
+      "Your proposal sets out the services, inclusions and price before booking."
+    ],
+    [
+      "Local coordination",
+      "We organize agreed transport, experiences and on-the-ground details."
+    ],
+    [
+      "Support as you go",
+      "You know who to contact before and during your journey."
+    ]
+  ],
+  "whyImage": "/home/why-choose-travelers.jpg",
+  "whyImageAlt": "Travelers exploring Western Sichuan together",
+  "whyGallery": [
+    {
+      "src": "/images/home-v22/why-vehicle.webp",
+      "alt": "AI illustration of a premium SUV",
+      "aiGenerated": true
+    },
+    {
+      "src": "/images/home-v22/why-planning.webp",
+      "alt": "AI illustration of the local team planning a journey",
+      "aiGenerated": true
+    },
+    {
+      "src": "/images/home-v22/why-road-trip.webp",
+      "alt": "AI illustration of travelers pausing in Western Sichuan",
+      "aiGenerated": true
+    },
+    {
+      "src": "/images/home-v22/why-culture-corrected.webp",
+      "alt": "AI illustration of a Tibetan cultural encounter with a shaved-headed monk",
+      "aiGenerated": true
+    },
+    {
+      "src": "/images/home-v22/why-pandas.webp",
+      "alt": "AI illustration of a panda visit",
+      "aiGenerated": true
+    }
+  ],
+  "steps": [
+    [
+      "01",
+      "Tell us your idea",
+      "Share your dates, group size, interests and questions.",
+      ""
+    ],
+    [
+      "02",
+      "Choose your service",
+      "We suggest the level of planning and support that fits.",
+      ""
+    ],
+    [
+      "03",
+      "Review your proposal",
+      "See the route, inclusions, price and booking terms.",
+      ""
+    ],
+    [
+      "04",
+      "Prepare with confidence",
+      "Get practical guidance before departure.",
+      ""
+    ],
+    [
+      "05",
+      "Travel your way",
+      "Enjoy the journey with agreed local coordination.",
+      ""
+    ],
+    [
+      "06",
+      "Share your feedback",
+      "Tell us what worked and what we can improve.",
+      ""
+    ]
+  ],
+  "faqs": [
+    [
+      "Can the itinerary be tailored to our interests?",
+      "Yes. Tell us what you enjoy, how you like to travel and how much time you have. We will propose a route and service scope for your review."
+    ],
+    [
+      "What is included in the starting price?",
+      "It depends on the service and confirmed quotation. Your proposal lists inclusions, exclusions and the pricing basis before booking. Road Trip and Signature starting prices are not per-person or complete-package prices."
+    ],
+    [
+      "Can you help with payments and travel preparation in China?",
+      "Journey Planning includes practical pre-trip guidance on payments, mobile connectivity and local transport. The exact support provided will be confirmed in your service proposal."
+    ],
+    [
+      "What happens if our plans change?",
+      "Cancellation and date-change rules vary by service and booking stage. Read the applicable service terms and any disclosed third-party charges before confirming your trip."
+    ],
+    [
+      "How do we get in touch during our journey?",
+      "Your confirmed travel documents explain your contact channel, support hours and what to do if you need help. Support depends on the service you book."
+    ]
+  ],
+  "vlogs": [],
+  "reviews": [],
+  "schemaVersion": 3,
+  "contentRevision": "homepage-2.0-2026-10-23",
+  "bookingPolicyVersion": "lumichan-services-type-e7b49a41",
+  "process": {
+    "steps": [
+      {
+        "order": 1,
+        "number": "01",
+        "title": "Tell us your idea",
+        "body": "Share your dates, group size, interests and questions.",
+        "reassurance": ""
+      },
+      {
+        "order": 2,
+        "number": "02",
+        "title": "Choose your service",
+        "body": "We suggest the level of planning and support that fits.",
+        "reassurance": ""
+      },
+      {
+        "order": 3,
+        "number": "03",
+        "title": "Review your proposal",
+        "body": "See the route, inclusions, price and booking terms.",
+        "reassurance": ""
+      },
+      {
+        "order": 4,
+        "number": "04",
+        "title": "Prepare with confidence",
+        "body": "Get practical guidance before departure.",
+        "reassurance": ""
+      },
+      {
+        "order": 5,
+        "number": "05",
+        "title": "Travel your way",
+        "body": "Enjoy the journey with agreed local coordination.",
+        "reassurance": ""
+      },
+      {
+        "order": 6,
+        "number": "06",
+        "title": "Share your feedback",
+        "body": "Tell us what worked and what we can improve.",
+        "reassurance": ""
+      }
+    ],
+    "videoEnabled": false,
+    "videos": []
+  },
+  "homepageLayoutRevision": "homepage-v2.2-2026-10-27",
+  "storySequences": [
+    {
+      "id": "story-1",
+      "title": "On the open road",
+      "description": "Route, landscape and room to pause.",
+      "intervalMs": 4500,
+      "enabled": true,
+      "aiGenerated": true,
+      "frames": [
+        {
+          "src": "/images/home-v22/story-vlog-01-01.webp",
+          "alt": "AI illustration: On the open road, scene 1 of 4",
+          "aiGenerated": true
+        },
+        {
+          "src": "/images/home-v22/story-vlog-01-02.webp",
+          "alt": "AI illustration: On the open road, scene 2 of 4",
+          "aiGenerated": true
+        },
+        {
+          "src": "/images/home-v22/story-vlog-01-03.webp",
+          "alt": "AI illustration: On the open road, scene 3 of 4",
+          "aiGenerated": true
+        },
+        {
+          "src": "/images/home-v22/story-vlog-01-04.webp",
+          "alt": "AI illustration: On the open road, scene 4 of 4",
+          "aiGenerated": true
+        }
+      ]
+    },
+    {
+      "id": "story-2",
+      "title": "A cultural encounter",
+      "description": "Listen, learn and meet the people behind a place.",
+      "intervalMs": 4500,
+      "enabled": true,
+      "aiGenerated": true,
+      "frames": [
+        {
+          "src": "/images/home-v22/story-vlog-02-01.webp",
+          "alt": "AI illustration: A cultural encounter, scene 1 of 4",
+          "aiGenerated": true
+        },
+        {
+          "src": "/images/home-v22/story-vlog-02-02.webp",
+          "alt": "AI illustration: A cultural encounter, scene 2 of 4",
+          "aiGenerated": true
+        },
+        {
+          "src": "/images/home-v22/story-vlog-02-03.webp",
+          "alt": "AI illustration: A cultural encounter, scene 3 of 4",
+          "aiGenerated": true
+        },
+        {
+          "src": "/images/home-v22/story-vlog-02-04.webp",
+          "alt": "AI illustration: A cultural encounter, scene 4 of 4",
+          "aiGenerated": true
+        }
+      ]
+    },
+    {
+      "id": "story-3",
+      "title": "An ordinary delight",
+      "description": "Small moments that stay with you.",
+      "intervalMs": 4500,
+      "enabled": true,
+      "aiGenerated": true,
+      "frames": [
+        {
+          "src": "/images/home-v22/story-vlog-03-01.webp",
+          "alt": "AI illustration: An ordinary delight, scene 1 of 4",
+          "aiGenerated": true
+        },
+        {
+          "src": "/images/home-v22/story-vlog-03-02.webp",
+          "alt": "AI illustration: An ordinary delight, scene 2 of 4",
+          "aiGenerated": true
+        },
+        {
+          "src": "/images/home-v22/story-vlog-03-03.webp",
+          "alt": "AI illustration: An ordinary delight, scene 3 of 4",
+          "aiGenerated": true
+        },
+        {
+          "src": "/images/home-v22/story-vlog-03-04.webp",
+          "alt": "AI illustration: An ordinary delight, scene 4 of 4",
+          "aiGenerated": true
+        }
+      ]
+    }
+  ],
+  "footer": {
+    "contactAddress": "No. 140, Annex of Tianfu Avenue, Chengdu High-tech Zone, Chengdu, Sichuan, China",
+    "email": "jin.lu@lumichan.com.cn"
+  },
+  "legalIdentity": {
+    "entityName": "寰宇纵横国际旅行社（重庆）有限公司四川第四分公司",
+    "registeredAddressChinese": "中国（四川）自由贸易试验区成都高新区世纪城路198号附170号1-2层",
+    "registeredAddressEnglish": "Floors 1–2, Annex No. 170, No. 198 Shijicheng Road, Chengdu High-tech Zone, China (Sichuan) Pilot Free Trade Zone, Chengdu, Sichuan, China",
+    "status": "draft",
+    "version": "registration-2026-10-27-draft",
+    "reviewedBy": "",
+    "reviewedAt": "",
+    "effectiveDate": ""
+  }
+}

@@ -1,0 +1,323 @@
+{
+  "schemaVersion": 1,
+  "modules": [
+    {
+      "id": "hero",
+      "order": 1,
+      "visible": true,
+      "title": "Travel Your Way.\nGo Deeper.",
+      "eyebrow": "Our travel services",
+      "body": "Three flexible service options for independent travelers, families and small groups.\nClear starting prices. Direct local contact. Tailored to you.",
+      "ctaLabel": "Explore the services",
+      "ctaUrl": "/traveler/services#services",
+      "note": "All prices shown are starting references. Final pricing depends on your route, travel dates, group size and service needs.",
+      "image": {
+        "src": "/images/services/hero.webp",
+        "alt": "AI illustration of travelers and an SUV overlooking mountains in Western Sichuan",
+        "focalPoint": "50% 50%",
+        "aiGenerated": true,
+        "licenseRecord": "Supplied service-page prototype assets, 2026-10-27; illustration only",
+        "authorized": false,
+        "published": true
+      }
+    },
+    {
+      "id": "why",
+      "order": 2,
+      "visible": true,
+      "title": "Why Travelers Choose Lumichan",
+      "eyebrow": "",
+      "body": "",
+      "ctaLabel": "Plan My Journey",
+      "ctaUrl": "/traveler/contact",
+      "items": [
+        {
+          "title": "Clear Starting Prices",
+          "body": "Know where your journey begins."
+        },
+        {
+          "title": "Direct Local Team",
+          "body": "Book directly with the team designing your journey."
+        },
+        {
+          "title": "Tailored to Your Needs",
+          "body": "Final pricing and details are shaped around you."
+        },
+        {
+          "title": "English-Speaking Drivers & Premium Vehicles",
+          "body": "Travel comfortably with better support."
+        }
+      ]
+    },
+    {
+      "id": "services",
+      "order": 3,
+      "visible": true,
+      "title": "Choose Your Level of Support",
+      "eyebrow": "Travel your way",
+      "body": "From independent planning with local guidance to a fully designed private journey.",
+      "ctaLabel": "Plan My Journey",
+      "ctaUrl": "/traveler/contact",
+      "note": "USD 99, USD 299 and USD 699 are starting references. Road Trip and Signature prices are not per-person or complete-package prices. The pricing basis and service scope are confirmed in your written quote."
+    },
+    {
+      "id": "pricing",
+      "order": 4,
+      "visible": true,
+      "title": "How Pricing Works",
+      "eyebrow": "How pricing works",
+      "body": "The prices shown above are starting prices. Your final quotation depends on your route, travel dates, number of travelers, vehicle type and service needs.",
+      "ctaLabel": "Plan My Journey",
+      "ctaUrl": "/traveler/contact",
+      "items": [
+        {
+          "title": "Starting Price",
+          "body": "See the general range for each service."
+        },
+        {
+          "title": "Your Needs",
+          "body": "Tell us your route, dates, group size and preferences."
+        },
+        {
+          "title": "Final Quote",
+          "body": "Receive a clear, customized proposal."
+        },
+        {
+          "title": "Confirm & Travel",
+          "body": "Once you’re happy, we confirm the details."
+        }
+      ],
+      "stripTitle": "Direct local booking. Clear service scope.",
+      "stripBody": "You book directly with the team designing and coordinating your journey."
+    },
+    {
+      "id": "vehicles",
+      "order": 5,
+      "visible": true,
+      "title": "Our Vehicles & Drivers",
+      "eyebrow": "Vehicles & drivers",
+      "body": "Road trips and private journeys can include English-speaking drivers and comfortable or premium SUVs selected for your route, group size and comfort needs.",
+      "ctaLabel": "Plan My Journey",
+      "ctaUrl": "/traveler/contact",
+      "points": [
+        "Comfortable & Premium SUVs",
+        "English-Speaking Drivers",
+        "Vehicle Class Confirmed in Writing",
+        "On-the-Road Support"
+      ],
+      "note": "Illustrative concepts only. Vehicle class and availability are confirmed for each route. Li Auto, ONVO L90 and Land Rover are examples, never guaranteed models."
+    },
+    {
+      "id": "idea",
+      "order": 6,
+      "visible": true,
+      "title": "You Bring the Idea.\nWe Help With the Rest.",
+      "eyebrow": "Why it feels easy",
+      "body": "Traveling in China can feel overwhelming if you’re doing everything on your own. With Lumichan, you can stay flexible while getting the local support you actually need.",
+      "ctaLabel": "Plan My Journey",
+      "ctaUrl": "/traveler/contact",
+      "image": {
+        "src": "/images/services/idea.webp",
+        "alt": "AI illustration of a mountain journey in Western Sichuan",
+        "focalPoint": "50% 50%",
+        "aiGenerated": true,
+        "licenseRecord": "Supplied service-page prototype assets, 2026-10-27; illustration only",
+        "authorized": false,
+        "published": true
+      },
+      "items": [
+        {
+          "title": "Before the trip",
+          "body": "We help you prepare clearly."
+        },
+        {
+          "title": "On the road",
+          "body": "We help make things smoother."
+        },
+        {
+          "title": "When plans change",
+          "body": "We help you adjust with less stress."
+        }
+      ]
+    },
+    {
+      "id": "reviews",
+      "order": 7,
+      "visible": true,
+      "title": "What Our Travelers Appreciate",
+      "eyebrow": "Guest reviews",
+      "body": "",
+      "ctaLabel": "Plan My Journey",
+      "ctaUrl": "/traveler/contact",
+      "note": "AI sample review text for layout preview only. These are not customer testimonials.",
+      "emptyText": "Traveler stories will appear here once their sources and photo permissions have been verified."
+    },
+    {
+      "id": "final",
+      "order": 8,
+      "visible": true,
+      "title": "Ready to Start Your Adventure?",
+      "eyebrow": "",
+      "body": "Tell us what you want to experience — we’ll design a private journey around you.",
+      "ctaLabel": "Plan My Journey",
+      "ctaUrl": "/traveler/contact",
+      "primaryLabel": "Book A Consultation ✦",
+      "primaryUrl": "/traveler/contact",
+      "secondaryLabel": "Browse Itineraries",
+      "secondaryUrl": "/traveler/itineraries"
+    }
+  ],
+  "services": [
+    {
+      "id": "planning",
+      "anchor": "planning-support",
+      "order": 1,
+      "visible": true,
+      "title": "Journey Planning & Local Support",
+      "subtitle": "Plan it yourself. Travel with a local expert in your pocket.",
+      "points": [
+        "Personalized planning support",
+        "Local guidance before and during the trip",
+        "Better decisions, fewer travel mistakes"
+      ],
+      "included": [
+        "Personalized itinerary planning",
+        "Digital travel planning booklet",
+        "Hotel and local transportation recommendations",
+        "Help with payments, mobile connectivity and pre-trip preparation",
+        "Guidance on insurance and practical travel questions",
+        "Online assistance during your journey",
+        "Local recommendations when plans change"
+      ],
+      "bestFor": "Independent travelers who want freedom with a trusted local contact.",
+      "image": {
+        "src": "/images/services/planning.webp",
+        "alt": "AI illustration: Journey Planning & Local Support",
+        "focalPoint": "50% 50%",
+        "aiGenerated": true,
+        "licenseRecord": "Supplied service-page prototype assets, 2026-10-27; illustration only",
+        "authorized": false,
+        "published": true
+      },
+      "ctaLabel": "Plan My Trip",
+      "ctaUrl": "/traveler/contact?service=planning"
+    },
+    {
+      "id": "road-trip",
+      "anchor": "private-road-trip",
+      "order": 2,
+      "visible": true,
+      "title": "Private Road Trip",
+      "subtitle": "Your own car. Your own pace. No tour-bus timetable.",
+      "points": [
+        "English-speaking driver",
+        "Comfortable or premium SUV selected for your route",
+        "Flexible private road trip experience",
+        "A practical choice for families and small groups"
+      ],
+      "included": [
+        "Personalized route and pre-trip support",
+        "Private vehicle throughout the confirmed journey",
+        "English-speaking driver",
+        "Vehicle matched to route, group size and actual availability",
+        "Hotel and restaurant recommendations",
+        "Booking assistance and local support on the road",
+        "Insurance, welcome meal and gift only as specified in the written quote"
+      ],
+      "bestFor": "Travelers who want private transport and a flexible pace, especially on routes where local driving support helps.",
+      "image": {
+        "src": "/images/services/road-trip.webp",
+        "alt": "AI illustration: Private Road Trip",
+        "focalPoint": "50% 50%",
+        "aiGenerated": true,
+        "licenseRecord": "Supplied service-page prototype assets, 2026-10-27; illustration only",
+        "authorized": false,
+        "published": true
+      },
+      "ctaLabel": "Plan My Trip",
+      "ctaUrl": "/traveler/contact?service=road-trip"
+    },
+    {
+      "id": "signature",
+      "anchor": "signature-private-journey",
+      "order": 3,
+      "visible": true,
+      "title": "Signature Private Journey",
+      "subtitle": "Designed around you — not around a standard itinerary.",
+      "points": [
+        "Fully customized around your travel style",
+        "English-speaking driver and upgraded vehicle when quoted",
+        "Premium support and deeper local access",
+        "A smoother, richer travel experience"
+      ],
+      "included": [
+        "One-to-one journey planning and travel concierge",
+        "Private vehicle and English-speaking driver in the agreed itinerary",
+        "Guide or interpreter when quoted",
+        "Selected hotels, restaurants and cultural experiences when quoted",
+        "Local experts and special-interest visits subject to availability",
+        "Insurance, priority support, welcome meal and gift only as specified in the written quote"
+      ],
+      "bestFor": "Travelers seeking privacy, flexibility and carefully coordinated cultural experiences.",
+      "image": {
+        "src": "/images/services/signature.webp",
+        "alt": "AI illustration: Signature Private Journey",
+        "focalPoint": "50% 50%",
+        "aiGenerated": true,
+        "licenseRecord": "Supplied service-page prototype assets, 2026-10-27; illustration only",
+        "authorized": false,
+        "published": true
+      },
+      "ctaLabel": "Plan My Trip",
+      "ctaUrl": "/traveler/contact?service=signature"
+    }
+  ],
+  "gallery": [
+    {
+      "src": "/images/services/road-trip.webp",
+      "alt": "AI concept of an SUV exterior on a mountain road",
+      "focalPoint": "50% 50%",
+      "aiGenerated": true,
+      "licenseRecord": "Supplied service-page prototype assets, 2026-10-27; illustration only",
+      "authorized": false,
+      "published": true
+    },
+    {
+      "src": "/images/services/interior.webp",
+      "alt": "AI concept of a premium SUV interior",
+      "focalPoint": "50% 50%",
+      "aiGenerated": true,
+      "licenseRecord": "Supplied service-page prototype assets, 2026-10-27; illustration only",
+      "authorized": false,
+      "published": true
+    },
+    {
+      "src": "/images/services/driver.webp",
+      "alt": "AI concept of a driver and SUV in Western Sichuan",
+      "focalPoint": "50% 50%",
+      "aiGenerated": true,
+      "licenseRecord": "Supplied service-page prototype assets, 2026-10-27; illustration only",
+      "authorized": false,
+      "published": true
+    },
+    {
+      "src": "/images/services/signature.webp",
+      "alt": "AI concept of a private journey welcome",
+      "focalPoint": "50% 50%",
+      "aiGenerated": true,
+      "licenseRecord": "Supplied service-page prototype assets, 2026-10-27; illustration only",
+      "authorized": false,
+      "published": true
+    },
+    {
+      "src": "/images/services/planning.webp",
+      "alt": "AI concept of a traveler exploring with a map",
+      "focalPoint": "50% 50%",
+      "aiGenerated": true,
+      "licenseRecord": "Supplied service-page prototype assets, 2026-10-27; illustration only",
+      "authorized": false,
+      "published": true
+    }
+  ],
+  "reviews": []
+}
