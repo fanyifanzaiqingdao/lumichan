@@ -125,6 +125,36 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="home-journeys section-pad" id="journeys">
+        <div className="section">
+          <div className="section-head">
+            <p className="eyebrow">{t(copy.journeys.eyebrow)}</p>
+            <h2 className="font-serif"><HeadingText text={copy.journeys.title} accent="Journeys" /></h2>
+            <p>{t(copy.journeys.intro)}</p>
+          </div>
+          <div className="journey-grid">
+            {journeys.filter((journey) => journey.published !== false).map((journey) => (
+              <article className="journey-card" key={journey.slug}>
+                <div className="journey-card__media">
+                  <SoftImage src={journey.image} alt={t(journey.imageAlt || journey.title)} loading="lazy" width={640} height={480} />
+                  {journey.showHomepagePrice === true && journeyPriceBadge(journey) && <span>{t(journeyPriceBadge(journey))}</span>}
+                </div>
+                <div className="journey-card__body">
+                  <h3 className="font-serif">{t(journey.title)}</h3>
+                  <p>{t(journey.summary)}</p>
+                  <div className="journey-card__tags">{safeList(journey.tags, []).map((tag) => <span key={tag}>{t(tag)}</span>)}</div>
+                  {journey.showHomepagePrice === true && journey.priceApproved && journey.price && journey.groupBasis && !/\[|placeholder|RMB\s*[—-]/i.test(`${journey.price} ${journey.groupBasis}`) ? (
+                    <div className="journey-card__price"><strong>{t(journey.price)}</strong><small>{t(journey.groupBasis)}</small></div>
+                  ) : null}
+                  <Link to={`/journeys/${journey.slug === 'chengdu-cultural-gateway' ? 'cultural-gateway' : journey.slug}`} className="text-gold-link" onClick={() => track('journey_view', { journey_slug: journey.slug, placeholder: false })}>{t("View journey ")}<span aria-hidden="true">→</span></Link>
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className="section-cta"><Link to="/traveler#inquiry" className="btn btn-forest">{t("Plan my journey ")}<span aria-hidden="true">→</span></Link></div>
+        </div>
+      </section>
+
       <section className="home-services section-pad" id="services">
         <div className="section">
         <div className="section-head">
@@ -172,36 +202,6 @@ export default function Home() {
           <div><strong>{t(copy.services.reassurance)}</strong><p>{t(copy.services.disclaimer)} <Link to="/traveler/booking-terms">{t("Booking Terms")}</Link></p></div>
           <Link to="/traveler/services" className="btn btn-forest" onClick={() => track('cta_click', { label: 'Explore all services', destination: '/traveler/services', section: 'services' })}>{t("Explore all services ")}<span aria-hidden="true">→</span></Link>
         </div>
-        </div>
-      </section>
-
-      <section className="home-journeys section-pad" id="journeys">
-        <div className="section">
-          <div className="section-head">
-            <p className="eyebrow">{t(copy.journeys.eyebrow)}</p>
-            <h2 className="font-serif"><HeadingText text={copy.journeys.title} accent="Journeys" /></h2>
-            <p>{t(copy.journeys.intro)}</p>
-          </div>
-          <div className="journey-grid">
-            {journeys.filter((journey) => journey.published !== false).map((journey) => (
-              <article className="journey-card" key={journey.slug}>
-                <div className="journey-card__media">
-                  <SoftImage src={journey.image} alt={t(journey.imageAlt || journey.title)} loading="lazy" width={640} height={480} />
-                  {journey.showHomepagePrice === true && journeyPriceBadge(journey) && <span>{t(journeyPriceBadge(journey))}</span>}
-                </div>
-                <div className="journey-card__body">
-                  <h3 className="font-serif">{t(journey.title)}</h3>
-                  <p>{t(journey.summary)}</p>
-                  <div className="journey-card__tags">{safeList(journey.tags, []).map((tag) => <span key={tag}>{t(tag)}</span>)}</div>
-                  {journey.showHomepagePrice === true && journey.priceApproved && journey.price && journey.groupBasis && !/\[|placeholder|RMB\s*[—-]/i.test(`${journey.price} ${journey.groupBasis}`) ? (
-                    <div className="journey-card__price"><strong>{t(journey.price)}</strong><small>{t(journey.groupBasis)}</small></div>
-                  ) : null}
-                  <Link to={`/journeys/${journey.slug === 'chengdu-cultural-gateway' ? 'cultural-gateway' : journey.slug}`} className="text-gold-link" onClick={() => track('journey_view', { journey_slug: journey.slug, placeholder: false })}>{t("View journey ")}<span aria-hidden="true">→</span></Link>
-                </div>
-              </article>
-            ))}
-          </div>
-          <div className="section-cta"><Link to="/traveler#inquiry" className="btn btn-forest">{t("Plan my journey ")}<span aria-hidden="true">→</span></Link></div>
         </div>
       </section>
 
@@ -260,7 +260,7 @@ export default function Home() {
           <p><SentenceLines text={copy.inquiry.intro} /></p>
           <p><SentenceLines text={copy.inquiry.reassurance} /></p>
         </div>
-        <InquiryForm services={services} track={track} config={{ ...defaultHomepage.formConfig, ...content.formConfig }} />
+        <details className="home-inquiry__expand"><summary className="btn btn-forest">{t("Start planning my journey")} →</summary><InquiryForm services={services} track={track} config={{ ...defaultHomepage.formConfig, ...content.formConfig }} /></details>
         </div>
       </section>
     </div>

@@ -150,3 +150,49 @@
   .page .sp-page .sp-price { grid-column: auto; }
   .page .jv-detail .jv-experience:nth-child(even) .jv-slideshow { order: 0; }
 }
+
+/* Homepage reference, November 12: editorial mosaic and compact service grid. */
+.page .home.home--v22 .home-hero { min-height: 680px; }
+.page .home.home--v22 .home-hero__content h1 { max-width: 11ch; font-size: clamp(3.2rem,5.8vw,6rem); line-height: .96; }
+.page .home.home--v22 .home-hero__content h1 > :last-child { font-style: italic; }
+.page .home.home--v22 .home-hero__subtitle { max-width: 42ch; font-size: .95rem; }
+.page .home.home--v22 .section-pad { padding-block: clamp(3rem,6vw,6rem); }
+.page .home--v22 .journey-grid { display:grid; grid-template-columns: 1.1fr 1fr; gap: 1rem; align-items:stretch; }
+.page .home--v22 .journey-card { position:relative; min-height:260px; overflow:hidden; border-radius:14px; background:#173d32; }
+.page .home--v22 .journey-card:first-child { grid-row:span 2; }
+.page .home--v22 .journey-card__media { position:absolute; inset:0; height:100%; aspect-ratio:auto; }
+.page .home--v22 .journey-card__media img { width:100%; height:100%; object-fit:cover; }
+.page .home--v22 .journey-card__body { position:relative; display:flex; flex-direction:column; justify-content:flex-end; min-height:260px; height:100%; box-sizing:border-box; padding:1.5rem; background:linear-gradient(transparent 10%,#102a24ee 100%); color:#fffdf3; }
+.page .home--v22 .journey-card__body :is(h3,p,a) { color:#fffdf3; }
+.page .home--v22 .journey-card__tags { display:none; }
+.page .home--v22 .service-feature-list { grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+.page .home--v22 .service-feature-list .service-feature { grid-template-columns:1fr; grid-template-areas:"visual" "copy"; border-radius:14px; }
+.page .home--v22 .service-feature-list .service-feature:first-child { grid-column:1/-1; grid-template-columns:1.05fr 1fr; grid-template-areas:"visual copy"; }
+.page .home--v22 .service-feature-list .service-feature:nth-child(even) { grid-template-areas:"visual" "copy"; }
+.page .home--v22 .service-feature__visual { min-height:0; aspect-ratio:2/1; }
+.page .home--v22 .service-feature:first-child .service-feature__visual { aspect-ratio:auto; min-height:390px; }
+.page .home--v22 .service-feature__copy { padding:clamp(1.4rem,2.6vw,2.6rem); }
+.page .home--v22 .service-feature--education { grid-column:1/-1; }
+.page .home--v22 .service-feature--education .service-feature__copy { padding:1.2rem 1.6rem; }
+.page .home--v22 .home-why { width:100%; max-width:none; padding-inline:max(6vw,calc((100vw - 1240px)/2)); display:block; box-sizing:border-box; background:#173d32; color:#f5f1e5; }
+.page .home--v22 .home-why__media { display:none; }
+.page .home--v22 .home-why__items { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:2rem; }
+.page .home--v22 .home-why__items article { border:1px solid #ffffff25; padding:1.5rem; }
+.page .home--v22 .home-process { background:#173d32; color:#f5f1e5; padding-top:0; }
+.page .home--v22 .home-process :is(h2,h3,p,small) { color:inherit; }
+.page .home--v22 .home-timeline { display:grid; grid-template-columns:repeat(6,1fr); gap:1rem; }
+.page .home--v22 .home-timeline li { padding:1rem 0; background:transparent; border-top:1px solid #bfa875; border-radius:0; }
+.page .home--v22 .home-inquiry { margin:1rem; border-radius:22px; background:#a95238; color:#fffaf0; text-align:center; }
+.page .home--v22 .home-inquiry__layout { display:block; max-width:800px; }
+.page .home--v22 .home-inquiry__intro :is(h2,p) { color:inherit; }
+.page .home--v22 .home-inquiry__expand { margin-top:2rem; }
+.page .home--v22 .home-inquiry__expand > summary { display:inline-flex; cursor:pointer; background:#fffaf0; color:#173d32; }
+.page .home--v22 .home-inquiry__expand .inquiry-form { margin-top:2rem; text-align:left; }
+@media(max-width:767px) {
+ .page .home.home--v22 .home-hero { min-height:620px; }
+ .page .home--v22 :is(.journey-grid,.service-feature-list) { grid-template-columns:1fr; }
+ .page .home--v22 .journey-card:first-child { grid-row:auto; }
+ .page .home--v22 .service-feature-list .service-feature:first-child { grid-template-columns:1fr; grid-template-areas:"visual" "copy"; }
+ .page .home--v22 .service-feature:first-child .service-feature__visual { min-height:0; aspect-ratio:3/2; }
+ .page .home--v22 :is(.home-why__items,.home-timeline) { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
